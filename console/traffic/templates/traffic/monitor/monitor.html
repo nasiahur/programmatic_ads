@@ -1,0 +1,17 @@
+{% extends 'traffic/application.html' %}
+
+{% block navbar_monitor %}class="active"{%endblock%}
+{% block navbar_settings %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>{% block header %}{%endblock%}</h2>
+    {% block breadcrumbs %}{% endblock %}
+    {% block banner %}{% endblock %}
+    
+    <section class="row-fluid">
+        {% block description %}{% endblock %}
+        {% block content %}{% endblock %}
+    </section>  
+
+{% endblock %}

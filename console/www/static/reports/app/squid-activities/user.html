@@ -1,0 +1,66 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{meta.name}}, {{user.value}}</h3>
+    <md-button aria-label="The Button" href="#/list"> Home </md-button>
+    <md-button aria-label="The Button" href="#/list/users"> User Activities </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+    <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        <md-list>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Requests</h3>
+                    <p>{{user.hits}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Bandwidth</h3>
+                    <p>{{user.size | bytes}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Name</h3>
+                    <p>{{user.value}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="days">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>Day</th>
+                                    <th md-column md-numeric>Size</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="d in days">
+                                    <td md-cell>{{d.day | date:'yyyy-MM-dd'}}</td>
+                                    <td md-cell>{{d.size | bytes }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+            <md-tab label="domains">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table id="domain_table">
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

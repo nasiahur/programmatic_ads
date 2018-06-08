@@ -1,0 +1,4 @@
+[
+    { "model": "antivirus.AvSettings", "fields": {} },
+    { "model": "antivirus.SafeBrowsing", "fields": {} }
+]

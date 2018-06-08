@@ -1,0 +1,20 @@
+{% extends 'node/application.html' %}
+{% block navbar_tools %}class="active"{%endblock%}
+{% block contents %}
+
+    <h2>Tools</h2>
+    {% block page_comment %}{% endblock %}
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_recategorize %}{%endblock%}><a href="{% url 'node:ViewDataChoices' %}">Data Choices</a></li>
+            <li {% block toolbar_backup %}{%endblock%}><a href="{% url 'node:ViewBackUp' %}">Backup</a></li>            
+            <li {% block toolbar_restore %}{%endblock%}><a href="{% url 'node:ViewRestore' %}">Restore</a></li>            
+        </ul>  
+        <div class="box">
+            {% block box_contents %}{% endblock %}
+        </div>
+    </section>
+
+{% endblock %}
+

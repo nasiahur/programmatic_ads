@@ -1,0 +1,46 @@
+{% extends 'squid/auth/pseudo.html' %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+{% block auth_users %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+        <table class="table table-hover table-condensed" style="margin-top: 0px;">
+            <tr>
+                <th>IP Address</th>
+                <th>Domain</th>
+                <th>User Name</th>
+                <th>User Principal Name</th>
+                <th>SID</th>
+            </tr>
+
+            {% if error_occured %}
+                <tr class="error">
+                    <td colspan="5" style="padding: 15px;">
+                        <strong>Error:</strong> <em>{{error_message}}</em>
+                        <br>
+                        <pre>{{error_traceback}}</pre>                    
+                    </td>
+                </tr>
+            {% else %}
+
+                {% for object in object_list %}
+                    <tr>
+                        <td>{{object.user_ip|truncatechars:60}}</td>                
+                        <td>{{object.domain|truncatechars:60}}</td>                
+                        <td>{{object.user_name|truncatechars:60}}</td>
+                        <td>{{object.user_pname|truncatechars:60}}</td>                
+                        <td>{{object.user_sid|truncatechars:60}}</td>                
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5"><small><em>No IP to User Name mapping available, please check Active Directory Inspector is installed and running on primary and backup domain controllers. Click <em>Connection Test</em> tab and/or refresh this page to try again.</em></small></td>
+                    </tr>
+                {% endfor %}  
+
+            {% endif %}
+        </table>                
+    
+    </div>
+{% endblock %}

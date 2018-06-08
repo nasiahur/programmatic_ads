@@ -1,0 +1,19 @@
+{% extends 'safety/application.html' %}
+{% block contents %}
+    
+    <section class="row-fluid">    
+        <form action="" method="POST" class="form-horizontal" role="form">
+        {% csrf_token %}            
+            <div class="alert alert-block alert-error fade in" id="policy_remove_confirm">
+                <h3 class="alert-heading">Confirm Removal</h3>
+                <p>You are about to remove policy <strong>{{object.name|title}}</strong>. This is irreversible operation and cannot be undone! Proceed only when absolutely necessary.</p>
+                <p>&nbsp;</p>
+                <p>
+                    {% if object.name != 'default' %}<button type="submit" name="remove" value="on" class="btn btn-danger">Remove Policy</button> {% endif %}<a class="btn btn-default" href="{% url 'ViewAdvanced' policy.pk %}">Cancel</a>
+                    
+                </p>
+            </div>            
+         </form>
+    </section>        
+
+{% endblock %}

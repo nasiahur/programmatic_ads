@@ -1,0 +1,89 @@
+{% extends 'squid/auth/localdb.html' %}
+
+{% block auth_localdb_users %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+		<p>The list of users is stored in <em>/opt/websafety/etc/users.htpasswd</em> file. The file is managed using <em>htpasswd</em> binary from <a target="new" href="https://httpd.apache.org/docs/current/programs/htpasswd.html">Apache web server</a> package.</p>
+
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 id="myModalLabel" style="color: red;">Remove Selected Items</h3>
+        </div>
+        <div class="modal-body">
+            <p>Selected items will be removed. This is irreversible operation and cannot be undone. Please proceed only when absolutely necessary.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" onclick="javascript:$('form#object_list').submit();" >Remove Items</button>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    <!-- various jscript helpers to select / deselect items -->
+    <script type="text/javascript">
+        var selectAll = function () {
+            $('.widget-messages input:not(:checked)').click();            
+        }, toggleSelection = function () {
+            $checked = $('.widget-messages input:checked');
+            $('.widget-messages input:not(:checked)').click();
+            $checked.click();
+        }, unselectAll = function () {
+            $('.widget-messages input:checked').click();
+        }, deleteMessages = function () {
+            $('.widget-messages input:checked').parents('.message').remove();
+        }, removeSelected = function () {
+            options = {}
+            $('#myModal').modal(options)
+        };
+    </script>
+
+    <div class="non-collapsible widget-messages">
+        <div class="message-actions">
+	        <div class="btn-group">
+				<a href="{% url 'ViewAuthLocalDbUsersCreate' %}" class="btn btn-primary btn-small">Add New</a>    
+				<button class="btn btn-primary btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'ViewAuthLocalDbImport' %}">Import</a></li>
+                    {% if htpasswd_exists %}<li><a href="{% url 'ViewAuthLocalDbExport' %}">Export</a></li>{% endif %}
+				</ul>
+			</div>
+	        <div style="margin: 0;" class="btn-toolbar pull-right">
+                <div class="btn-group">
+                    <a class="btn btn-small" href="javascript:selectAll()">Select All</a>
+                    <button data-toggle="dropdown" class="btn btn-small dropdown-toggle"><i class="icon-caret-down"></i></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:toggleSelection()">Toggle Selection</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:unselectAll()">Unselect All</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <a href="javascript:removeSelected()" class="btn btn-danger btn-small dropdown-toggle">Remove Selected</a>                    
+                </div>
+            </div>
+        </div>
+        
+        <form method="POST" style="margin-bottom: 0px;" id="object_list">{% csrf_token %}
+        <table class="table table-hover table-condensed" style="margin-top: 20px;">
+        {% for object in object_list %}
+            <tr>
+                <td  style="border-top: none;"><input type="checkbox" value="{{object.pk}}" name="selected_id" style="margin-top: 0px;"> <a href="{% url 'ViewAuthLocalDbUsersUpdate' object.user %}">{{object.user|truncatechars:60}}</a></td>
+                <td  style="border-top: none;">{{object.comment|truncatechars:60}}</td>                
+                <td  style="border-top: none;">{{object.encpass|truncatechars:60}}</td>                
+            </tr>
+        {% empty %}
+            <tr>
+                <td  style="border-top: none;" colspan="3"><small><em>No items found, click Add New or Import to add new items to the list.</em></small></td>
+            </tr>
+        {% endfor %}  
+        </table>        
+        </form>
+    </div>
+
+    {% block member_heading%}{%endblock%}    
+
+    </div>
+{% endblock %}

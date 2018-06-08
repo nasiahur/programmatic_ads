@@ -1,0 +1,4 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid runtime information retrieved using <em>squidclient mgr:counters</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_counters %}class="active"{%endblock%}
+{% block pre_content %}{{client.counters_str}}{% endblock %}

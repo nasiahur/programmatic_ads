@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul></ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+
+{% block contents %}
+        
+        <h2 align="center">Apply Configuration Settings <small>and restart ICAP daemon and Squid proxy if required</small></h2>
+        <p>&nbsp;</p>
+
+        
+        
+        <section class="row-fluid">
+        
+            <div class="span6">
+                <h3 class="box-header">Save and Restart</h3>
+                <div class="box" style="display: block;">                
+                    <form action="{% url 'frame:RestartView' %}" method="POST">{% csrf_token %}             
+                    <ul>
+                        <li>All changes from Web UI are saved to configuration storage.</li>
+                        <li>ICAP daemon (wsicapd) is unconditionally restarted.</li>
+                        <li>Squid Proxy is unconditionally restarted.</li>
+                        <li>All active HTTP and ICAP connections are terminated, browsers may need a refresh of all opened pages.</li>
+                        <li>New configuration settings are applied immediately.</li>
+                    </ul>
+                    <p>&nbsp;</p>
+                    <p class="text-center">
+                        <button type="submit" name="restart" value="true" class="btn btn-large btn-danger">Restart Squid Proxy &amp; ICAP Server</button>                            
+                    </p>
+                    </form>   
+                    <p>&nbsp;</p>                    
+                </div>
+            </div>
+            
+            <div class="span6">
+                <h3 class="box-header">Save and Reload</h3>
+                <div class="box">
+                    <form action="{% url 'frame:ReloadView' %}" method="POST" class="navbar-form">{% csrf_token %} 
+                        <ul>
+                                <li>All changes from Web UI are saved to configuration storage.</li>
+                                <li>ICAP daemon (wsicapd) is reloaded using standard HUP message.</li>
+                                <li>Squid Proxy is reloaded using standard HUP message.</li>
+                                <li>New connections from browsers may not pick up configuration changes if they are serviced by persistent ICAP connections with old configuration.</li>
+                                <li>New configuration settings are applied to new ICAP connections only.</li>
+                        </ul>
+                        <p>&nbsp;</p>                        
+                        <p class="text-center">
+                            <button type="submit" name="reload" value="true" class="btn btn-large btn-success">Reload Squid Proxy &amp; ICAP Server</button>
+                        </p>
+                    </form>                  
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+            
+        </section>
+
+        
+{% endblock %}

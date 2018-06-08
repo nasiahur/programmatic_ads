@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_user %}active{%endblock%}
+{% block header_tab %}<small> / User IP Addresses</small>{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the following local IP addresses are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeUserIpCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeUserIpUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeUserIpUpdate' object.pk %}{%endblock%}
+
+

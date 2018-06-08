@@ -1,0 +1,37 @@
+{% extends 'squid/logs/logs.html' %}
+
+{% block toolbar_levels %}class="active"{%endblock%}
+
+{% block page_comment %}{% endblock %}
+
+{% block page_content %}
+
+
+    <form class="form-inline" method="POST" action="">
+        {% csrf_token %}
+        <label>Default level of Squid cache.log (all sections):</label>
+        {{form.loglevel_section_all}}
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+        <button type="submit" class="btn" name="reset_defaults">Reset to Defaults</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Section</th>
+                <th>Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for section in sections %}
+            <tr>
+                <td>{{section.section_id}}</td>
+                <td>{{section.title}}</td>
+                <td><a href="{% url 'ViewLogSectionUpdate' section.section_id %}">{{section.get_level_display}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}

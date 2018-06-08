@@ -1,0 +1,12 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_domain %}active{%endblock%}
+{% block header_tab %} / Domain Names{% endblock %}
+
+{% block page_comment %}
+<p>Connections to the following remote domains are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeDomainNameCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeDomainNameUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeDomainNameUpdate' object.pk %}{%endblock%}

@@ -1,0 +1,11 @@
+{% extends 'safety/rules/rulefile_list.html' %}
+
+{% block toolbar_rule_file %}active{%endblock%}
+
+{% block rule_desc%}<p>Blocks downloads of files based on their actual contents. The names of files are not taken into account. Even if a dangerous executable file is being dowloaded as innocent image, such file will be blocked.</p>{%endblock%}
+
+{% block th1 %}Real File Type{%endblock%}
+
+{% block addnew_href%}{% url 'ViewRuleFileContentCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewRuleFileContentUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewRuleFileContentUpdate' policy.pk object.pk %}{%endblock%}

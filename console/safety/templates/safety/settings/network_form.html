@@ -1,0 +1,111 @@
+{% extends 'safety/settings/settings.html' %}
+
+{% block toolbar_network %}class="active"{%endblock%}
+
+{% block settings_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <div class="box">    
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group">
+                <label class="checkbox inline">{{form.enable_icap}} Enable ICAP integration of Web Safety and Squid proxy. <em>Warning</em> - clear this checkbox only when told by the Support Team. If this checkbox is cleared Squid does not forward traffic to Web Safety ICAP server and thus web filtering is fully disabled!</label>
+            </div>  
+            <div class ="well">
+                <div class="control-group {% if form.wsicap_address.errors %}error{%endif%}">
+                    <label class="control-label" for="id_wsicap_address">ICAP Address</label>
+                    <div class="controls">                
+                        <div class="input-append">
+                            {{form.wsicap_address}}
+                            <button class="btn" type="button" onclick="$('#id_wsicap_address').val('127.0.0.1');"><i class="icon-magic"></i></button>
+                        </div>                    
+                        {% if form.wsicap_address.errors %}
+                            <span class="help-block">{{form.wsicap_address.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify IP address to listen on (usually 127.0.0.1)</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group {% if form.wsicap_port.errors %}error{%endif%}">
+                    <label class="control-label" for="id_wsicap_port">ICAP Port</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_wsicap_port { width: 70px; }</style>
+                            {{form.wsicap_port}}
+                            <button class="btn" type="button" onclick="$('#id_wsicap_port').val('1344');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.wsicap_port.errors %}
+                            <span class="help-block">{{form.wsicap_port.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify port number to listen on (usually 1344)</span>
+                        {%endif%}
+                    </div>
+                </div>        
+                <div class="control-group {% if form.wsicap_threads.errors %}error{%endif%}">
+                    <label class="control-label" for="id_wsicap_threads">ICAP Pool Size</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_wsicap_threads { width: 70px; }</style>
+                            {{form.wsicap_threads}} 
+                            <button class="btn" type="button" onclick="$('#id_wsicap_threads').val('9');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.wsicap_threads.errors %}
+                            <span class="help-block">{{form.wsicap_threads.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify number of threads in the ICAP thread pool (usually <em>Number of CPUs * 2 + 1</em>)</span>
+                        {%endif%}
+                    </div>
+                </div>     
+                <div class="control-group {% if form.wsicap_logging.errors %}error{%endif%}">
+                    <label class="control-label" for="id_wsicap_logging">Log Level</label>
+                    <div class="controls">
+                        <style>#id_wsicap_logging { width: 100px; }</style>
+                        {{form.wsicap_logging}}                         
+                        {% if form.wsicap_logging.errors %}
+                            <span class="help-block">{{form.wsicap_logging.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify log level of the <a href="{% url 'ViewSafetyErrorLog' %}">ICAP daemon log</a> (default info)</span>
+                        {%endif%}
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.bypass_to_localnet}} Never filter connections to IP addresses within local private LAN (RFC 1918). Default and recommended value is <em>On</em>.</label>
+                    </div>
+                </div>                       
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.wsicap_debug}} Enable dump of ICAP session contents on disk into <em>/opt/websafety/var/temp</em> folder. Should be enabled ONLY by Diladele Web Safety support team!</label>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary" id="button_save">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+       
+    </div>
+    
+{% endblock %}

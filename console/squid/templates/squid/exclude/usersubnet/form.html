@@ -1,0 +1,16 @@
+{% extends 'squid/exclude/form.html' %}
+
+{% block exclude_user %}active{%endblock%}
+{% block header_tab %}<small> / User IP Subnet</small>{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the following local IP subnets are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block value_name%}IP Subnet{%endblock%}
+{% block value_help%}Specify IP subnet to add to exclusion list. For example, 10.0.0.0/24. Both IPv4 and IPv6 addresses are supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExcludeUserSubnetList' %}{%endblock%}

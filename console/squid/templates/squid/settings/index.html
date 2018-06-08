@@ -1,0 +1,29 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_settings %}class="active"{%endblock%}
+
+{% block contents %}
+
+	<!-- on pfsense we are not managing squid settings -->
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage Squid settings using pfSense's Web UI.
+        </div>
+    {% else %}	    
+	    <h2>Settings<small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+	    {% block page_comment %}{% endblock %}
+
+	    <section class="row-fluid">
+	        <ul class="nav nav-pills">
+	        	<li {% block toolbar_network %}{%endblock%}><a href="{% url 'ViewNetworkInfo' %}">Network</a></li>        	
+	        	<li {% block toolbar_acls %}{%endblock%}><a href="{% url 'ViewAcls' %}">Default ACLs</a></li>        	
+	        	<li {% block toolbar_administrative %}{%endblock%}><a href="{% url 'ViewAdministrative' %}">Administrative</a></li>        	
+	        	<li {% block toolbar_dns %}{%endblock%}><a href="{% url 'ViewDns' %}">DNS</a></li> 
+	        	<li {% block toolbar_miscellaneous %}{%endblock%}><a href="{% url 'ViewMiscellaneous' %}">Miscellaneous</a></li> 
+	        	
+	        </ul>  
+	        {% block page_content %}{% endblock %}        
+	    </section>
+    {% endif %}   
+         
+{% endblock %}

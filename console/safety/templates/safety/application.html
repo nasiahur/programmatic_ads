@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block bar_safety %}class="active"{% endblock %}
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul>
+            	<li {% block navbar_policies %}{%endblock%}>
+                    <a id="navbar_policies" href="{% url 'ViewPolicyList' %}"><span class="icon-font"></span>Policies</a>
+                </li>
+                <li {% block navbar_settings %}{%endblock%}>
+                    <a id="navbar_settings" href="{% url 'ViewSettingsNetwork' %}"><span class="icon-cog"></span>Settings</a>
+                </li>
+                <li {% block navbar_subscriptions %}{%endblock%}>
+                    <a href="{% url 'ViewSubscriptionsAdBlock' %}"><span class="icon-book"></span>Definitions</a>
+                </li>
+                <li {% block navbar_support %}{% endblock %}><a href="{% url 'ViewSafetySystemInfo' %}"><span class="icon-folder-open-alt"></span> Logs</a></li>
+                <li {% block navbar_tools %}{%endblock%}>
+                    <a href="{% url 'ViewImportTxt' %}"><span class="icon-wrench"></span>Tools</a>
+                </li>
+            </ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+
+{% block warning_area %}
+
+    <!-- show a warning for community license -->
+    {% if safety.is_community %}
+        <div class="alert alert-warning">You are using community license key. Web filter is deactivated. If web filtering is desired, <a target="new" href="https://www.diladele.com/licensing.html">get a free trial or purchase the license key</a> from Diladele B.V. </div>
+    {% endif %}
+
+{% endblock %}

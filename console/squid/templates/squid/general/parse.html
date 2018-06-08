@@ -1,0 +1,18 @@
+{% extends 'squid/general/general.html' %}
+
+{% block toolbar_parse %}class="active"{%endblock%}
+
+{% block page_comment %}<p>Contents of your Squid configuration file are shown below. For now Squid configuration may only partially be managed by this Web UI.</p>{% endblock %}
+
+{% block page_content %}
+	<div class="box">        
+	    <style type="text/css">
+	        .wrapit {
+	            white-space: pre-wrap;
+	            margin-bottom: 20px;
+	        }
+	    </style>
+	    <p>Result of running <em>squid -k parse</em></p>
+	    <pre class="wrapit">{{parse.get_str}}</pre>
+    </div>
+{% endblock %}

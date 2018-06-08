@@ -1,0 +1,92 @@
+{% extends 'squid/auth/active_directory.html' %}
+
+{% block auth_ad_scheme_ntlm %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+		<p>NTLM authentication is much less secure than Kerberos. Nevertheless it is still used when you need to authenticate users outside of your Active Directory domain or the browser is configured to connect to proxy IP address instead of proxy's FQDN. Authentication is done by redirecting NTLM authentication requests to your domain controllers which may result into increased load on them.</p>
+
+		{% if form.non_field_errors %}
+	    <div class="alert alert-danger">
+	         {% for error in form.non_field_errors %}
+	             <span>{{ error|escape }}</span>
+	         {% endfor %}
+	    </div>  
+	    {% endif %}
+
+	    <form class="form-horizontal" method="POST">
+	        {% csrf_token %}
+	        <input type="hidden" name="squid" value="{{squid.pk}}">
+
+	        <div class="control-group">
+	            <label class="control-label">&nbsp;</label>
+	            <div class="controls"><label class="checkbox inline">{{form.ntlm_enable}} Activate NTLM proxy authenticator.</label>
+	            </div>
+	        </div>
+	        <div class="control-group {% if form.ntlm_helper_total.errors %}error{%endif%}">
+            <label class="control-label" for="id_ntlm_helper_total">Auth Helpers (Total)</label>
+            <div class="controls">
+                <div class="input-append">
+                    <style>#id_ntlm_helper_total { width: 70px; }</style>
+                    {{form.ntlm_helper_total}}
+                    <button class="btn" type="button" onclick="$('#id_ntlm_helper_total').val('20');"><i class="icon-magic"></i></button>
+                </div>           
+                {% if form.ntlm_helper_total.errors %}
+                    <span class="help-block">{{form.ntlm_helper_total.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Total number of authentication helpers to run. It is recommended to set it equal to the approximate number of proxy users in your network.</span>
+                {%endif%}
+            </div>
+        </div>        
+
+        <div class="control-group {% if form.ntlm_helper_idle.errors %}error{%endif%}">
+            <label class="control-label" for="id_ntlm_helper_idle">Auth Helpers (Idle)</label>
+            <div class="controls">
+                <div class="input-append">
+                    <style>#id_ntlm_helper_idle { width: 70px; }</style>
+                    {{form.ntlm_helper_idle}}
+                    <button class="btn" type="button" onclick="$('#id_ntlm_helper_idle').val('10');"><i class="icon-magic"></i></button>
+                </div>           
+                {% if form.ntlm_helper_idle.errors %}
+                    <span class="help-block">{{form.ntlm_helper_idle.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Idle number of authentication helpers to run. It is recommended to make it equal to approximately 1/2 of the total number of users in your network.</span>
+                {%endif%}
+            </div>
+        </div>        
+
+        <div class="control-group {% if form.ntlm_helper_startup.errors %}error{%endif%}">
+            <label class="control-label" for="id_ntlm_helper_startup">Auth Helpers (Startup)</label>
+            <div class="controls">
+                <div class="input-append">
+                    <style>#id_ntlm_helper_startup { width: 70px; }</style>
+                    {{form.ntlm_helper_startup}}
+                    <button class="btn" type="button" onclick="$('#id_ntlm_helper_startup').val('5');"><i class="icon-magic"></i></button>
+                </div>           
+                {% if form.startup.errors %}
+                    <span class="help-block">{{form.ntlm_helper_startup.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Number of authentication helpers to run at startup of Squid. It is recommended to make it equal to approximately 1/4 of the total number of users in your network.</span>
+                {%endif%}
+            </div>
+        </div>  
+
+
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.ntlm_helper_verbose}} Enable debugging of NTLM authentication helpers. Debug output will be dumped to <a href="{% url 'ViewCacheLog' %}">Squid cache log</a>.</label>
+            </div>
+        </div>
+	        <div class="control-group">
+	            <div class="controls">
+	                <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div> 	                
+	            </div>
+	        </div>
+	    </form>
+
+	</div>        
+    
+{% endblock %}
+

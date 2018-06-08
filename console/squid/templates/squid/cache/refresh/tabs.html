@@ -1,0 +1,15 @@
+{% extends 'squid/cache/index.html' %}
+
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+
+{% block header_tab %}<small> / Refresh Patterns</small>{% endblock %}
+{% block toolbar_patterns %}class="active"{%endblock%}
+
+{% block page_content %}
+
+    {% block member_heading%}{%endblock%}
+    <div class="box">
+        {% block box_content %}{%endblock%}
+    </div>
+
+{% endblock %}

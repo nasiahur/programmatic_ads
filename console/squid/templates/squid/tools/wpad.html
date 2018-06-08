@@ -1,0 +1,45 @@
+{% extends 'squid/tools/index.html' %}
+{% block navbar_tools %}class="active"{%endblock%}
+
+{% block toolbar_wpad %}class="active"{%endblock%}
+
+{% block box_contents %}
+
+    {% if error %}
+        <div class="alert alert-error">
+            <p><strong>Warning!</strong></p> 
+            <p>Cannot import WPAD file, error {{error}}.</p>
+        </div>
+    {% endif %} 
+
+    <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="control-group {% if form.file.errors %}error{%endif%}">
+            <label class="control-label" for="id_file">WPAD file to import</label>
+            <div class="controls">
+                {{form.file}}   
+                 {% if form.file.errors %}
+                    <span class="help-block">{{form.file.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Please browse to the WPAD file which you would like to use for proxy autodiscovery. The same file will be both used as <em>wpad.dat</em> and <em>proxy.pac</em>. See more information at <a target="_new" href="http://findproxyforurl.com/">findproxyforurl.com</a> web site. Contents of this file are shown below.</span>
+                {%endif%}            
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls" style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Upload File</button>
+                <a href="{%  url 'ToolsRemoveWpad' %}" class="btn btn-danger">Delete File</a>                            
+            </div>
+        </div>
+    </form>
+
+    <style type="text/css">
+        .wrapit {
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+    </style>
+    <pre class="wrapit">{{wpad_dat}}</pre>
+
+{% endblock %}
+

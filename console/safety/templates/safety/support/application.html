@@ -1,0 +1,22 @@
+{% extends 'safety/application.html' %}
+
+{% block navbar_support %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Support</h2>
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_system %}{%endblock%}>
+                <a href="{% url 'ViewSafetySystemInfo' %}">System Info</a>
+            </li>
+            <li {% block toolbar_error_log %}{%endblock%}>
+                <a href="{% url 'ViewSafetyErrorLog' %}">Error Log</a>
+            </li>            
+        </ul>  
+        {% block content %}{% endblock %}
+    </section>        
+{% endblock %}
+
+

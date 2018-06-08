@@ -1,0 +1,185 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{itemvalue}}</h3>
+    <md-button aria-label="The Button" href="#/"> Home </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+
+    <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        <md-list>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Requests</h3>
+                    <p>{{detailed.hits}} ({{detailed.hits_rate}}%)</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Bandwidth</h3>
+                    <p>{{detailed.size | bytes}} ({{detailed.size_rate}}%)</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Offensive Requests</h3>
+                    <p>{{detailed.offensive}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Unproductive Requests</h3>
+                    <p>{{detailed.unproductive}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Users</h3>
+                    <p>{{detailed.users}}</p>
+                </div>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>IPs</h3>
+                    <p>{{detailed.ips}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="days">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>Day</th>
+                                    <th md-column md-numeric>Total Requests</th>
+                                    <th md-column md-numeric>Requests %</th>
+                                    <th md-column md-numeric>Offensive Requests</th>
+                                    <th md-column md-numeric>Unproductive Requests</th>
+                                    <th md-column md-numeric>Size</th>
+                                    <th md-column md-numeric>Size %</th>
+                                    <th md-column md-numeric>Users</th>
+                                    <th md-column md-numeric>IPs</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="day in days">
+                                    <td md-cell>{{day.date}}</td>
+                                    <td md-cell>{{day.hits}}</td>
+                                    <td md-cell>{{day.hits_rate}}</td>
+                                    <td md-cell>{{day.offensive}}</td>
+                                    <td md-cell>{{day.unproductive}}</td>
+                                    <td md-cell>{{day.size | bytes }}</td>
+                                    <td md-cell>{{day.size_rate}}</td>
+                                    <td md-cell>{{day.users}}</td>
+                                    <td md-cell>{{day.ips}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+            <md-tab label="hours">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>Hour</th>
+                                    <th md-column md-numeric>Total Requests</th>
+                                    <th md-column md-numeric>Requests %</th>
+                                    <th md-column md-numeric>Offensive Requests</th>
+                                    <th md-column md-numeric>Unproductive Requests</th>
+                                    <th md-column md-numeric>Size</th>
+                                    <th md-column md-numeric>Size %</th>
+                                    <th md-column md-numeric>Users</th>
+                                    <th md-column md-numeric>IPs</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="hour in hours">
+                                    <td md-cell>{{hour.hour}}</td>
+                                    <td md-cell>{{hour.hits}}</td>
+                                    <td md-cell>{{hour.hits_rate}}</td>
+                                    <td md-cell>{{hour.offensive}}</td>
+                                    <td md-cell>{{hour.unproductive}}</td>
+                                    <td md-cell>{{hour.size | bytes }}</td>
+                                    <td md-cell>{{hour.size_rate}}</td>
+                                    <td md-cell>{{hour.users}}</td>
+                                    <td md-cell>{{hour.ips}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+            <md-tab label="ip addresses">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column>IP</th>
+                            <th md-column md-numeric>Total Requests</th>
+                            <th md-column md-numeric>Requests %</th>
+                            <th md-column md-numeric>Offensive Requests</th>
+                            <th md-column md-numeric>Unproductive Requests</th>
+                            <th md-column md-numeric>Size</th>
+                            <th md-column md-numeric>Size %</th>
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row ng-repeat="ip in ips">
+                                <td md-cell>{{ip.value}}</td>
+                                <td md-cell>{{ip.hits}}</td>
+                                <td md-cell>{{ip.hits_rate}}</td>
+                                <td md-cell>{{ip.offensive}}</td>
+                                <td md-cell>{{ip.unproductive}}</td>
+                                <td md-cell>{{ip.size | bytes }}</td>
+                                <td md-cell>{{ip.size_rate}}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+            <md-tab label="users">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column>User Name</th>
+                            <th md-column md-numeric>Total Requests</th>
+                            <th md-column md-numeric>Requests %</th>
+                            <th md-column md-numeric>Offensive Requests</th>
+                            <th md-column md-numeric>Unproductive Requests</th>
+                            <th md-column md-numeric>Size</th>
+                            <th md-column md-numeric>Size %</th>
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row ng-repeat="user in users">
+                                <td md-cell><a href="#/list/{{item}}/{{user.id}}/?itemvalue={{itemvalue}}&uservalue={{user.value}}">{{user.value}}</a></td>
+                                <td md-cell>{{user.hits}}</td>
+                                <td md-cell>{{user.hits_rate}}</td>
+                                <td md-cell>{{user.offensive}}</td>
+                                <td md-cell>{{user.unproductive}}</td>
+                                <td md-cell>{{user.size | bytes }}</td>
+                                <td md-cell>{{user.size_rate}}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

@@ -1,0 +1,34 @@
+{% extends 'squid/exclude/tabs.html' %}
+{% block exclude_advanced %}active{%endblock%}
+
+{% block header_tab %} / Advanced{% block header_subtab %}{% endblock %}{% endblock %}
+
+{% block page_comment %}<p>Specify here advanced exclusion settings of your own choice.</p>{% endblock %}
+
+{% block box_content %}
+
+    {% block member_heading%}{%endblock%}
+    
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form class="form-horizontal" method="POST" id="advanced_form">
+        {% csrf_token %}
+        {% block advanced_value_control%}{%endblock%}            
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group"><button type="submit" class="btn btn-primary" id="button_save">Save Changes</button></div>                 
+            </div>
+        </div>
+    </form>
+    
+{% endblock %}
+
+
+
+

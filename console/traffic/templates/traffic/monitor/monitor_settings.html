@@ -1,0 +1,24 @@
+{% extends 'traffic/monitor/monitor.html' %}
+
+{% block navbar_monitor %}class="active"{%endblock%}
+{% block leftbar_settings %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>{% block header %}{%endblock%}</h2>
+    {% block breadcrumbs %}{% endblock %}
+    {% block banner %}{% endblock %}
+    
+    
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_database %}{%endblock%}><a href="{% url 'View_ChannelMonitorUpdate' user.profile.traffic.pk %}">Database</a></li>
+            <li {% block toolbar_memory %}{%endblock%}><a href="{% url 'View_ChannelMemoryUpdate' user.profile.traffic.pk %}">Real Time</a></li>
+            <li {% block toolbar_syslog %}{%endblock%}><a href="{% url 'View_ChannelSyslogUpdate' user.profile.traffic.pk %}">Syslog</a></li>
+            <li {% block toolbar_file %}{%endblock%}><a href="{% url 'View_ChannelFileUpdate' user.profile.traffic.pk %}">Access Log</a></li>            
+        </ul>
+        {% block description %}{% endblock %}
+        {% block content %}{% endblock %}
+    </section>  
+
+{% endblock %}

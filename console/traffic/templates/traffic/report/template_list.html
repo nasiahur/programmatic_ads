@@ -1,0 +1,284 @@
+{% extends 'traffic/report/report.html' %}
+{% load staticfiles %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+
+{% block toolbar_templates %}class="active"{%endblock%}
+
+{% block subheader_comment %}{% endblock %}
+
+{% block tab_content %}
+
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            $('a[rel=tooltip]').tooltip();
+        });
+    </script>
+
+    <!-- tab of template types -->
+    <ul class="nav nav-tabs" id="nav_tabs">
+    	<li class="active"><a id="tab_squid" href="#squid" data-toggle="tab">Squid Reports</a></li>
+    	<li><a id="tab_domains" data-toggle="tab" href="#domains">Domains</a></li>
+        <li><a id="tab_users" href="#users" data-toggle="tab">Users</a></li>
+        <li><a id="tab_categories" href="#categories" data-toggle="tab">Categories</a></li>
+        <li><a id="tab_policiies" href="#policies" data-toggle="tab">Policies</a></li>
+        
+    </ul>
+    <div id="myTabContent" class="tab-content">
+
+    	<div class="tab-pane fade" id="domains">
+
+    		<div class="box">
+	    		<table class="table table-striped table-condensed table-hover" width="100%">
+	            <thead>
+	                <tr>
+	                	<th>Name</th>
+	                	<th>Description</th>
+	                	<th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<tr>
+	                    <td><a 
+	                    	id="icap-domains-top-by-requests" 
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-by-requests' %}" 
+	                    	title=""
+	                    	>Top Domains By Requests</a></td>
+	                    <td>Domains with the most web requests. Drill-down includes information about users, urls, distribution of requests by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-top-by-users'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-by-users' %}" 
+	                    	title=""
+	                    	>Top Domains By Users</a></td>
+	                    <td>Domains with the most users. Drill-down includes information about users, urls, distribution of users by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-by-users' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-top-blocked-by-requests'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-blocked-by-requests' %}" 
+	                    	title=""
+	                    	>Top Blocked Domains By Requests</a></td>
+	                    <td>Blocked domains with the most web requests. Drill-down includes information about users, urls, distribution of requests by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-blocked-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-top-blocked-by-users'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-blocked-by-users' %}" 
+	                    	title=""
+	                    	>Top Blocked Domains By Users</a></td>
+	                    <td>Blocked domains with the most users. Drill-down includes information about users, urls, distribution of users by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-blocked-by-users' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-top-unproductive-by-requests'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-unproductive-by-requests' %}" 
+	                    	title=""
+	                    	>Top Unproductive Domains By Requests</a></td>
+	                    <td>Unproductive domains with the most web requests. Drill-down includes information about users, urls, distribution of requests by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-unproductive-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-top-unproductive-by-users'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-unproductive-by-users' %}" 
+	                    	title=""
+	                    	>Top Unproductive Domains By Users</a></td>
+	                    <td>Unproductive domains with the most users. Drill-down includes information about users, urls, distribution of users by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-top-unproductive-by-users' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a 
+	                    	id='icap-domains-detailed'
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-detailed' %}" 
+	                    	title=""
+	                    	>Detailed Domain Info</a></td>
+	                    <td>Detailed domain report by domain name, optional user and policy.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-domains-detailed' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td></td>
+	                    <td></td>
+	                    <td></td>
+	                </tr>
+	            </tbody>
+	            </table>
+	        </div>
+
+        </div>
+        <div class="tab-pane fade" id="users">
+
+        	<div class="box">
+	    		<table class="table table-striped table-condensed table-hover" width="100%">
+	            <thead>
+	                <tr>
+	                	<th>Name</th>
+	                	<th>Description</th>
+	                	<th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-by-requests' %}" title="">Top Users by Requests</a></td>
+	                    <td>Users who have the most web requests. Drill-down includes information about user, distribution of requests by hour, day, category and domain.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-by-domains' %}" title="">Top Users by Domains</a></td>
+	                    <td>Users who visited the most domains. Drill-down includes information about user, distribution of domains by hour, day and category.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-blocked-by-domains' %}" title="">Top Users by Blocked Domains</a></td>
+	                    <td>Users who visited the most blocked domains. Drill-down includes information about user, distribution of domains by hour, day and category.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-blocked-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-unproductive-by-domains' %}" title="">Top Users by Unproductive Domains</a></td>
+	                    <td>Users who visited the most unproductive domains. Drill-down includes information about user, distribution of domains by hour, day and category.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-top-unproductive-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-by-domains' %}" title="">Detailed Users by Domains</a></td>
+	                    <td>Detailed user report by user name and optional domain.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-search-queries' %}" title="">User Search Queries</a></td>
+	                    <td>Information about user queries in Google, Bing, Yahoo and DuckDuckGo. Contains a list of queries per user.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-search-queries' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-youtube' %}" title="">User Youtube Videos</a></td>
+	                    <td>Information about user Youtube videos. Contains a list of videos per user.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-youtube' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-blocked-by-domains' %}" title="">Detailed Users by Blocked Domains</a></td>
+	                    <td>Detailed user report by user name on blocked domains.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-blocked-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-unproductive-by-domains' %}" title="">Detailed Users by Unproductive Domains</a></td>
+	                    <td>Detailed user report by user name on unproductive domains.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-users-detailed-unproductive-by-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	            </tbody>
+	            </table>
+	        </div>
+        </div>
+
+        <div class="tab-pane fade" id="categories">
+
+
+        	<div class="box">
+	    		<table class="table table-striped table-condensed table-hover" width="100%">
+	            <thead>
+	                <tr>
+	                	<th>Name</th>
+	                	<th>Description</th>
+	                	<th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-categories-top-by-requests' %}" title="">Top Categories by Requests</a></td>
+	                    <td>Site categories sorted by the most web requests. Drill-down includes information about users and domains as well as distribution of requests by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-categories-top-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-categories-top-by-users' %}" title="">Top Categories by Users</a></td>
+	                    <td>Site categories sorted by the most users. Drill-down includes information about users and domains as well as distribution of users by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-categories-top-by-users' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>	                
+	            </tbody>
+	            </table>
+	        </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="policies">
+
+
+        	<div class="box">
+	    		<table class="table table-striped table-condensed table-hover" width="100%">
+	            <thead>
+	                <tr>
+	                	<th>Name</th>
+	                	<th>Description</th>
+	                	<th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-policies-top-by-requests' %}" title="">Policies by Requests</a></td>
+	                    <td>Policies sorted by the most web requests. Drill-down includes information about users and domains as well as distribution of requests by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-policies-top-by-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-policies-top-by-users' %}" title="">Policies by Users</a></td>
+	                    <td>Policies sorted by the most users. Drill-down includes information about users and domains as well as distribution of users by hour and day.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'icap-policies-top-by-users' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	            </tbody>
+	            </table>
+	        </div>
+        </div>
+
+
+        <div class="tab-pane fade  active in" id="squid">
+
+
+        	<div class="box">
+	    		<table class="table table-striped table-condensed table-hover" width="100%">
+	            <thead>
+	                <tr>
+	                	<th>Name</th>
+	                	<th>Description</th>
+	                	<th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	             	<tr>
+	                    <td><a 
+	                    	id="squid-bandwidth" 
+	                    	href="{% url 'traffic:ViewReportCreateJob' 'squid-bandwidth' %}" title="">Bandwidth</a></td>
+	                    <td>Aggregated information about consumed bandwith.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-bandwidth' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-top-domains' %}" title="">Top Domains</a></td>
+	                    <td>Information about most visited domains.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-top-domains' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-user-activities' %}" title="">User Activities</a></td>
+	                    <td>Complete list of activities for all users. Includes user names, visited domains and access time.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-user-activities' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-denied-requests' %}" title="">Denied Requests</a></td>
+	                    <td>Information about denied browser requests. Includes user names, visited domains and access time.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-denied-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	                <tr>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-unauthenticated-requests' %}" title="">Unauthenticated Requests</a></td>
+	                    <td>Information about unauthenticated browser requests. Includes user names, visited domains and access time.</td>
+	                    <td><a href="{% url 'traffic:ViewReportCreateJob' 'squid-unauthenticated-requests' %}"><i class="icon-pencil"></i></a></td>
+	                </tr>
+	            </tbody>
+	            </table>
+	        </div>
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}

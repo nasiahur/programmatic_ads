@@ -1,0 +1,87 @@
+{% extends 'squid/exclude/tabs.html' %}
+
+{% block box_content %}
+
+    {% block member_heading%}{%endblock%}
+    
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group {% if form.value.errors %}error{%endif%}">
+                <label class="control-label" for="id_value">{% block value_name%}{%endblock%}</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_value").addClass("input-block-level");
+                       });
+                    </script>
+                    {{form.value}}                
+                    {% if form.value.errors %}
+                        <span class="help-block">{{form.value.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">{% block value_help%}{%endblock%}</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_sslbump}} Never decrypt HTTPS and never perform SSL bump for such connections.</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_auth}} Skip any forms of proxy authentication for such connections.</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_adaptation}} Exclude connections from web filtering and anti-malware scanning.</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_urlrewrite}} Do not check connections using Google Safe Browsing module.</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_cache}} Never cache any HTML pages transferred over these connections.</label>
+                </div>
+            </div>
+            <div class="control-group {% if form.comment.errors %}error{%endif%}">
+                <label class="control-label" for="id_comment">{% block comment_name%}{%endblock%}</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_comment").addClass("input-block-level");
+                            $('#id_comment').attr('rows', 3);
+                            $('#id_comment').attr('size', 90);
+                       });
+                    </script>
+                    {{form.comment}}                
+                    {% if form.comment.errors %}
+                        <span class="help-block">{{form.comment.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">{% block comment_help%}{%endblock%}</span>
+                    {%endif%}
+                </div>
+            </div>         
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary" id="button_save">Save Changes</button></div> 
+                    {% block cancel_button%}
+                    <div class="btn-group"><a href="{% block cancel_href%}{%endblock%}" class="btn">Cancel</a></div> 
+                    {%endblock%}
+                </div>
+            </div>
+        </form>
+    
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_general %}class="active"{%endblock%}
+
+{% block contents %}
+    
+    <h2>General Information</h2>
+    {% block page_comment %}{% endblock %}
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_config %}{%endblock%}>
+                <a id="squid_general_configuration" href="{% url 'ViewGeneralConfig' %}">Configuration File</a>
+            </li>
+            <li {% block toolbar_parse %}{%endblock%}>
+                <a id="squid_general_parse" href="{% url 'ViewGeneralParse' %}">Verification</a>
+            </li>
+            <li {% block toolbar_version %}{%endblock%}>
+                <a id="squid_general_version" href="{% url 'ViewGeneralVersion' %}">Version</a>
+            </li>            
+            <li {% block toolbar_runtime %}{%endblock%}>
+                <a id="squid_general_runtime" href="{% url 'ViewRuntimeMgrInfo' %}">Runtime Info</a>
+            </li>
+        </ul>  
+        {% block page_content %}{% endblock %}        
+    </section>        
+{% endblock %}

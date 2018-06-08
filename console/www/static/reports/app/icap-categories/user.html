@@ -1,0 +1,83 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{itemvalue}}, {{uservalue}}</h3>
+    <md-button aria-label="Home" href="#/"> Home </md-button>
+    <md-button aria-label="User" href="#/list/{{item}}/"> User </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="domains">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>Domain</th>
+                                    <th md-column md-numeric>Total Requests</th>
+                                    <th md-column md-numeric>Requests %</th>
+                                    <th md-column md-numeric>Offensive Requests</th>
+                                    <th md-column md-numeric>Unproductive Requests</th>
+                                    <th md-column md-numeric>Size</th>
+                                    <th md-column md-numeric>Size %</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="domain in domains">
+                                    <td md-cell><a href="#/list/{{item}}/{{user}}/{{domain.id}}/?domainvalue={{domain.value}}&uservalue={{uservalue}}&itemvalue={{itemvalue}}">{{domain.value}}</a></td>
+                                    <td md-cell>{{domain.hits}}</td>
+                                    <td md-cell>{{domain.hits_rate}}</td>
+                                    <td md-cell>{{domain.offensive}}</td>
+                                    <td md-cell>{{domain.unproductive}}</td>
+                                    <td md-cell>{{domain.size | bytes }}</td>
+                                    <td md-cell>{{domain.size_rate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+	    <md-tab label="hours">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>Hour</th>
+                                    <th md-column md-numeric>Total Requests</th>
+                                    <th md-column md-numeric>Requests %</th>
+                                    <th md-column md-numeric>Offensive Requests</th>
+                                    <th md-column md-numeric>Unproductive Requests</th>
+                                    <th md-column md-numeric>Size</th>
+                                    <th md-column md-numeric>Size %</th>
+                                    <th md-column md-numeric>Users</th>
+                                    <th md-column md-numeric>IPs</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="hour in hours">
+                                    <td md-cell>{{hour.hour}}</td>
+                                    <td md-cell>{{hour.hits}}</td>
+                                    <td md-cell>{{hour.hits_rate}}</td>
+                                    <td md-cell>{{hour.offensive}}</td>
+                                    <td md-cell>{{hour.unproductive}}</td>
+                                    <td md-cell>{{hour.size | bytes }}</td>
+                                    <td md-cell>{{hour.size_rate}}</td>
+                                    <td md-cell>{{hour.users}}</td>
+                                    <td md-cell>{{hour.ips}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+
+
+
+
+
+
+

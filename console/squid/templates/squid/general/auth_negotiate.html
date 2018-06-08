@@ -1,0 +1,4 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid runtime information retrieved using <em>squidclient mgr:negotiateauthenticator</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_negotiateauth %}class="active"{%endblock%}
+{% block pre_content %}{{client.negotiateauthenticator_str}}{% endblock %}

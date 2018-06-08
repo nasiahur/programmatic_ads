@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_other %}active{%endblock%}
+{% block header_tab %} / Time Schedule{% endblock %}
+
+{% block page_comment %}
+<p>Connections during the following time schedules are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeScheduleCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeScheduleUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeScheduleUpdate' object.pk %}{%endblock%}
+
+

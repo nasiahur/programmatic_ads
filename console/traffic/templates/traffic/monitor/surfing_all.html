@@ -1,0 +1,117 @@
+{% extends 'traffic/monitor/monitor.html' %}
+{% load l10n %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+
+{% block toolbar_now %}class="active"{%endblock%}
+{% block leftbar_surfingnow %}class="active"{%endblock%}
+
+{% block header %}Surfing Now{%endblock%}
+
+{% block banner %}<p>&nbsp;</p>{% endblock %}
+
+{% block content %}
+
+    <div class="box non-collapsible widget-messages">
+        <div class="message-actions">
+
+            <form class="form-inline" method="GET" action="">
+                {% csrf_token %}
+                {{form.column_name}}
+                {{form.column_value}}
+                <button type="submit" class="btn">Show Incidents</button>
+                <button class="btn" onclick="$('#id_column_value').val(''); $('#id_column_name').val('0');">Reset Filter</button>
+            </form>
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}</div>
+            {% endif %}
+
+            {% if paginator.num_pages > 1 %}
+            <div class="pagination pagination-mini pull-right">
+                <ul>
+                    {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}&cv={{cv}}&cn={{cn}}&order_by={{order_by}}&asc={{ascending}}&pob={{pob}}">Prev</a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#">Prev</a></li>
+                    {% endif %}
+                    {% for num in paginator.page_range %}
+                    <li {% if page_obj.number == num %}class="active" {%endif%}><a href="?page={{ num }}&cv={{cv}}&cn={{cn}}&order_by={{order_by}}&asc={{ascending}}&pob={{pob}}">{{num}}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}&cv={{cv}}&cn={{cn}}&order_by={{order_by}}&asc={{ascending}}&pob={{pob}}">Next</a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#">Next</a></li>
+                    {% endif %}
+               </ul>
+            </div>
+            {% endif %}
+
+            <table class="table table-striped table-condensed table-hover" width="100%">
+                <thead>
+                <tr>
+                    <th><a href="?order_by=timestamp&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Time</a></th>
+                    <th><a href="?order_by=iid&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Incident</a></th>
+                    <th><a href="?order_by=policy&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Policy</a></th>
+                    <th><a href="?order_by=verdict&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Verdict</a></th>
+                    <th><a href="?order_by=level&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Level</a></th>
+                    <th><a href="?order_by=user_name&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">User Name</a></th>
+                    <th><a href="?order_by=user_ip&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">User IP</a></th>
+                    <th><a href="?order_by=hostname&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Host</a></th>
+                    <th>Category</th>
+                    <th>URL</th>
+                    <th><a href="?order_by=module&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Module</a></th>
+                    <th>Param 1</th>
+                    <th>Duration (ms)</th>
+                    <th><a href="?order_by=size&cv={{cv}}&cn={{cn}}&page={{page}}&asc={{ascending}}&reverse_asc=True&pob={{pob}}">Size</a></th>
+                </tr>
+                </thead>
+
+                {% for item in items %}
+                <tr {% if item.verdict == 'block' %}style="color: red;" {% elif item.is_whitelisted %}style="color: green;" {% endif%}>
+
+                    <td>{{item.timestamp|localize}}</td>
+                    <td><nobr>
+                        <a href="{{item.url}}" target="_new" style="text-decoration: none;">
+                        {% if item.message == 'request' %} 
+                        <i class="icon-circle-arrow-up" style="color: green;"></i>
+                        {% elif item.message == 'response' %}
+                        <i class="icon-circle-arrow-down" style="color: blue;"></i>
+                        {%else%}
+                        <i class="icon-circle-blank"></i>
+                        {%endif%}</a>
+                        &nbsp;<a id="tooltip{{item.iid}}" href="#" data-toggle="tooltip" title="{{item.method}}, {{item.duration}} ms, {% if item.trusted %} trusted+, {%endif%}scan flags: {{item.get_flags_as_string}}">{{item.iid}}</a>
+                        </nobr>
+                    </td>
+                    <td>
+                        {% if item.policy != "default" %}
+                            <a title="Triggered by {{item.member}}">{{item.policy}}</a>                        
+                        {% else %}
+                            {{item.policy}}
+                        {% endif %}
+                    </td>
+                    <td>{{item.verdict}}</td>
+                    <td>{{item.level}}</td>
+                    <td>{{item.user_name}}</td>
+                    <td>
+                        {% if item.user_eui != "" and item.user_eui != "-" %}
+                            <a title="EUI (MAC) {{item.user_eui}}">{{item.user_ip}}</a>
+                        {% else %}
+                            {{ item.user_ip }}
+                        {%endif%}
+                    </td>
+                    <td>{% if item.host != "-" %}<a href="{% url 'ViewRecategorizedDomainCreate' %}?name={{item.host}}">{{item.host}}</a>{% else %}{{item.host}}{%endif%}</td>
+                    <td>{{item.get_categories_as_string}}</td>
+                    <td>{{item.url }}</td>
+                    <td><a title="param2 {{item.param2}}">{{item.module}}</a></td>
+                    <td>{{item.param1}}</td>
+                    <td>{{item.timing}} / {{item.mtime}}</td>
+                    <td>{{item.size}}</td>
+                </tr>
+                {% empty %}
+                    <tr class="warning"><td colspan="13">No records found</td></tr>
+                
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

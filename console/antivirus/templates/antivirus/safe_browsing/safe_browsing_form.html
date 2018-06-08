@@ -1,0 +1,123 @@
+{% extends 'antivirus/safe_browsing/safe_browsing.html' %}
+
+{% block toolbar_settings %}class="active"{%endblock%}
+
+{% block page_content %}
+
+    <div class="box">
+
+        <!-- show form errors -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+            
+
+
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls">
+                        <label class="checkbox inline">{{form.enable}} Enable checking for malware URLs using Google Safe Browsing database. Default value is <em>Off</em>, i.e. no safe browsing check is active.</label>
+                    </div>
+                </div>  
+
+
+                <div class="control-group {% if form.api_key.errors %}error{%endif%}">
+                    <label class="control-label" for="id_api_key">API Key</label>
+                    <div class="controls">  
+                        <style>#id_api_key { width: 500px; }</style>
+                        {{form.api_key}}
+                        {% if form.api_key.errors %}
+                            <span class="help-block">{{form.api_key.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Google Safe Browsing unique API key from <a target="new" href="https://developers.google.com/safe-browsing/v4/get-started">https://developers.google.com/safe-browsing/v4/get-started</a>. Required.</span>
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="control-group {% if form.deny_url.errors %}error{%endif%}">
+                    <label class="control-label" for="id_deny_url">Deny URL</label>
+                    <div class="controls">  
+                        <style>#id_deny_url { width: 500px; }</style>
+                        <div class="input-append">
+                            {{form.deny_url}}
+                            <button class="btn" type="button" onclick="$('#id_deny_url').val('http://proxy.example.lan/antivirus/safebrowsing/blocked');"><i class="icon-magic"></i></button>
+                        </div>                    
+
+                        {% if form.deny_url.errors %}
+                            <span class="help-block">{{form.deny_url.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">URL to redirect the original request to if this is found to be detected by Google Safe Browsing. Required. For example, <em>http://blocked.example.lan</em>. Please ensure this domain is fully accessible from within your network. Click on the wizard button to use the default blocked page serviced by this UI.</span>
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls">
+                        <label class="checkbox inline">{{form.check_malware}} Block requests for malware sites. Default value is <em>On</em>. Recommended.</label>
+                    </div>
+                </div>  
+
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls">
+                        <label class="checkbox inline">{{form.check_social}} Block requests for social engineering sites. Default value is <em>On</em>. Recommended.</label>
+                    </div>
+                </div>  
+
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls">
+                        <label class="checkbox inline">{{form.check_unwanted_soft}} Block requests for generally unwanted software. Default value is <em>Off</em>.</label>
+                    </div>
+                </div>  
+
+                <div class="control-group {% if form.cache_clean.errors %}error{%endif%}">
+                    <label class="control-label" for="id_cache_clean">Scan Cache</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_cache_clean { width: 100px; }</style>
+                            {{form.cache_clean}}
+                            <button class="btn" type="button" onclick="$('#id_cache_clean').val('60');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.cache_clean.errors %}
+                            <span class="help-block">{{form.cache_clean.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Maximum number of seconds to cache clean scan results. Default value is 60 seconds (i.e. clean objects are rescanned after 60 seconds).</span>
+                        {%endif%}
+                    </div>
+                </div>
+
+
+                <div class="control-group {% if form.daemon_port.errors %}error{%endif%}">
+                <label class="control-label" for="id_daemon_port">Listen Port</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_daemon_port { width: 100px; }</style>{{form.daemon_port}}<button class="btn" type="button" onclick="$('#id_daemon_port').val('18890');"><i class="icon-magic"></i></button></div>  
+                    {% if form.daemon_port.errors %}
+                        <span class="help-block">{{form.daemon_port.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the port that Web Safety Google Safebrowsing daemon (wsgsbd) is listening on. Default value is <em>18890</em>.</span>
+                    {%endif%}
+                </div>
+
+            </div>  
+
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

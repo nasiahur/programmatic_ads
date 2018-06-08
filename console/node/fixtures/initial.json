@@ -1,0 +1,5 @@
+[
+	{ "model": "node.Node", "fields": {} },
+	{ "model": "node.NetManual", "fields": {} },
+	{ "model": "node.Sharing", "fields": {} }
+]

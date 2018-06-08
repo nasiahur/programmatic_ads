@@ -1,0 +1,45 @@
+{% extends 'safety/rules/rule.html' %}
+
+{% block toolbar_rule_ads %}active{%endblock%}
+
+{% block rule_desc %}<p>Annoyances blocking module tries to block access to well-known web tracking networks, obtrusive scripts and information retrieval code on the web pages thus protecting sensitive information about your browsing history and personal interests.</p>{%endblock%}
+
+{% block rule_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        
+        <div class="control-group">
+            <label class="checkbox inline">{{form.replace_with_image}} Replace annoyances with transparent images. Image and flash based banners will be replaced with transparent image, greatly improving overall view of web pages in all browsers.</label>
+        </div>    
+        <div class="control-group">
+            <label class="checkbox inline">{{form.apply_replace_heuristics}} Enhance page view in browsers. If replace heuristics algorithm allows it, replace all blocked annoyances with transparent images to improve overall user experience.</label>                                   
+        </div>
+        <div class="control-group">
+            <label class="checkbox inline">{{form.hide_trackers}} Hide placeholders in HTML pages. Sometimes tracking code cannot be blocked. In this case hide placeholders of these trackers on HTML pages to make them look nicer.</label>                                   
+        </div>
+                    
+        <div class="control-group">
+            <label class="checkbox inline">{{form.mangle_id}} Mangle ID of the hidden HTML node. Helps to better hide tracking placeholders. Experimental feature.</label>
+        </div>
+        <div class="control-group">
+            <label class="checkbox inline">{{form.mangle_class}} Mangle CLASS of the hidden HTML node. Helps to better hide tracking placeholders. Experimental feature.</label>
+        </div>      
+        
+        <div class="control-group">
+            <div class="btn-group">
+                <button class="btn btn-primary">Save Changes</button>                
+            </div> 
+        </div>
+    </form>
+    
+        
+{% endblock %}

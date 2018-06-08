@@ -1,0 +1,26 @@
+#
+# network interface - {{device.name}}
+#
+auto {{device.name}}
+{% if device.ip4_config != 0 %}
+# IPv4 configuration for {{device.name}}
+iface {{device.name}} inet {{device.ip4_config_type_etc_network_interfaces_str}}
+    {% if device.ip4_config == 2 %}
+    address {{device.ip4_address}}
+    netmask {{device.ip4_netmask}}
+    {% if device.ip4_gateway %}gateway {{device.ip4_gateway}}{%endif%}
+    {% if device.ip4_dns_srv1 or device.ip4_dns_srv2 %}dns-nameservers {{device.ip4_dns_srv1}} {{device.ip4_dns_srv2}}{%endif%}
+    {% if device.ip4_dns_search %}dns-search {{device.ip4_dns_search}}{% endif %}
+    {% endif %}
+{% endif %}
+{% if device.ip6_config != 0 %}
+# IPv6 configuration for {{device.name}}
+iface {{device.name}} inet6 {{device.ip6_config_type_etc_network_interfaces_str}}
+    {% if device.ip6_config == 2 %}
+    address {{device.ip6_address}}
+    netmask {{device.ip6_subnet}}
+    {% if device.ip6_gateway %}gateway {{device.ip6_gateway}}{%endif%}
+    {% if device.ip6_dns_srv1 or device.ip6_dns_srv2 %}dns-nameservers {{device.ip6_dns_srv1}} {{device.ip6_dns_srv2}}{%endif%}
+    {% if device.ip6_dns_search %}dns-search {{device.ip6_dns_search}}{% endif %}
+    {% endif %}
+{% endif %}

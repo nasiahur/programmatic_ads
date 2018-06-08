@@ -1,0 +1,12 @@
+{% extends 'squid/ssl/missing/base.html' %}
+
+{% block toolbar_ssl_missing_domain %}class="active"{%endblock%}
+
+{% block ssl_missing_desc %}
+<p>Sometimes the remote HTTPS server is not configured correctly and it does not send intermediate certificates upon connection. Use this list to  manage intermediate certificates uploaded to this proxy box. Missing intermediate certificates will be concatenated to <em>/opt/websafety/etc/foreign_intermediate_certs.pem</em> file and used for HTTPS decryption.</p>
+{% endblock %}
+
+
+{% block addnew_href%}{% url 'ViewSslIntermediateCertCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslIntermediateCertUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslIntermediateCertUpdate' object.pk %}{%endblock%}

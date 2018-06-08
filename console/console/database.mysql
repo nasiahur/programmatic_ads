@@ -1,0 +1,1 @@
+Switches local monitoring database to MySQL (connection settings are in /opt/websafety/var/console/console/settings.py)

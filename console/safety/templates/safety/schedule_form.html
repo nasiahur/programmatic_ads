@@ -1,0 +1,89 @@
+{% extends 'safety/policy.html' %}
+
+{% block toolbar_schedule %}class="active"{%endblock%}
+{% block policy_content %}
+
+    <p>Add a new schedule when this policy is activated.</p>
+
+    <div class="box">    
+    
+        {% if policy.name == 'default' %}
+            <div class="alert alert-info"><p>Default filtering policy is used when proxy user can not be found in other policies so there is no need to configure schedule of the default policy. It is always switched on.</p></div>    
+        {% else %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                 {% for error in form.non_field_errors %}
+                     <span>{{ error|escape }}</span>
+                 {% endfor %}
+            </div>  
+            {% endif %}
+            
+            <form method="POST" class="form-horizontal">{% csrf_token %}
+                <input type="hidden" name="policy" value="{{policy.pk}}">
+                <div class="control-group">
+                    <label class="control-label">Day of Week</label>
+                    <div class="controls">                    
+                        <label class="checkbox inline">{{form.on_mon}} Monday</label>                    
+                        <label class="checkbox inline">{{form.on_tue}} Tuesday</label>
+                        <label class="checkbox inline">{{form.on_wed}} Wednesday</label>
+                        <label class="checkbox inline">{{form.on_thu}} Thursday</label>
+                        <label class="checkbox inline">{{form.on_fri}} Friday</label>
+                        <label class="checkbox inline">{{form.on_sat}} Saturday</label>
+                        <label class="checkbox inline">{{form.on_sun}} Sunday</label>
+                    </div>
+                </div>
+                <div class="control-group {% if form.from_hours.errors %}error{%endif%}">
+                    <label class="control-label" for="id_address">From Hours</label>
+                    <div class="controls">                
+                        {{form.from_hours}}
+                        {% if form.from_hours.errors %}
+                            <span class="help-block">{{form.from_hours.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify the hour this schedule must be active from. For example 00. Possible values 00 to 23.</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group {% if form.from_mins.errors %}error{%endif%}">
+                    <label class="control-label" for="id_address">From Minutes</label>
+                    <div class="controls">                
+                        {{form.from_mins}}
+                        {% if form.from_mins.errors %}
+                            <span class="help-block">{{form.from_mins.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify the minute this schedule must be active from. For example 00. Possible values 00 to 59.</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group {% if form.to_hours.errors %}error{%endif%}">
+                    <label class="control-label" for="id_address">To Hours</label>
+                    <div class="controls">                
+                        {{form.to_hours}}
+                        {% if form.to_hours.errors %}
+                            <span class="help-block">{{form.to_hours.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify the hour this schedule must be active till. For example 00. Possible values 00 to 23. Must be equal to or bigger than the from hour.</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group {% if form.to_mins.errors %}error{%endif%}">
+                    <label class="control-label" for="id_address">To Minutes</label>
+                    <div class="controls">                
+                        {{form.to_mins}}
+                        {% if form.to_mins.errors %}
+                            <span class="help-block">{{form.to_mins.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Specify the minutes this schedule must be active till. For example 00. Possible values 00 to 59. If from hour is the same as to hour, then the to minutes must be bigger than from minutes.</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>                        
+                        <div class="btn-group"><a href="{% url 'ViewScheduleList' policy.pk %}" class="btn">Cancel</a></div> 
+                    </div>
+                </div>
+            </form>                    
+        {% endif %}
+    </div>
+{% endblock %}

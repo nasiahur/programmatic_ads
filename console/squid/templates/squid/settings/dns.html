@@ -1,0 +1,73 @@
+{% extends 'squid/settings/index.html' %}
+
+{% block toolbar_dns %}class="active"{%endblock%}
+{% block page_comment %}<p>Global DNS settings.</p>{% endblock %}
+
+{% block page_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <div class="box">
+
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="control-group {% if form.dns_timeout.errors %}error{%endif%}">
+                <label class="control-label" for="id_dns_timeout">DNS Query Timeout</label>
+                <div class="controls">
+                    <style>#id_dns_timeout { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.dns_timeout}}
+                        <button class="btn" type="button" onclick="$('#id_dns_timeout').val('30');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.dns_timeout.errors %}
+                        <span class="help-block">{{form.dns_timeout.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the DNS query timeout in seconds. If no response is received to a DNS query within this time all DNS servers for the queried domain are assumed to be unavailable. Default value is <em>30 seconds</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_dns_v4_first"></label>
+                <div class="controls"><label class="checkbox inline">{{form.dns_v4_first}} If a domain is accessible by both IPv4 (A) and IPv6 addresses, prefer contacting it by IPv4. Default value if <em>Off</em>.</label>
+                </div>
+            </div>              
+            <div class="control-group {% if form.dns_nameservers.errors %}error{%endif%}">
+                <label class="control-label" for="id_dns_nameservers">DNS Name Servers</label>
+                <div class="controls">
+                    <style>#id_dns_nameservers { width: 470px; }</style>
+                    {{form.dns_nameservers}}
+                    {% if form.dns_nameservers.errors %}
+                        <span class="help-block">{{form.dns_nameservers.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Use this if you want to explicitly specify a list of DNS name servers (IP addresses) that Squid should connect to instead of those given in your <em>/etc/resolv.conf</em> file. Default value is empty.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

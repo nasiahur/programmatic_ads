@@ -1,0 +1,26 @@
+{% extends 'squid/exclude/advanced/form.html' %}
+
+{% block header_subtab %} / HTTPS Decryption{% endblock %}
+
+
+{% block advanced_value_control%}
+
+	<div class="control-group {% if form.value_sslbump.errors %}error{%endif%}">
+        <label class="control-label" for="id_value_sslbump">&nbsp;</label>
+        <div class="controls">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#id_value_sslbump").addClass("input-block-level");
+               });
+            </script>
+            {{form.value_sslbump}}                
+            {% if form.value_sslbump.errors %}
+                <span class="help-block">{{form.value_sslbump.errors|striptags}}</span>
+            {% else %}
+                <span class="help-block">Specify here raw Squid ACLs for HTTPS decryption and SSL bump exclusions. See Squid's <a target="_new" href="http://www.squid-cache.org/Doc/config/acl/">online documentation</a> for more information. The contents of this field will be written to squid.conf as-is so please be careful.</span>
+            {%endif%}
+        </div>
+    </div>
+{%endblock%}
+
+

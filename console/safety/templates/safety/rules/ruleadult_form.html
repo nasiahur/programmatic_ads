@@ -1,0 +1,101 @@
+{% extends 'safety/rules/rule.html' %}
+
+{% block toolbar_rule_adult %}class="active"{%endblock%}
+
+{% block rule_desc %}{%endblock%}
+
+{% block rule_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <div class="alert alert-success"><strong>Notice:</strong> obscene adult content is always blocked according to Internet Watch Foundation black list. For more information see <a href="https://www.iwf.org.uk" target="_new">https://www.iwf.org.uk</a></div>  
+    
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <div class="control-group">                
+            <label class="checkbox inline">{{form.enable_phrases}} Use full text search engine for detection of explicit language pages. Application will scan all downloaded pages and calculate the "weight" of each page. Commonly used words all have a weight of 0, adult specific language on the other hand has weights more than zero. The more mature a word is - the more weight it has. If contents of a page result into weight more than maximum then this page is blocked.</label>                                   
+        </div>
+        <div class ="well"> 
+            <div class="control-group">                
+                <label class="checkbox inline">{{form.trust_allowed_categories}} Use <a href="{% url 'ViewSettingsTrustedCategories' %}">Trusted Categories</a>. When given domain is known to be part of a trusted category, adult language detection is not applied. Default value is Off. Set to On in adult friendly environments where occasional display of adult content is not a problem.</label>                
+            </div>     
+            <div class="control-group {% if form.phrases_maximum_weight.errors %}error{%endif%}">
+                <label class="control-label" for="id_phrases_maximum_weight">Max Text Weight</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input id="id_phrases_maximum_weight" class="span2" maxlength="512" name="phrases_maximum_weight" size="60" type="text" value="{{form.phrases_maximum_weight.value}}">
+                        <a class="btn" type="button" onclick="$('#id_phrases_maximum_weight').val(40);"><i class="icon-magic"></i></a>
+                    </div>
+                    {% if form.phrases_maximum_weight.errors %}
+                        <span class="help-block">{{form.phrases_maximum_weight.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Sets maximum weight of the inspected text. Any text with exceeding weight is considered to be explicit and blocked. The weight of a text is calculated as sum of weights of all scanned words. Default value is 40. Set it to lower value to block more and higher to block less. Database of prohibited phrases is stored at <em>/opt/websafety/var/spool/adult/weighted.conf</em> (you need to edit it manually if required).</span>
+                    {%endif%}
+                </div>
+            </div>  
+            <div class="control-group {% if form.phrases_maximum_size.errors %}error{%endif%}">
+                    <label class="control-label" for="id_phrases_maximum_weight">Max Text Size</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input id="id_phrases_maximum_size" class="span2" maxlength="512" name="phrases_maximum_size" size="60" type="text" value="{{form.phrases_maximum_size.value}}">
+                            <a class="btn" type="button" onclick="$('#id_phrases_maximum_size').val(2097152);"><i class="icon-magic"></i></a>
+                        </div>
+                        {% if form.phrases_maximum_size.errors %}
+                            <span class="help-block">{{form.phrases_maximum_size.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Sets maximum size of text to be inspected (in bytes). Scanning text larger than 2MB requires very powerful CPU and should be avoided on any weaker hardware. Typical size of a Google search results page is approximately 1MB, of YouTube search results page 1.3MB. Default value is 2097152 bytes (2MB).</span>
+                        {%endif%}
+                    </div>
+                </div> 
+        </div>
+            
+        <div class="control-group">
+            <label class="checkbox inline">{{form.enable_heuristics}} Enable advanced heuristics algorithm for detection of adult URLs. Most of explicit URLs are easily detectable by explicit words used in them.</label>                                               
+        </div>  
+        <div class ="well"> 
+            <div class="control-group {% if form.heuristics_maximum_weight.errors %}error{%endif%}">
+                <label class="control-label" for="id_heuristics_maximum_weight">Maximum Weight of URL</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input id="id_heuristics_maximum_weight" class="span2" maxlength="512" name="heuristics_maximum_weight" size="60" type="text" value="{{form.heuristics_maximum_weight.value}}">
+                        <a class="btn" type="button" onclick="$('#id_heuristics_maximum_weight').val(40);"><i class="icon-magic"></i></a>
+                    </div>
+                    {% if form.heuristics_maximum_weight.errors %}
+                        <span class="help-block">{{form.heuristics_maximum_weight.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Sets maximum weight of the words in URL and Referer URL. Any request with exceeding weight is considered to be explicit and blocked. The weight of URL is calculated as sum of weights of all scanned URL parts. Default value is 40. Set it to lower value to block more and higher to block less. Database of prohibited words in URL is stored at <em>/opt/websafety/var/spool/adult/heuristics.conf</em> (you need to edit it manually if required).</span>
+                    {%endif%}
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="checkbox inline">{{form.phrases_scan_links}} Scan external HTML links and anchors in inspected text. Recommended by default.</label>                                                   
+            </div>    
+            <div class="control-group">
+                <label class="checkbox inline">{{form.phrases_parse_links}} Perform parsing and heuristics analysis of external HTML links and anchors in inspected text . Recommended for strict web filtering policies.</label>                                                   
+            </div> 
+            <div class="control-group">
+                <label class="checkbox inline">{{form.phrases_scan_javascript}} Scan embedded scripts. Recommended for strict web filtering policies. May give false positives (object is considered adult only but in reality is not).</label>
+            </div>    
+            <div class="control-group">
+                <label class="checkbox inline">{{form.phrases_scan_css}} Scan embedded style sheets. Recommended for strict web filtering policies. May give false positives (object is considered adult only but in reality is not).</label>
+            </div>    
+        </div>
+        <div class="control-group">
+            <label class="checkbox inline">{{form.enable_image_filtering}} Filter explicit images based on skin detection algorithms. This is experimental feature, it is recommended to keep it off. Enable it only if you have plenty of CPU, RAM and fast disk storage available on your server. For now only JPEG images are filtered. Please provide feedback concerning this feature to support@diladele.com.</label>
+        </div> 
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group">
+                    <button class="btn btn-primary">Save Changes</button>                
+                </div> 
+            </div>
+        </div>
+    </form>
+        
+{% endblock %}

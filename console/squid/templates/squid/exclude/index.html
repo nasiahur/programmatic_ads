@@ -1,0 +1,13 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_exclude %}class="active"{%endblock%}
+
+{% block contents %}
+    
+    <h2>Exclusions<small>{% block header_tab %}{% endblock %}</small></h2>
+    {% block page_comment %}{% endblock %}
+
+    <section class="row-fluid">
+        {% block page_content %}{% endblock %}        
+    </section>        
+{% endblock %}

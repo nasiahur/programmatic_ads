@@ -1,0 +1,13 @@
+{% extends 'safety/members/form.html' %}
+
+{% block toolbar_member_name %}class="active"{%endblock%}
+
+{% block member_heading%}{%endblock%}
+
+{% block value_name%}User Name{%endblock%}
+{% block value_help%}Specify name of user to be included into this policy.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewMemberNameList' policy.pk %}{%endblock%}

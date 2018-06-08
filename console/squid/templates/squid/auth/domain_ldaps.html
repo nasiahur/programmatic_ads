@@ -1,0 +1,106 @@
+{% extends 'squid/auth/active_directory.html' %}
+
+{% block auth_ad_general %}class="active"{%endblock%}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">If proxy authentication is enabled only authenticated users will be able to access the Internet through this proxy. Proxy authentication can only be used in case of explicit proxy deployment, when browser is configured to use the proxy. See <a href="http://wiki.squid-cache.org/Features/Authentication" target="_new">Squid Wiki article</a> for more information.</p>
+{% endblock %}
+
+
+{% block tab_content %}
+
+    <!-- modal dialog to show results of the detection -->     
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 id="myModalLabel">Detection Completed Successfully</h3>
+        </div>
+        <div class="modal-body">
+            <p>LDAPS server certificates were retrieved from configured domain controller(s) and stored in <em>/opt/websafety/etc/ldaps.pem</em> file. Please make sure they make sense for your network environment, click <em>Save Changes</em> and then <em>Test Connection</em> buttons on the <a href="{% url 'ViewAuthDomainEdit' %}">integration</a> tab.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        </div>
+    </div>
+    <div id="myModalError" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 id="myModalLabel" style="color:red">Detection Failed</h3>
+        </div>
+        <div class="modal-body">
+            <p>LDAPS server certificates could not be retrieved from configured domain controller(s). Please make sure your have correctly configured domain controllers addresses on the <a href="{% url 'ViewAuthDomainEdit' %}">integration</a> tab.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var DetectAutomatically = function () {
+            $.ajax({url: "{% url 'ViewLdapsDetect' %}", success: function(result){
+                options = {}
+                $('#myModal').modal(options)
+                location.reload();
+            }, error: function (textStatus, errorThrown) {
+                options = {}
+                $('#myModalError').modal(options)
+                location.reload();
+                Success = false;//doesnt goes here
+            }}
+            );
+        };
+    </script>
+
+
+
+
+    <div class="box">
+        <style type="text/css">
+            .wrapit {
+                white-space: pre-wrap;
+            }
+        </style>    
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <p><strong>Cannot upload LDAPS server certificate!</strong><p>
+            <p>{% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}</p>
+        </div>  
+        {% endif %}
+
+        <form enctype="multipart/form-data" class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group {% if form.file.errors %}error{%endif%}">
+                    <div class="controls">
+                        <input type="file" name="file" id="id_file">
+                        <span class="help-block"><p>Browse to your LDAPS server certificate and click <em>Import Certificate</em> button or click the <em>Retrieve Automatically</em> button to try to get the certificate from configured domain controller(s) directly.</p></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Import Certificate</button>
+                        <a class="btn" href="{% url 'ViewAuthDomainLdapsExport' %}">Export Certificate</a>
+                        <a class="btn" href="{% url 'ViewAuthDomainLdapsRemove' %}">Remove Certificate</a>
+                        <a class="btn" href="{% url 'ViewLdapsDetect' %}">Detect Automatically</a>
+                        <a class="btn" href="{% url 'ViewAuthDomainEdit' %}">Cancel</a>
+                    </div>
+                </div>
+                        
+        
+            </form>
+
+
+
+
+        <p style="margin-top: 10px;">Raw contents of trusted LDAPS public server certificate uploaded to <em>/opt/websafety/etc/ldaps.pem</em> are shown below.</p>
+        <pre style="margin-top: 10px;" >{{cacert_raw}}</pre>
+        
+        <p style="margin-top: 10px;">Contents of trusted LDAPS public server certificate uploaded to <em>/opt/websafety/etc/ldaps.pem</em> are shown below.</p>
+        <pre style="margin-top: 10px;" 
+            {% if squid.authdomain.use_ldaps %}
+                {% if not cacert_result %}class="alert-error"{%endif%}
+            {%endif%}
+        >{{cacert_output}}</pre>
+        
+    </div>
+
+{% endblock %}

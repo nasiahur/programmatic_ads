@@ -1,0 +1,18 @@
+{% extends 'safety/application.html' %}
+{% block navbar_tools %}class="active"{%endblock%}
+{% block contents %}
+
+    <h2>Tools</h2>
+    {% block page_comment %}{% endblock %}
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_upload %}{%endblock%}><a href="{% url 'ViewImportTxt' %}">Import Data</a></li>            
+        </ul>  
+        <div class="box">
+            {% block box_contents %}{% endblock %}
+        </div>
+    </section>
+
+{% endblock %}
+

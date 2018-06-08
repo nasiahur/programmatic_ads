@@ -1,0 +1,11 @@
+{% extends 'squid/ssl/target/base.html' %}
+
+{% block toolbar_ssl_target_subnet %}class="active"{%endblock%}
+
+{% block ssl_target_desc %}
+<p>HTTPS connections to the following IP subnets are always decrypted. This is usually used in <em>intercept (transparent) proxy</em> deployments. If you have <em>explicit proxy</em> it is much easier to use the <a href="{% url 'ViewSslTargetDomainList' %}">domain name</a> targets.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewSslTargetSubnetCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslTargetSubnetUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslTargetSubnetUpdate' object.pk %}{%endblock%}

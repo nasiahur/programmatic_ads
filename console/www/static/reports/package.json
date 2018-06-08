@@ -1,0 +1,17 @@
+{
+  "version": "0.0.0",
+  "private": true,
+  "name": "reports",
+  "description": "Diladele Web Safety Reports",
+  "repository": "http://www.diladele.com",
+  "license": "Diladele B.V. License",
+  "devDependencies": {
+    "http-server": "^0.6.1",
+    "bower": "^1.7.7"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+    "prestart": "npm install",
+    "start": "http-server -a 127.0.0.1 -p 80"
+  }
+}

@@ -1,0 +1,11 @@
+{% extends 'safety/rules/rulefile_form.html' %}
+
+{% block rule_desc%}<p>Blocks downloads of files based on their actual contents. The names of files are not taken into account. Even if a dangerous executable file is being dowloaded as innocent image, such file will be blocked.</p>{%endblock%}
+
+{% block value_name%}Real File Type{%endblock%}
+{% block value_help%}The application contains some predefined real contents blocking filters shown below. Specify the name of the filter as Real File Type. For example, rule exe.ms.dll blocks downloads of Microsoft Windows executable files and shared libraries. <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/web_filter/policies/blocking_file_downloads.html">The list of available real file types is available online</a>.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleFileContentList' policy.pk %}{%endblock%}

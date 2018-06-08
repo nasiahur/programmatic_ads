@@ -1,0 +1,115 @@
+{% extends 'traffic/report/report.html' %}
+{% load staticfiles %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+
+{% block toolbar_jobs %}class="active"{%endblock%}
+
+{% block subheader_comment %}<p>The following table contains currently scheduled report jobs. Each report job generates a separate report. Click <em>Report Name</em> to view generated reports in a new browser window. Click <em>Edit Report</em> to edit report job definition or <em>Remove</em> to delete the report job and its corresponding report from the system.</p>{% endblock %}
+
+{% block tab_content %}
+
+	<div class="box">
+
+	{% if not object_list %}
+	<section class="row-fluid">
+        <div class="span12">            
+            <div class="alert">
+				<strong>Warning!</strong> You have no active report generation jobs configured. Click on the Templates tab, select required report generation template and click <em>Create Report</em> button to create a new Report Job.
+			</div>
+        </div>
+    </section>
+    {% else %}
+
+    	<table class="table table-striped table-condensed table-hover" width="100%">
+            <thead>
+                <tr>
+                	<th>Name</th>
+                	<th>Description</th>
+                	<th>Type</th>
+                	<th>Parameters</th>
+                	<th>Built On</th>
+                	<th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr {% if not object.enabled %}class="alert"{%endif%}>
+                    <td>{% if object.generated_finished %}<a target="_new" href="{% url 'traffic:ViewReportViewJob' object.name 'index.html' %}" title="">{{object.name}}</a>{% else %}{{object.name}}{% endif %}{% if not object.enabled %} (disabled){%endif%}</td>
+                    <td>{{object.comments|truncatechars:40}}</td>
+                    <td>{{object.template_type}}</td>
+                    <td>{{object.params_str}}</td>
+                    <td>{% if object.generated_finished %}{{object.generated_on}}{%else%}not yet{%endif%}</td>
+                    <td>
+                    	{% if object.generated_finished %}
+                    		<a target="_new" href="{% url 'traffic:ViewReportViewJob' object.name 'index.html' %}" data-toggle="tooltip" title="view generated report"><i class="icon-signal"></i></a>
+
+                    	{% else %}
+                    		<i class="icon-signal" data-toggle="tooltip" title="report is not generated yet"></i>
+                    	{% endif %}
+                    	&nbsp;
+                        <a 
+                            href="{% url 'traffic:ViewReportUpdateJob' object.pk object.template_type %}" 
+                            data-toggle="tooltip" 
+                            title="edit report template">
+                            <i class="icon-pencil"></i>
+                        </a>
+                        &nbsp;&nbsp;
+                        <a 
+                            id="remove_report_{{object.pk}}"
+                            href="javascript:removeJob({{object.pk}})" 
+                            class="comment-remove" 
+                            data-toggle="tooltip" 
+                            title="delete report">
+                            <i class="icon-trash"></i>
+                        </a>
+
+                        {% if object.generated_finished %}
+                            &nbsp;
+                            <a target="_new" href="{% url 'traffic:ViewReportExportPdf' object.name %}" data-toggle="tooltip" title="view report as PDF"><i class="icon-download"></i></a>                            
+                        {% endif %}
+
+                        {% if object.logfile_exists %}
+                        &nbsp;<a href="{% url 'traffic:ViewReportViewJob' object.name 'data/report.log' %}" class="comment-remove" data-toggle="tooltip" title="view generation log"><i class="icon-file-alt"></i></a>
+                        {% endif %}
+                        </td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+	{% endif %}
+
+    <!-- hidden post with selected id populated by the modal box -->
+    <form method="POST" id="remove">
+        {% csrf_token %}
+        <input type="hidden" value="" name="selected_id" id="selected_id"/>
+    </form>
+
+    <script type="text/javascript">
+        var removeJob = function (selected_id) {
+
+            options = {}
+
+            $("#remove #selected_id").val(selected_id);
+            $('#confirmRemoveModal').modal(options)
+        };
+        var submitRemoveForm = function () {
+            $('form#remove').submit()
+        }
+    </script>
+    <div id="confirmRemoveModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 id="myModalLabel" style="color: red;">Remove Report</h3>
+        </div>
+        <div class="modal-body">
+            <p>Report job and all its generated reports are about to be removed. This is irreversible operation and cannot be undone. Please proceed only when absolutely necessary.</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirm_removal" class="btn btn-danger" onclick="javascript:submitRemoveForm();" >Remove</button>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}

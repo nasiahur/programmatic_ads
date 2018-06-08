@@ -1,0 +1,11 @@
+{% extends 'safety/rules/ruledomainbase_form.html' %}
+
+{% block rule_desc%}<p>Unconditionally block requests for specific URLs based on User Agent HTTP header using Perl style regular expression.</p>{%endblock%}
+
+{% block value_name%}User Agent Regex{%endblock%}
+{% block value_help%}For example the .*youtube.* value blocks requests coming from YouTube app on Apple iPhone, iPad and Google Android.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleUserAgentList' policy.pk %}{%endblock%}

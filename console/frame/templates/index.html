@@ -1,0 +1,140 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- styles -->
+
+
+        {% block uicolor %}
+            <!-- UI color is adjusted based on the license -->
+            {% with 'css/1.3.0/'|add:safety.get_uicolor|add:'/bootstrap.min.css' as href_static %}
+                <link href="{% static href_static %}" media="all" rel="stylesheet" type="text/css" id="bootstrap-css">
+            {% endwith %}
+            {% with 'css/1.3.0/'|add:safety.get_uicolor|add:'/adminflare.min.css' as href_static %}
+                <link href="{% static href_static %}" media="all" rel="stylesheet" type="text/css" id="adminflare-css">
+            {% endwith %}
+        {% endblock %}
+
+        <link href="{% static 'css/1.3.0/pages.min.css' %}" media="all" rel="stylesheet" type="text/css">
+
+        {% include "fonts.html" %}
+
+        <style type="text/css">
+            .box, .well { padding-bottom: 0; }
+        </style>
+        
+        <!-- scripts -->
+        <script src="{% static 'javascripts/1.3.0/adminflare-demo-init.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'javascripts/1.3.0/modernizr-jquery.min.js'%}" type="text/javascript"></script>
+        <script src="{% static 'javascripts/1.3.0/adminflare-demo.min.js'%}" type="text/javascript"></script>
+        <script src="{% static 'javascripts/1.3.0/bootstrap.min.js'%}" type="text/javascript"></script>
+        <script src="{% static 'javascripts/1.3.0/adminflare.js'%}" type="text/javascript"></script>    
+        <script type="text/javascript">
+            $(document).ready(function() {
+                prettyPrint();
+                $("#theme_switcher").hide();
+            });
+        </script>
+
+        <title>{% block head_title %}{% endblock %}</title>
+    </head>
+    
+    <body {% block body_fluid %}{% endblock %}>
+        <script type="text/javascript">demoSetBodyLayout();</script>
+        
+        <header class="navbar navbar-fixed-top" id="main-navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="logo" href="{% url 'node:ViewDashboard' %}"><img alt="Af_logo" src="{% static 'images/af-logo.png' %}"></a>
+                    <a class="btn nav-button collapsed" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-reorder"></span>
+                    </a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                        	<li class="divider-vertical"></li>
+                        	<li {% block bar_dash %}{% endblock %}><a <a name="topnav_traffic" href="{% url 'traffic:View_MonitorSurfingNow' %}"><!--<span class="icon-th-large"></span>&nbsp; --> Traffic Monitor</a></li>
+                        	<li class="divider-vertical"></li>
+                            <li {% block bar_safety %}{% endblock %}><a name="topnav_safety" href="{% url 'ViewPolicyList' %}"><!--<span class="icon-shield"></span>&nbsp;--> Web Filter</a></li>
+                            <li class="divider-vertical"></li>
+                            <li {% block bar_av %}{% endblock %}><a name="topnav_av" href="{% url 'ViewAvSettingsMode' %}"><!--<span class="icon-shield"></span>&nbsp;--> Anti Virus</a></li>
+                            <li class="divider-vertical"></li>
+                            <li {% block bar_squid %}{% endblock %}><a name="topnav_squid" href="{% url 'ViewGeneralConfig' %}">Squid Proxy</a></li>
+                            <li class="divider-vertical"></li>                                                        
+                        </ul>
+                        {% if not hide_apply %}
+                        <ul class="nav pull-right">
+
+                            <li>
+                                <a target="new" href="https://www.diladele.com/support.html"><i class="icon-info-sign"></i> Support</a>
+                            </li>
+                            <li class="separator"></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle usermenu" data-toggle="dropdown">
+                                    <img alt="Avatar" src="{% static 'images/avatar.png'%}">
+                                    <span>&nbsp;&nbsp;{{ user }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/admin/auth/user/1/password/">Change Password</a></li>
+                                    <li><a href="{% url 'LogoutView' %}">Log Out</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <div class="btn-group">
+                                    <a href="{% url 'frame:ApplyView' %}" class="btn btn-success">Apply Settings</a>
+                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick="$('#apply_and_restart_form').submit();">Save and Restart</a></li>
+                                        <li><a href="#" onclick="$('#apply_and_reload_form').submit();">Save and Reload</a></li>
+                                    </ul>                                    
+                                </div>
+                                <form style="display:none;" id="apply_and_restart_form" action="{% url 'frame:RestartView' %}" method="POST">{% csrf_token %}</form>
+                                <form style="display:none;" id="apply_and_reload_form" action="{% url 'frame:ReloadView' %}" method="POST">{% csrf_token %}</form>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        {% block navigation %}{% endblock %}
+        
+        <section class="container">    
+        
+            {% if not disable_top_messages %}
+                {% for message in messages %}
+                    {% if message|stringformat:"s" == 'need_squid_restart' %}
+                        <div class="alert alert-danger" id="need_squid_restart_message">
+                            <strong>Success!</strong> Configuration changes were saved successfully. Please do not forget to <a href="{% url 'frame:ApplyView' %}">Apply New Settings and Restart the ICAP server</a>.
+                        </div>
+                    {% elif message|stringformat:"s" == 'need_squid_reload' %}
+                        <div class="alert alert-success" id="need_squid_reload_message">
+                            <strong>Success!</strong> Configuration changes were saved successfully. Please do not forget to <a href="{% url 'frame:ApplyView' %}">Apply New Settings and Reload the ICAP server</a>.
+                        </div>
+                    {% elif message|stringformat:"s" == 'need_reboot' %}
+                        <div class="alert alert-error" id="need_reboot">
+                            <strong>Success!</strong> Configuration changes were saved successfully. You need to reboot this server from console to apply the settings system-wide.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endif %}                        
+                {% endfor %}
+            {% endif %}
+
+            {% block warning_area %}{% endblock %}
+
+            {% block contents %}{% endblock %}
+            <footer id="main-footer">
+                Web Safety for Squid Proxy, version 6.2.0.FD48-amd64-linux-ubuntu16, (c) Diladele B.V., 2018.
+                <a href="#" class="pull-right" id="on-top-link">
+                    On Top &nbsp;<i class=" icon-chevron-up"></i>
+                </a>
+                
+            </footer>            
+        </section>
+        <div class="notifications top-right"></div>
+    </body>
+</html>

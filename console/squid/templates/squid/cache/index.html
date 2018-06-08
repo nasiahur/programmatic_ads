@@ -1,0 +1,26 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_cache %}class="active"{%endblock%}
+
+{% block contents %}
+
+	<!-- on pfsense we are not managing squid settings -->
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running Web Safety on pfSense. In this case you have to manage cache settings using pfSense's Web UI.
+        </div>
+    {% else %}	    
+	    <h2>Cache<small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+	    {% block page_comment %}{% endblock %}
+
+	    <section class="row-fluid">
+	        <ul class="nav nav-pills">
+	        	<li {% block toolbar_memory %}{%endblock%}><a href="{% url 'ViewCacheMemory' %}">Memory</a></li>        	
+	        	<li {% block toolbar_disk %}{%endblock%}><a href="{% url 'ViewCacheDisk' %}">Disk</a></li> 
+	        	<li {% block toolbar_patterns %}{%endblock%}><a href="{% url 'ViewCacheRefreshPatternList' %}" id="toolbar_patterns">Refresh Patterns</a></li>
+	        </ul>  
+	        {% block page_content %}{% endblock %}        
+	    </section>
+    {% endif %}   
+         
+{% endblock %}

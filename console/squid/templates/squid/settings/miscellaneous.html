@@ -1,0 +1,53 @@
+{% extends 'squid/settings/index.html' %}
+
+{% block toolbar_miscellaneous %}class="active"{%endblock%}
+{% block page_comment %}<p>Miscellaneous settings.</p>{% endblock %}
+
+{% block page_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <div class="box">
+
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="squid" value="{{squid.pk}}">
+            <div class="control-group {% if form.forwarded_for.errors %}error{%endif%}">
+                <label class="control-label" for="id_forwarded_for">Forwarded For</label>
+                <div class="controls">
+                    {{form.forwarded_for}}
+                    {% if form.forwarded_for.errors %}
+                        <span class="help-block">{{form.forwarded_for.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">If set to <em>on</em>, Squid will append your client's IP address in the HTTP requests it forwards. By default it looks like <em>X-Forwarded-For: 192.1.2.3</em>.<br>If set to <em>off</em>, it will appear as <em>X-Forwarded-For: unknown</em>.<br>If set to <em>transparent</em>, Squid will not alter the X-Forwarded-For header in any way.<br> If set to <em>delete</em>, Squid will delete the entire X-Forwarded-For header.<br>If set to <em>truncate</em>, Squid will remove all existing X-Forwarded-For entries, and place the client IP as the sole entry.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

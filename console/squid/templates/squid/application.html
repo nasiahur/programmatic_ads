@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block bar_squid %}class="active"{% endblock %}
+{% block navigation %}    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul>
+                <li {% block navbar_general %}{%endblock%}>
+                	<a id="navbar_general" href="{% url 'ViewGeneralConfig' %}"><span class="icon-book"></span>General</a>
+                </li>
+                <li {% block navbar_exclude %}{%endblock%}>
+                	<a id="navbar_exclude" href="{% url 'ViewExcludeDomainNameList' %}"><span class="icon-check"></span>Exclusions</a>
+                </li>
+                <li {% block navbar_ssl %}{%endblock%}>
+                	<a href="{% url 'ViewSslInfo' %}"><span class="icon-th-large"></span>HTTPS / SSL</a>
+                </li>
+                <li {% block navbar_auth %}{%endblock%}>
+                	<a id="navbar_auth" href="{% url 'ViewAuthExplicit' %}"><span class="icon-user"></span>Auth</a>
+                </li>
+                <li {% block navbar_cache %}{%endblock%}>
+                	<a id="navbar_cache" href="{% url 'ViewCacheMemory' %}"><span class="icon-cloud-download"></span>Cache</a>
+                </li>                
+                <li {% block navbar_settings %}{%endblock%}>
+                    <a id="leftnav_settings" href="{% url 'ViewNetworkInfo' %}"><span class="icon-cog"></span>Settings</a>
+                </li>
+                <li {% block navbar_tools %}{%endblock%}>
+                	<a href="{% url 'ToolsUploadSquidFile' %}"><span class="icon-wrench"></span>Tools</a>
+                </li>
+                <li {% block navbar_logs %}{%endblock%}>
+                	<a href="{% url 'ViewAccessLog' %}"><span class="icon-folder-open-alt"></span>Logs</a>
+                </li>
+            </ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+

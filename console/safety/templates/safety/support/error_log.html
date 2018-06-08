@@ -1,0 +1,16 @@
+{% extends 'safety/support/application.html' %}
+
+{% block navbar_logs %}class="active"{%endblock%}
+{% block toolbar_error_log %}class="active"{%endblock%}
+
+{% block content %}
+    <div class="box">    
+        <style type="text/css">
+            .wrapit {
+                white-space: pre-wrap;
+                margin-bottom: 20px;
+            }
+        </style>
+        <pre class="wrapit">{{error_log}}</pre>
+    </div>
+{% endblock %}

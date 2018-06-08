@@ -1,0 +1,26 @@
+{% extends 'antivirus/safe_browsing/safe_browsing.html' %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+{% block toolbar_log %}class="active"{%endblock%}
+{% block page_comment %}<p>Last {{size}} lines from Google Safe Browsing daemon log <em>{{log_path}}</em> are shown below.</p>{% endblock %}
+
+{% block page_content %}
+
+    <div class="box">
+        <form class="form-inline" method="GET" action="">
+            {% csrf_token %}
+            <input type="text" class="span1" placeholder="tail N lines" name="size" value="{{size}}">
+            <input type="text" class="span4" placeholder="text to search for (like grep)" name="include" value="{{include}}" id="id_include">
+            <input type="text" class="span4" placeholder="text to exclude from output (like grep -v)" name="exclude" value="{{exclude}}" id="id_exclude">
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
+            <button class="btn" onclick="$('#id_include').val(''); $('#id_exclude').val('');">Reset Filter</button>
+        </form>
+        <style type="text/css">
+            .wrapit {
+                white-space: pre-wrap;
+                margin-bottom: 20px;
+            }
+        </style>
+        <pre class="wrapit">{{log_contents}}</pre>
+    </div>
+
+{% endblock %}

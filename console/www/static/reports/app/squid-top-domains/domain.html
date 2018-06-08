@@ -1,0 +1,46 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{meta.name}}, {{domain.value}}</h3>
+    <md-button aria-label="The Button" href="#/list"> Home </md-button>
+    <md-button aria-label="The Button" href="#/list/domains"> Domains </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+    <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        <md-list>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Duraion</h3>
+                    <p>{{domain.duration}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Total Bandwidth</h3>
+                    <p>{{domain.size | bytes}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Name</h3>
+                    <p>{{domain.value}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="domains">
+                <md-content class="md-padding">
+                    <md-table-container>
+                        <table md-table id="users_table">
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

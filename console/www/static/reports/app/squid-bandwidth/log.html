@@ -1,0 +1,22 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>Log</h3>
+    <md-button aria-label="Home" href="#/"> Home </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Log File">
+                <md-content class="md-padding">
+                    <style type="text/css">
+                        .wrapit {
+                            white-space: pre-wrap;
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                    <pre class="wrapit">{{log}}</pre>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

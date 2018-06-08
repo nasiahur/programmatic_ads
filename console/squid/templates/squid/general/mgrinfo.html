@@ -1,0 +1,4 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid runtime information retrieved using <em>squidclient mgr:info</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_mgrinfo %}class="active"{%endblock%}
+{% block pre_content %}{{client.mrginfo_str}}{% endblock %}

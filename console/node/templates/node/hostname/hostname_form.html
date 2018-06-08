@@ -1,0 +1,46 @@
+{% extends 'node/hostname/index.html' %}
+
+{% block content %}
+
+    {% if reboot.required %}
+        <div class="alert alert-error"><strong>Warning</strong>: Configured host name <em>{{reboot.configured_hn}}</em> is different from host name used by some running processes <em>{{reboot.running_hn}}</em>. This usually happens after you have set a new host name. You need to reboot the system to apply new settings to all processes.
+        </div>  
+    {% endif %}
+
+    {% if reboot.error %}
+        <div class="alert alert-error"><strong>Warning</strong>: Cannot check configured and running host names. Error <em>{{reboot.error_msg}}</em>.</div>  
+    {% endif %}
+
+    <p>Specify the short host name of this system. For example, <em>websafety</em>. This host name will later be used in error messages from Squid and blocked pages from Web Safety.</p>
+    <p>&nbsp;</p>
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR</strong>: 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+        <div class="control-group {% if form.value.errors %}error{%endif%}">
+            <label class="control-label" for="id_value">Host Name</label>
+            <div class="controls">
+                <div class="input-append">
+                    {{form.value}}
+                    <button class="btn" type="button" onclick="$('#id_value').val('websafety');"><i class="icon-magic"></i></button>
+                </div>
+                {% if form.value.errors %}
+                    <span class="help-block">{{form.value.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify here the host name for this system. For example <em>websafety</em>. This host name will be written to <em>/etc/hostname</em>. Please note, changing host name affects all running processes and requires full system restart.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+    </form>
+{% endblock %}

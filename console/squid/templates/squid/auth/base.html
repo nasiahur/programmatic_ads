@@ -1,0 +1,24 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_auth %}class="active"{%endblock%}
+
+{% block contents %}
+    
+    <h2>{% block title %}{% endblock %} <small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+
+    {% block page_comment %}{% endblock %}
+
+    <!-- to hide up-down controls in numeric inputs -->
+    <style type="text/css">
+        input[type='number'] {
+            -moz-appearance:textfield;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    </style>
+
+    {% block base_contents %}{% endblock %}
+
+{% endblock %}

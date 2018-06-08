@@ -1,0 +1,19 @@
+{% extends 'squid/auth/base.html' %}
+
+{% block title %}Local User Authentication{% endblock %}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">Local user authentication allows administrator to create a predefined list of users and passwords for this proxy. When a user tries to connect, a popup is presented with request to enter user credentials. Squid verifies the validity of provided credentials and allows or denies web access. This method of authentication is common in small networks with limited number of users.</p>
+{% endblock %}
+
+{% block base_contents %}
+
+	<section class="row-fluid">		
+		<ul class="nav nav-pills" id="myTab">
+            <li {% block auth_localdb_general %}{%endblock%}><a href="{% url 'ViewAuthLocalDbEdit' %}">General</a></li>
+            <li {% block auth_localdb_users %}{%endblock%}><a href="{% url 'ViewAuthLocalDbUsersList' %}">List of Users</a></li>            
+        </ul>
+        {%block tab_content %}{%endblock%}
+	</section>
+    
+{% endblock %}

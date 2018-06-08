@@ -1,0 +1,105 @@
+{% extends 'node/network/device_form.html' %}
+{% block toolbar_ipv4 %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<p style="margin-bottom: 20px;">Please note, changing network settings affects all running processes and requires full system restart.</p>
+
+
+	{% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR</strong>: 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+    	<div class="control-group {% if form.ip4_config.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_config">Configuration Type</label>
+            <div class="controls">
+                {{form.ip4_config}}
+                {% if form.ip4_config.errors %}
+                    <span class="help-block">{{form.ip4_config.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Select DHCP to automatically obtain IP address or Static to manually specify it. It is recommended to use static addresses.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_address.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_address">IP Address</label>
+            <div class="controls">
+                {{form.ip4_address}}
+                {% if form.ip4_address.errors %}
+                    <span class="help-block">{{form.ip4_address.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify static IP address. For example, <em>192.168.1.10</em>. This setting is ignored when address is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_netmask.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_netmask">Network Mask</label>
+            <div class="controls">
+                {{form.ip4_netmask}}
+                {% if form.ip4_netmask.errors %}
+                    <span class="help-block">{{form.ip4_netmask.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify netmask. For example, <em>255.255.255.0</em>. This setting is ignored when address is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_gateway.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_gateway">Default Gateway</label>
+            <div class="controls">
+                {{form.ip4_gateway}}
+                {% if form.ip4_gateway.errors %}
+                    <span class="help-block">{{form.ip4_gateway.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the default gateway. For example, <em>192.168.1.1</em>. This setting is ignored when address is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_dns_srv1.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_dns_srv1">DNS Server 1</label>
+            <div class="controls">
+                {{form.ip4_dns_srv1}}
+                {% if form.ip4_dns_srv1.errors %}
+                    <span class="help-block">{{form.ip4_dns_srv1.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the first DNS server. For example, <em>192.168.1.3</em>. This setting is ignored when DNS info is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_dns_srv2.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_dns_srv2">DNS Server 2</label>
+            <div class="controls">
+                {{form.ip4_dns_srv2}}
+                {% if form.ip4_dns_srv2.errors %}
+                    <span class="help-block">{{form.ip4_dns_srv2.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the second DNS server (optional). For example, <em>192.168.1.4</em>. This setting is ignored when DNS info is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip4_dns_search.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_dns_search">DNS Search Suffix</label>
+            <div class="controls">
+                {{form.ip4_dns_search}}
+                {% if form.ip4_dns_search.errors %}
+                    <span class="help-block">{{form.ip4_dns_search.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify suffix to be appended to records without domain part. If you are using Active Directory specify here the lowercase name of your domain, for example, <em>example.lan</em>.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+                <a href="{% url 'node:ViewNetworkDeviceList' %}" class="btn">Cancel</a>            
+            </div>
+        </div>
+    </form>
+    
+    
+
+{% endblock %}

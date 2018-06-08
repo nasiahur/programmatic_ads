@@ -1,0 +1,12 @@
+{% extends 'squid/ssl/errors/base.html' %}
+
+{% block toolbar_ssl_error_subnet %}class="active"{%endblock%}
+
+{% block ssl_error_desc %}
+<p>HTTPS / SSL errors (invalid certificates) on these IP subnets are ignored, access to these IP subnets is left as is. The browser will decide what do to with the error, not Squid.</p>
+{% endblock %}
+
+
+{% block addnew_href%}{% url 'ViewSslErrorSubnetCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslErrorSubnetUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslErrorSubnetUpdate' object.pk %}{%endblock%}

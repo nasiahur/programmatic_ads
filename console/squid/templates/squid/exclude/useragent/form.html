@@ -1,0 +1,17 @@
+{% extends 'squid/exclude/form.html' %}
+
+{% block exclude_other %}active{%endblock%}
+{% block header_tab %} / Browser User Agent{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the browsers identified by the following User-Agent strings are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+
+{% block value_name%}User Agent{%endblock%}
+{% block value_help%}Specify browser User-Agent string to add to exclusion list. For example <em>Java/1.9</em>{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExcludeUserAgentList' %}{%endblock%}

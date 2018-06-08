@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block bar_av %}class="active"{% endblock %}
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul>
+                <li {% block navbar_general %}{%endblock%}>
+                    <a id="navbar_general" href="{% url 'ViewAvSettingsMode' %}"><span class="icon-book"></span>General</a>
+                </li>
+                <li {% block navbar_ecap %}{%endblock%}>
+                    <a id="navbar_ecap" href="{% url 'ViewAvSettingsEcapActions' %}"><span class="icon-beaker"></span>ClamAV</a>
+                </li>
+                <li {% block navbar_icap %}{%endblock%}>
+                    <a id="navbar_icap" href="{% url 'ViewAvSettingsIcap' %}"><span class="icon-inbox"></span>Other AV</a>
+                </li>
+                <li {% block navbar_malware %}{%endblock%}>
+                    <a id="navbar_malware" href="{% url 'ViewSafeBrowsingEdit' %}"><span class="icon-asterisk"></span>Safe Browse</a>
+                </li>
+            </ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends 'antivirus/safe_browsing/safe_browsing.html' %}
+{% block toolbar_status %}class="active"{%endblock%}
+{% block page_comment %}<p>Current status of Google Safe Browsing daemon.</p>{% endblock %}
+
+{% block page_content %}
+
+    <div class="box">
+
+
+        <table class="table table-striped table-condensed table-hover {% if info.Error %}alert alert-error{%endif%}">
+            <tr>
+                <th width="40%">Variable Name</th>
+                <th>Current Value</th>
+            </tr>
+            <tr>
+                <td>QueriesByDatabase</td>
+                <td>{{info.Stats.QueriesByDatabase}}</td>
+            </tr>
+            <tr>
+                <td>QueriesByCache</td>
+                <td>{{info.Stats.QueriesByCache}}</td>
+            </tr>
+            <tr>
+                <td>QueriesByAPI</td>
+                <td>{{info.Stats.QueriesByAPI}}</td>
+            </tr>
+            <tr>
+                <td>QueriesFail</td>
+                <td>{{info.Stats.QueriesFail}}</td>
+            </tr>
+            <tr>
+                <td>DatabaseUpdateLag</td>
+                <td>{{info.Stats.DatabaseUpdateLag}}</td>
+            </tr>
+            <tr>
+                <td>Last Error</td>
+                <td>{{info.Error}}</td>
+            </tr>
+        </table>  
+
+    </div>
+
+{% endblock %}

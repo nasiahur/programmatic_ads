@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block bar_dash %}class="active"{% endblock %}
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul>
+                <li {% block leftbar_surfingnow %}{%endblock%}>
+                    <a id="navbar_realtime" href="{% url 'traffic:View_MonitorSurfingNow' %}"><span class="icon-th-large"></span>Real Time</a>
+                </li>                
+                <li {% block leftbar_history %}{%endblock%}>
+                    <a id="navbar_history" href="{% url 'traffic:View_MonitorIncidentList' %}"><span class="icon-calendar"></span>History</a>
+                </li>
+                <li {% block leftbar_reports %}{%endblock%}>
+                    <a id="navbar_reports" href="{% url 'traffic:ViewReportJobs' %}"><span class="icon-inbox"></span>Reports</a>
+                </li>
+                <li {% block leftbar_settings %}{%endblock%}>
+                    <a id="navbar_settings" href="{% url 'traffic:View_MonitoringUpdateGlobals' %}"><span class="icon-cog"></span>Settings</a>
+                </li>
+                <li {% block leftbar_support %}{%endblock%}>
+                    <a id="navbar_logs" href="{% url 'traffic:View_MonitorUploadLog' %}"><span class="icon-folder-open-alt"></span>Logs</a>
+                </li>
+            </ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+

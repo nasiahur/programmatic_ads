@@ -1,0 +1,72 @@
+{% extends 'safety/subscriptions/subscriptions.html' %}
+
+{% block toolbar_subscriptions_privacy %}class="active"{%endblock%}
+
+{% block subscriptions_desc %}<p>Blocking online annoyances means preventing access to well-known web tracking networks, obtrusive scripts and information retrieval code on web pages. Please enable only required subscriptions. Selecting too many subscriptions may require more powerful CPU!</p>{%endblock%}
+
+{% block subscriptions_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+        <table class="table table-condensed table-striped table-hover">
+            <tr>
+                <td>
+                    <label for="id_enable_adware" style="font-weight: normal;{% if form.enable_adware.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_adware}} AdWare
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_antiadb" style="font-weight: normal;{% if form.enable_antiadb.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_antiadb}} Anti AdBlock
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_privacy" style="font-weight: normal;{% if form.enable_privacy.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_privacy}} Privacy
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_tracking" style="font-weight: normal;{% if form.enable_tracking.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_tracking}} Tracking
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_annoyance" style="font-weight: normal;{% if form.enable_annoyance.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_annoyance}} Annoyance
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_cookies" style="font-weight: normal;{% if form.enable_cookies.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_cookies}} Cookies
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_social" style="font-weight: normal;{% if form.enable_social.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_social}} Social Buttons
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_custom2" style="font-weight: normal;{% if form.enable_custom2.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_custom2}} Custom
+                    </label>
+                </td>
+            </tr>
+        </table>  
+        <div class="form-group">
+            <div class="col-lg-4">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+    </form>
+    
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul></ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+
+{% block contents %}
+
+        <div class="page-header">
+            <h2><font color="red">{% if is_reload %}Reload{% else %}Restart{%endif%} FAILED</font></h2>
+        </div>
+        
+        <div class="box">
+            <p class="lead"></p>
+            <h4><font color="red">Exit code - {{exit_code}}</font></h4>
+            {% if exception %}
+                <pre>Exception - {{exception}}</pre>                
+            {%else%}
+                <pre>No exceptions raised.</pre>
+            {%endif%}
+
+            <h4><font color="red">Program output</font></h4>
+            <pre>{{stdout}}</pre>
+
+            <h4><font color="red">Errors / Exceptions</font></h4>
+            {% if exception %}
+            <pre>{{stderr}}
+
+{{traceback}}
+</pre>
+            {%else%}
+                <pre>STDERR stream is empty.</pre>
+            {%endif%}
+
+            <h3><font color="red">What should I do?</font></h3>
+            <p>Try restarting Diladele Web Safety and Squid Proxy manually from your server's console by running the following command. Watch closely for any errors in the output. If this error is repeated, contact <a href="mailto:support@diladele.com">support@diladele.com</a> attaching this error page.</p>
+            <pre>/opt/websafety/bin/restart.sh</pre>
+            <p>&nbsp;</p>
+        </div>
+        
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'safety/tools/index.html' %}
+{% block navbar_tools %}class="active"{%endblock%}
+
+{% block toolbar_upload %}class="active"{%endblock%}
+
+{% block box_contents %}
+
+    {% if error %}
+        <div class="alert alert-error">
+            <p><strong>Warning!</strong></p> 
+            <p>Cannot import file, error {{error}}.</p>
+        </div>
+    {% else %}
+        <div class="alert alert-error"><strong>Warning!</strong> Danger area, you must know exactly what you are doing!</div>
+    {% endif %} 
+
+    <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="control-group {% if form.type.errors %}error{%endif%}">
+            <label class="control-label" for="id_type">Type of entry to import</label>
+            <div class="controls">
+                {{form.type}}   
+                 {% if form.type.errors %}
+                    <span class="help-block">{{form.type.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Select what kind of entries are contained in the file to be uploaded. Warning - the upload script does not check the actual type of imported entries and adds them all as strings. So please correctly specify the type of entries being imported!</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.policy.errors %}error{%endif%}">
+            <label class="control-label" for="id_policy">Policy Name</label>
+            <div class="controls">
+                <select id="id_policy" name="policy">
+                    {% for policy in policy_list %}
+                    <option value="{{policy.id}}">{{policy.name}}</option>
+                    {% endfor %}
+                </select>
+                 {% if form.policy.errors %}
+                    <span class="help-block">{{form.policy.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Select which policy to upload into. Warning - Member* types are not applicable for Defaut policy!</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.file.errors %}error{%endif%}">
+            <label class="control-label" for="id_file">Path to file to import</label>
+            <div class="controls">
+                {{form.file}}   
+                 {% if form.file.errors %}
+                    <span class="help-block">{{form.file.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Please browse to the file which you would like to import into selected type of items and click <em>Upload File</em>. The entries to import must be one per line, all lines starting with # are skipped as well as empty lines. Each line is trimmed before import. Not more than 1000 entries per file are supported.</span>
+                {%endif%}            
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls" style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Upload File</button>                            
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+

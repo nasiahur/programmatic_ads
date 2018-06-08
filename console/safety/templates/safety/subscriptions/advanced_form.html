@@ -1,0 +1,58 @@
+{% extends 'safety/subscriptions/subscriptions.html' %}
+
+{% block toolbar_subscriptions_advanced %}class="active"{%endblock%}
+
+{% block subscriptions_desc %}{%endblock%}
+
+{% block subscriptions_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <div class="control-group">
+            <div class="controls">       
+                <label class="checkbox inline">{{form.replace_with_image}} Replace detected objects with transparent images. Image and flash based banners will be replaced with transparent image, greatly improving overall view of web pages in all browsers.</label>
+            </div>
+        </div>    
+        <div class="control-group">
+            <div class="controls">       
+                <label class="checkbox inline">{{form.apply_replace_heuristics}} Enhance page view in browsers. If replace heuristics algorithm allows it, replace all detected objects with transparent images to improve overall user experience.</label>                                   
+            </div>
+        </div>
+        <div class="control-group"> 
+            <div class="controls">              
+                <label class="checkbox inline">{{form.hide_tags}} Hide placeholder tags in HTML pages. Sometimes detected objects that are part of the page cannot be blocked. In this case hide placeholders of these objects on HTML pages to make them look nicer.</label>       
+            </div>
+        </div>
+        <div class="control-group">   
+            <div class="controls">            
+                <label class="checkbox inline">{{form.scan_external_links}} Scan embedded links in HTML documents. Experimental feature.</label>       
+            </div>
+        </div>        
+        <div class="control-group">
+            <div class="controls">       
+                <label class="checkbox inline">{{form.mangle_id}} Mangle ID of the hidden HTML tag. Helps to better hide detected objects. Experimental feature.</label>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">       
+                <label class="checkbox inline">{{form.mangle_class}} Mangle CLASS of the hidden HTML tag. Helps to better hide detected objects. Experimental feature.</label>
+            </div>
+        </div>      
+        <div class="control-group">
+            <div class="controls">       
+                <div class="btn-group">
+                    <button class="btn btn-primary">Save Changes</button>                
+                </div> 
+            </div>
+        </div>
+    </form>
+    
+{% endblock %}

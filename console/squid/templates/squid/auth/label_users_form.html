@@ -1,0 +1,79 @@
+{% extends 'squid/auth/label.html' %}
+
+{% block auth_users %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error"><strong>ERROR</strong>: 
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group {% if form.user_name.errors %}error{%endif%}">
+                <label class="control-label" for="id_user_name">User Name</label>
+                <div class="controls">
+                    {{form.user_name}}                
+                    {% if form.user_name.errors %}
+                        <span class="help-block">{{form.user_name.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the name (label) of the new user. This name must be unique. Please note the name is <em> case-sensitive</em>, i.e. <em>john</em> and <em>John</em> are two different names!</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.user_ip.errors %}error{%endif%}">
+                <label class="control-label" for="id_user_ip">IP Address</label>
+                <div class="controls">
+                    {{form.user_ip}}                
+                    {% if form.user_ip.errors %}
+                        <span class="help-block">{{form.user_ip.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the IP address that will be mapped to the name shown above. For example, <em>192.168.1.1</em></span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.user_mac.errors %}error{%endif%}">
+                <label class="control-label" for="id_user_mac">MAC Address</label>
+                <div class="controls">
+                    {{form.user_mac}}                
+                    {% if form.user_mac.errors %}
+                        <span class="help-block">{{form.user_mac.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the MAC address that will be mapped to the name shown above (UPPER CASE). For example, <em>12:34:56:78:9A:BC</em>. Please note in order to be able to use MAC addresses your device must be directly connected to Squid. There should be no routers/load balancers in-between.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.comment.errors %}error{%endif%}">
+                <label class="control-label" for="id_comment">Comment</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_comment").addClass("input-block-level");
+                            $('#id_comment').attr('rows', 5);
+                            $('#id_comment').attr('size', 90);
+                       });
+                    </script>
+                    {{form.comment}}                
+                    {% if form.comment.errors %}
+                        <span class="help-block">{{form.comment.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify comment for your own use.</span>
+                    {%endif%}
+                </div>
+            </div>                               
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary" id="button_save">Save Changes</button></div> 
+                    <div class="btn-group"><a href="{% url 'ViewAuthLabelList' %}" class="btn">Cancel</a></div> 
+                </div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

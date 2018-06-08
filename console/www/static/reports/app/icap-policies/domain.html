@@ -1,0 +1,57 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{itemvalue}}, {{uservalue}}, {{domainvalue}}</h3>
+    <md-button aria-label="Home" href="#/"> Home </md-button>
+    <md-button aria-label="User" href="#/list/{{item}}/"> User </md-button>
+    <md-button aria-label="User" href="#/list/{{item}}/{{user}}"> Domain </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+
+    <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        <md-list>
+        </md-list>
+    </md-sidenav>
+
+    <md-content flex id="content">
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="url paths">
+                <md-content class="md-padding">
+
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column>Path</th>
+                                <th md-column md-numeric>Total Requests</th>
+                                <th md-column md-numeric>Requests %</th>
+                                <th md-column md-numeric>Offensive Requests</th>
+                                <th md-column md-numeric>Unproductive Requests</th>
+                                <th md-column md-numeric>Size</th>
+                                <th md-column md-numeric>Size %</th>
+                            </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="url in urls">
+                                    <td md-cell><a target="_new" href="http://{{url.host}}{{url.path}}?{{url.query}}">{{url.path | limitTo : 25 }}{{url.query ? "?" : ""}}{{url.query | limitTo : 15 }}</a></td>
+                                    <td md-cell>{{url.hits}}</td>
+                                    <td md-cell>{{url.hits_rate}}</td>
+                                    <td md-cell>{{url.offensive}}</td>
+                                    <td md-cell>{{url.unproductive}}</td>
+                                    <td md-cell>{{url.size | bytes }}</td>
+                                    <td md-cell>{{url.size_rate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+            </md-tab>
+
+        </md-tabs>
+    </md-content>
+</div>
+
+
+
+
+
+

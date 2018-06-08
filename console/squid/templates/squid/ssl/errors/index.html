@@ -1,0 +1,22 @@
+{% extends 'squid/ssl/index.html' %}
+
+{% block toolbar_ssl_errors %}class="active"{%endblock%}
+
+{% block page_content %}
+
+	<ul class="nav nav-tabs" id="myTab">
+        <li {% block toolbar_ssl_error_domain %}{%endblock%}><a href="{% url 'ViewSslErrorDomainList' %}">Domain Name</a></li>
+        <li {% block toolbar_ssl_error_ip %}{%endblock%}><a href="{% url 'ViewSslErrorIpList' %}">IP Address</a></li>
+        <li {% block toolbar_ssl_error_subnet %}{%endblock%}><a href="{% url 'ViewSslErrorSubnetList' %}">IP Subnet</a></li>        
+    </ul>
+    
+    {% block ssl_error_desc %}{%endblock%}
+        
+    <div class="tab-content" id="myTabContent" style="margin-bottom: 10px;">
+        <div class="tab-pane fade in active" id="home">
+            <div class="box">    
+                {% block ssl_error_content %}{%endblock%}    
+            </div>        
+        </div>
+    </div>
+{% endblock %}

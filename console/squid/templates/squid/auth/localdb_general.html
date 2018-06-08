@@ -1,0 +1,100 @@
+{% extends 'squid/auth/localdb.html' %}
+
+{% block auth_localdb_general %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+		{% if form.non_field_errors %}
+	    <div class="alert alert-error"><strong>ERROR</strong>: 
+	         {% for error in form.non_field_errors %}
+	             <span>{{ error|escape }}</span>
+	         {% endfor %}
+	    </div>  
+	    {% endif %}
+
+	    <form class="form-horizontal" method="POST">
+        	{% csrf_token %}
+        	<input type="hidden" name="squid" value="{{squid.pk}}">
+
+	        <div class="control-group">
+	            <label class="control-label">&nbsp;</label>
+	            <div class="controls"><label class="checkbox inline">{{form.enable}} Activate Local User Database proxy authenticator.</label>
+	            </div>
+	        </div>
+	        <div class="control-group {% if form.title.errors %}error{%endif%}">
+	            <label class="control-label" for="id_title">Proxy Message</label>
+	            <div class="controls">
+	                <div class="input-append">
+	                    {{form.title}}
+	                    <button class="btn" type="button" onclick="$('#id_title').val('Squid Proxy');"><i class="icon-magic"></i></button>
+	                </div>
+					{% if form.title.errors %}
+	                    <span class="help-block">{{form.title.errors|striptags}}</span>
+	                {% else %}
+	                    <span class="help-block">Specify here the proxy authentication informational message for your proxy users. Default is <em>Squid Proxy</em>.</span>
+	                {%endif%}
+	            </div>
+	        </div>
+	        <div class="control-group {% if form.helper_total.errors %}error{%endif%}">
+	            <label class="control-label" for="id_helper_total">Auth Helpers (Total)</label>
+	            <div class="controls">
+	                <div class="input-append">
+	                	<style>#id_helper_total { width: 70px; }</style>
+	                    {{form.helper_total}}
+	                    <button class="btn" type="button" onclick="$('#id_helper_total').val('20');"><i class="icon-magic"></i></button>
+	                </div>           
+	                {% if form.helper_total.errors %}
+	                    <span class="help-block">{{form.helper_total.errors|striptags}}</span>
+	                {% else %}
+	                    <span class="help-block">Total number of authentication helpers to run. It is recommended to set it equal to the approximate number of proxy users in your network.</span>
+	                {%endif%}
+	            </div>
+	        </div>        
+	        <div class="control-group {% if form.helper_idle.errors %}error{%endif%}">
+	            <label class="control-label" for="id_helper_idle">Auth Helpers (Idle)</label>
+	            <div class="controls">
+	                <div class="input-append">
+	                	<style>#id_helper_idle { width: 70px; }</style>
+	                    {{form.helper_idle}}
+	                    <button class="btn" type="button" onclick="$('#id_helper_idle').val('10');"><i class="icon-magic"></i></button>
+	                </div>           
+	                {% if form.helper_idle.errors %}
+	                    <span class="help-block">{{form.helper_idle.errors|striptags}}</span>
+	                {% else %}
+	                    <span class="help-block">Idle number of authentication helpers to run. It is recommended to make it equal to approximately 1/2 of the total number of users in your network.</span>
+	                {%endif%}
+	            </div>
+	        </div>        
+	        <div class="control-group {% if form.helper_startup.errors %}error{%endif%}">
+	            <label class="control-label" for="id_helper_startup">Auth Helpers (Startup)</label>
+	            <div class="controls">
+	                <div class="input-append">
+	                	<style>#id_helper_startup { width: 70px; }</style>
+	                    {{form.helper_startup}}
+	                    <button class="btn" type="button" onclick="$('#id_helper_startup').val('5');"><i class="icon-magic"></i></button>
+	                </div>           
+	                {% if form.helper_startup.errors %}
+	                    <span class="help-block">{{form.helper_startup.errors|striptags}}</span>
+	                {% else %}
+	                    <span class="help-block">Number of authentication helpers to run at startup of Squid. It is recommended to make it equal to approximately 1/4 of the total number of users in your network.</span>
+	                {%endif%}
+	            </div>
+	        </div>  
+	        <div class="control-group">
+	            <label class="control-label">&nbsp;</label>
+	            <div class="controls"><label class="checkbox inline">{{form.helper_verbose}} Enable debugging of authentication helper. Debug output will be dumped to <a href="{% url 'ViewCacheLog' %}">Squid cache log</a>.</label>
+	            </div>
+	        </div>
+	        <div class="control-group">
+	            <div class="controls">
+	                <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>                
+	            </div>
+	        </div>
+    </form>
+
+    {% block member_heading%}{%endblock%}    
+
+    </div>
+{% endblock %}

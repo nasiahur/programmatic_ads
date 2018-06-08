@@ -1,0 +1,37 @@
+{% extends 'squid/general/general.html' %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+{% block toolbar_runtime %}class="active"{%endblock%}
+
+{% block page_comment %}{% endblock %}
+
+{% block page_content %}
+    
+    <style type="text/css">
+        .wrapit {
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+    </style>
+    <section class="row-fluid">
+        <ul class="nav nav-tabs" id="squid_general_runtime_list">
+        	<li {% block toolbar_runtime_mgrinfo %}{%endblock%}><a href="{% url 'ViewRuntimeMgrInfo' %}">Manager</a></li>
+        	<li {% block toolbar_runtime_counters %}{%endblock%}><a href="{% url 'ViewRuntimeCounters' %}">Counters All</a></li>
+        	<li {% block toolbar_runtime_5min %}{%endblock%}><a href="{% url 'ViewRuntimeCountersMin5' %}">Counters 5 min</a></li>
+        	<li {% block toolbar_runtime_60min %}{%endblock%}><a href="{% url 'ViewRuntimeCountersMin60' %}">Counters 1 hour</a></li>
+        	<li {% block toolbar_runtime_utilization %}{%endblock%}><a href="{% url 'ViewRuntimeUtilization' %}">Utilization</a></li>
+        	<li {% block toolbar_runtime_dnsinfo %}{%endblock%}><a href="{% url 'ViewRuntimeDnsInfo' %}">DNS</a></li>
+        	<li {% block toolbar_runtime_negotiateauth %}{%endblock%}><a href="{% url 'ViewRuntimeAuthNegotiate' %}">Negotiate Auth</a></li>
+        	<li {% block toolbar_runtime_ntlmauth %}{%endblock%}><a href="{% url 'ViewRuntimeAuthNtlm' %}">NTLM Auth</a></li>
+        	<li {% block toolbar_runtime_basicauth %}{%endblock%}><a href="{% url 'ViewRuntimeAuthBasic' %}">Basic Auth</a></li>
+        	<li {% block toolbar_runtime_client_list %}{%endblock%}><a href="{% url 'ViewRuntimeClientList' %}">Client List</a></li>
+            <!--<li {% block toolbar_runtime_username_cache %}{%endblock%}><a href="{ % url 'ViewInfo' 'username_cache' %}">User Names</a></li>-->
+            <li {% block toolbar_runtime_active_requests %}{%endblock%}><a href="{% url 'ViewRuntimeActiveRequests' %}">Active Requests</a></li>
+        </ul>  
+        <div class="box"> 
+            {% block before_pre_content %}
+                <pre class="wrapit">{% block pre_content %}{% endblock %}</pre>
+            {% endblock %}
+        </div>
+    </section> 
+	
+{% endblock %}

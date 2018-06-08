@@ -1,0 +1,269 @@
+{% extends 'traffic/monitor/monitoring_form.html' %}
+{% block toolbar_channels %}class="active"{%endblock%}
+
+{% block page_content %}
+
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">{% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}</div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#realtime">Real Time</a></li>
+            <li><a href="#persistent" data-toggle="tab">Persistent</a></li>
+            <li><a href="#accesslog" data-toggle="tab">Access Log</a></li>
+            <li><a href="#syslog" data-toggle="tab">Syslog</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="realtime">
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.realtime_enable}} Store monitoring records into real time monitoring tab. Enabled by default.</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Show in Real Time</label>
+                    <div class="controls">
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_clean}} Clean Records</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adblock}} Blocked Ads</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_privacy}} Blocked Trackers</label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adult_heuristics}} Blocked Adult URLs</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adult_safesearch}} Enforced Safe Search</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adult_youtube}} Enforced YouTube Safety</label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_categories}} Blocked Site Categories</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adult_phrases}} Blocked Adult Language</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_adult_image}} Blocked Adult Images</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_apps}} Restricted Web Apps</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_http_sanitation}} Blocked HTTP Requests</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_content_type}} Blocked Content-Types</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_charset}} Blocked Charsets</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_transfer_encoding}} Blocked Transfer Encodings</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_file_name}} Blocked File Names</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_file_type}} Blocked File Types</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_content_file_size}} Blocked Large Files</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.realtime_store_sslbump}} Skipped SSL Connections</label></div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="control-group {% if form.realtime_limit_record_count.errors %}error{%endif%}">
+                    <label class="control-label" for="realtime_limit_record_count">Record Limit</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            {{form.realtime_limit_record_count}}
+                            <button class="btn" type="button" onclick="$('#id_realtime_limit_record_count').val('10000');"><i class="icon-magic"></i></button>
+                        </div>                    
+                        {% if form.realtime_limit_record_count.errors %}
+                            <span class="help-block">{{form.realtime_limit_record_count.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Store last N records of monitoring information in real time database. It is recommended to keep this value small to limit amount of consumed RAM. Default value is 10000 records.</span>
+                        {%endif%}
+                    </div>
+                </div>                        
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.realtime_store_path}} Store URL path into real time monitoring tab.</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.realtime_store_query}} Store URL query into real time monitoring tab.</label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="persistent">
+
+            <div class="row-fluid">
+                <div class="alert alert-danger"><strong>Warning!</strong> It is not recommended to store red colored records in the persistent database. If you still require it - try to move the monitoring database to a separate server as indicated in the <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/traffic_monitoring/index.html">documentation</a>. Do it at your own risk, your database may grow very quickly!</div>
+            </div>
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.persistent_enable}} Store monitoring records into monitoring database. Required for reporting to work correctly.</label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Save in the database</label>
+                    <div class="controls">
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_clean}} <font color="red">Clean Records</font></label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adblock}} <font color="red">Blocked Ads</font></label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_privacy}} <font color="red">Blocked Trackers</font></label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adult_heuristics}} Blocked Adult URLs</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adult_safesearch}} <font color="red">Enforced Safe Search</font></label></div>                                                        
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adult_youtube}} <font color="red">Enforced YouTube Safety</font></label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_categories}} Blocked Site Categories</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adult_phrases}} Blocked Adult Language</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_adult_image}} Blocked Adult Images</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_apps}} <font color="red">Restricted Web Apps</font></label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_http_sanitation}} Blocked HTTP Requests</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_content_type}} Blocked Content-Types</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_charset}} Blocked Charsets</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_transfer_encoding}} Blocked Transfer Encodings</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_file_name}} Blocked File Names</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_file_type}} Blocked File Types</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_content_file_size}} Blocked Large Files</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.persistent_store_sslbump}} <font color="red">Skipped SSL Connections</font></label></div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="control-group {% if form.persistent_purge.errors %}error{%endif%}">
+                    <label class="control-label" for="id_address">Purge After N Days</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            {{form.persistent_purge}}
+                            <button class="btn" type="button" onclick="$('#id_persistent_purge').val('30');"><i class="icon-magic"></i></button>
+                        </div>                    
+                        {% if form.persistent_purge.errors %}
+                            <span class="help-block">{{form.persistent_purge.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Records older than specified number of days are removed from the monitoring database. This is required to keep the size of the database within appropriate limits. Greater number of days usually requires more free space on disk. Default value is 30 days.</span>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.persistent_store_path}} Store URL path into monitoring database. Disabled by default.</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.persistent_store_query}} <font color="red">Store URL query into monitoring database. Disabled by default.</font></label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="accesslog">            
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.accesslog_enable}} Store monitoring records to <em>/opt/websafety/var/log/access.log</em>. Disabled by default.</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Write to Access Log</label>
+                    <div class="controls">
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_clean}} Clean Records</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adblock}} Blocked Ads</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_privacy}} Blocked Trackers</label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adult_heuristics}} Blocked Adult URLs</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adult_safesearch}} Enforced Safe Search</label></div>                                                        
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adult_youtube}} Enforced YouTube Safety</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_categories}} Blocked Site Categories</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adult_phrases}} Blocked Adult Language</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_adult_image}} Blocked Adult Images</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_apps}} Restricted Web Apps</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_http_sanitation}} Blocked HTTP Requests</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_content_type}} Blocked Content-Types</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_charset}} Blocked Charsets</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_transfer_encoding}} Blocked Transfer Encodings</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_file_name}} Blocked File Names</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_file_type}} Blocked File Types</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_content_file_size}} Blocked Large Files</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.accesslog_store_sslbump}} Skipped SSL Connections</label></div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="controls"><label class="checkbox inline">{{form.accesslog_store_path}} Store URL path into access log. Disabled by default.</label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="controls"><label class="checkbox inline">{{form.accesslog_store_query}} Store URL query into access log. Disabled by default.</label>
+                        </div>
+                    </div>
+                
+            </div>
+            <div class="tab-pane fade" id="syslog">
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                    <div class="controls"><label class="checkbox inline">{{form.syslog_enable}} Store monitoring records into syslog with <em>websafety</em> prefix. Disabled by default.</label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Write to SYSLOG</label>
+                    <div class="controls">
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_clean}} Clean Records</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adblock}} Blocked Ads</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_privacy}} Blocked Trackers</label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adult_heuristics}} Blocked Adult URLs</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adult_safesearch}} Enforced Safe Search</label></div>                                                        
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adult_youtube}} Enforced YouTube Safety</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_categories}} Blocked Site Categories</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adult_phrases}} Blocked Adult Language</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_adult_image}} Blocked Adult Images</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_apps}} Restricted Web Apps</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_http_sanitation}} Blocked HTTP Requests</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_content_type}} Blocked Content-Types</label></div>
+                        </div>
+                        <div class="row-fluid">                            
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_charset}} Blocked Charsets</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_transfer_encoding}} Blocked Transfer Encodings</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_file_name}} Blocked File Names</label></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_file_type}} Blocked File Types</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_content_file_size}} Blocked Large Files</label></div>
+                            <div class="span4"><label class="checkbox inline">{{form.syslog_store_sslbump}} Skipped SSL Connections</label></div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">&nbsp;</label>
+                        <div class="controls"><label class="checkbox inline">{{form.syslog_store_path}} Store URL path into syslog. Disabled by default.</label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="controls"><label class="checkbox inline">{{form.syslog_store_query}} Store URL query into syslog. Disabled by default.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+            <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Changes</button>                    
+            </div>
+        </div>
+        </form>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'node/tools/index.html' %}
+{% block leftbar_tools %}class="active"{%endblock%}
+
+{% block toolbar_recategorize %}class="active"{%endblock%}
+
+{% block box_contents %}
+
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="safety" value="{{user.profile.safety.pk}}"/>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls">
+            	<label class="checkbox inline">
+            		{{form.upload_recategorization}} Anonymously share the list of non categorized and recategorized domains with Diladele B.V. 
+            		{% if safety.is_community %}
+            			<font color="red">Always enabled when using community license.</font>
+            		{%else%}
+            			Enabling this setting will let us improve the quality of domain categorization. 
+            		{% endif %}
+            	</label>
+            </div>
+        </div>  
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls">
+            	<label class="checkbox inline">
+            		{{form.upload_telemetry_basic}} Anonymously share basic telemetry usage data with Diladele B.V. 
+            		{% if safety.is_community %}
+            			<font color="red">Always enabled when using community license.</font>
+            		{%else%}
+            			Enabling this setting will let us better understand what features need to be improved in the product. Basic telemetry data may contain anonymous information about what pages in Admin UI were clicked most, which modules in Admin UI are used more often, etc.
+            		{% endif %}
+            	</label>
+            </div>
+        </div>  
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls">
+            	<label class="checkbox inline">
+            		{{form.upload_telemetry_extended}} Anonymously share extended telemetry data with Diladele B.V. Enable this setting only in non production environments and if you would like to actively support development of the product. Extended telemetry may contain information about visited sites, matched filters, configured exclusions and the like.</label>
+            </div>
+        </div>  
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group"><button type="submit" class="btn btn-primary">Save Settings</button></div>                     
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+

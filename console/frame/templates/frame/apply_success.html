@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul></ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+
+{% block contents %}
+
+        <div class="page-header">
+            <h2><font color="green">{% if is_reload %}Reload{% else %}Restart{%endif%} Successful</font></h2>
+        </div>
+        
+        <div class="box">
+            <p class="lead">{% if is_reload %}Reload{% else %}Restart{%endif%} of Squid Proxy and/or Diladele Web Safety ICAP completed successfully. The following log shows command executed.</p>
+            
+            <h3><font color="green">Exit code - {{exit_code}}</font></h3>
+            {% if exception %}
+                <pre>Exception - {{exception}}</pre>
+            {%else%}
+                <pre>No exceptions raised.</pre>
+            {%endif%}
+
+            <h4><font color="green">STDOUT</font></h4>
+            <pre>{{stdout}}</pre>
+
+            <h4><font color="green">STDERR</font></h4>
+            {% if exception %}
+            <pre>{{stderr}}</pre>
+            {%else%}
+                <pre>STDERR stream is empty.</pre>
+            {%endif%}
+            <p>&nbsp;</p>
+        </div>
+        
+{% endblock %}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/static/reports/app/bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="/static/reports/app/bower_components/angular-material-data-table/dist/md-data-table.css" />
+    <link rel="stylesheet" href="app.css"/>
+
+    <style type="text/css">
+        /**
+         * Hide when Angular is not yet loaded and initialized
+         */
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+        }
+    </style>
+</head>
+<body ng-app="reportApp" layout="column" ng-cloak >
+
+    <script src="/static/reports/app/bower_components/angular/angular.js"></script>
+    <script src="/static/reports/app/bower_components/angular-route/angular-route.js"></script>
+    <script src="/static/reports/app/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/static/reports/app/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/static/reports/app/bower_components/angular-aria/angular-aria.js"></script>
+    <script src="/static/reports/app/bower_components/angular-messages/angular-messages.js"></script>
+    <script src="/static/reports/app/bower_components/angular-material/angular-material.js"></script>
+    <script src="/static/reports/app/bower_components/angular-material-data-table/dist/md-data-table.js"></script>
+    <script src="controllers.js"></script>
+    <script src="app.js"></script>
+
+    <div ng-view></div>
+</body>
+</html>

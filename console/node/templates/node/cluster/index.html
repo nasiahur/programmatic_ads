@@ -1,0 +1,26 @@
+{% extends 'node/application.html' %}
+
+{% block leftbar_cluster %}class="active"{%endblock%}
+
+{% block contents %}
+
+	<h2>Sync of Configuration <small><font color="red">Experimental Feature</font></small> </h2>
+    <p>Web Safety servers can be organized into clusters. Client nodes in a cluster  periodically connect to one configured server to synchronize web filter configuration and maintain global state information. Node-specific settings (network, logs, etc.) are not shared between peers. You can configure this node either as a client or as a server.</p>
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+        	<li {% block toolbar_server %}{%endblock%}><a href="{% url 'node:ViewClusterServer' %}">Node as Configuration Server</a></li>
+
+            <li {% block toolbar_client %}{%endblock%}><a href="{% url 'node:ViewClusterClient' %}">Node as Configuration Client</a></li>
+            <li {% block toolbar_nodes %}{%endblock%}><a href="{% url 'node:ViewClusterServerNodesList' %}">Connected Nodes</a></li>
+
+            <li {% block toolbar_log %}{%endblock%}><a href="{% url 'node:ViewClusterLog' %}">Sync Log</a></li>
+
+            
+        </ul>  
+        <div class="box">
+        	{% block clustering_content %}{% endblock %}	
+        </div>
+        
+    </section>        
+{% endblock %}

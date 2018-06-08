@@ -1,0 +1,132 @@
+{% extends 'antivirus/settings/ecap.html' %}
+
+{% block toolbar_trickling %}class="active"{%endblock%}
+
+{% block page_content %}
+
+    <div class="box">
+
+
+        <!-- show a warning for enabled and matching antivirus module -->
+        {% if not form.instance.enable %}
+            <div class="alert alert-danger">
+                <strong>Warning</strong>: antivirus checking is disabled. Configured settings will have no effect.         
+            </div>  
+        {% else %}
+            {% if form.instance.av_type != 0 %}
+                <div class="alert alert-danger">
+                    <strong>Warning</strong>: eCAP antivirus module is not activated. Configured settings will have no effect.         
+                </div>  
+            {% endif %}
+        {% endif %}
+
+
+        <!-- show form errors -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+            <div class="control-group">
+                <label class="checkbox inline">{{form.ecap_clamav_trickling_enable}} Enable trickling of scanned objects. If downloaded object is huge the browser may timeout when waiting for the object. Enabling this option will force antivirus module to trickle small parts of object (so called drops) to the browser to prevent timeouts. Default value is <em>Off</em>, i.e. no trickling is allowed.</label>
+            </div> 
+
+            <div class="well">
+
+                <div class="control-group {% if form.ecap_clamav_trickling_type.errors %}error{%endif%}">
+                    <label class="control-label" for="id_ecap_clamav_trickling_type">Trickle Type</label>
+                    <div class="controls">  
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                $("#id_ecap_clamav_trickling_type").addClass("input-xlarge");                        
+                           });
+                        </script>   
+                        {{form.ecap_clamav_trickling_type}}
+                        {% if form.ecap_clamav_trickling_type.errors %}
+                            <span class="help-block">{{form.ecap_clamav_trickling_type.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Type of trickling. It is recommended to trickle headers and limited body.</span>
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="control-group {% if form.ecap_clamav_trickling_size_max.errors %}error{%endif%}">
+                    <label class="control-label" for="id_ecap_clamav_trickling_size_max">Trickle Limit</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_ecap_clamav_trickling_size_max { width: 100px; }</style>
+                            {{form.ecap_clamav_trickling_size_max}}
+                            <button class="btn" type="button" onclick="$('#id_ecap_clamav_trickling_size_max').val('5242880');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.ecap_clamav_trickling_size_max.errors %}
+                            <span class="help-block">{{form.ecap_clamav_trickling_size_max.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Maximum size of an object to trickle (if <em>Trickle headers and limited body</em> is selected above). Upon reaching this size trickle stops. Default value is 5242880 bytes (5Mb).</span>
+                        {%endif%}
+                    </div>
+                </div>
+
+                <div class="control-group {% if form.ecap_clamav_trickling_drop_size.errors %}error{%endif%}">
+                    <label class="control-label" for="id_ecap_clamav_trickling_drop_size">Drop Size</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_ecap_clamav_trickling_drop_size { width: 70px; }</style>
+                            {{form.ecap_clamav_trickling_drop_size}}
+                            <button class="btn" type="button" onclick="$('#id_ecap_clamav_trickling_drop_size').val('10');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.ecap_clamav_trickling_drop_size.errors %}
+                            <span class="help-block">{{form.ecap_clamav_trickling_drop_size.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Maximum size of a drop to trickle. Note, the headers of the response are always tricked in full. Default value is 10 bytes.</span>
+                        {%endif%}
+                    </div>
+                </div>  
+
+                <div class="control-group {% if form.ecap_clamav_trickling_period.errors %}error{%endif%}">
+                    <label class="control-label" for="id_ecap_clamav_trickling_period">Drop Period</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_ecap_clamav_trickling_period { width: 70px; }</style>
+                            {{form.ecap_clamav_trickling_period}}
+                            <button class="btn" type="button" onclick="$('#id_ecap_clamav_trickling_period').val('1');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.ecap_clamav_trickling_period.errors %}
+                            <span class="help-block">{{form.ecap_clamav_trickling_period.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Seconds between each trickled drop. Default value is 1 second.</span>
+                        {%endif%}
+                    </div>
+                </div> 
+
+                <div class="control-group {% if form.ecap_clamav_trickling_start_delay.errors %}error{%endif%}">
+                    <label class="control-label" for="id_ecap_clamav_trickling_start_delay">Start Delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <style>#id_ecap_clamav_trickling_start_delay { width: 70px; }</style>
+                            {{form.ecap_clamav_trickling_start_delay}}
+                            <button class="btn" type="button" onclick="$('#id_ecap_clamav_trickling_start_delay').val('1');"><i class="icon-magic"></i></button>
+                        </div>           
+                        {% if form.ecap_clamav_trickling_start_delay.errors %}
+                            <span class="help-block">{{form.ecap_clamav_trickling_start_delay.errors|striptags}}</span>
+                        {% else %}
+                            <span class="help-block">Trickling starts after specified number of seconds. Default value is 1 second.</span>
+                        {%endif%}
+                    </div>
+                </div> 
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

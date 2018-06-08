@@ -1,0 +1,54 @@
+{% extends 'node/network/index.html' %}
+{% block toolbar_devices %}class="active"{%endblock%}
+
+{% block boxed_content %}
+
+    <section class="row-fluid">
+        <div class="box">
+
+        <p>The following network interface cards were detected on this system. Click on the network card to edit its properties.</p>
+
+        <div class="non-collapsible widget-messages">
+            {% if not object_list %}
+                <table class="table table-striped table-condensed table-hover" style="margin-top: 10px;">
+                <tbody>
+                <tr class="alert alert-error">
+                    <td style="border-top: none;" colspan="3"><small><em>No network cards detected. Try configuring network settings from root console, reboot the proxy box and refresh this page.</em></small></td>
+                </tr>                            
+                </tbody>
+                </table>        
+            {% else %}
+                <form method="POST" style="margin-bottom: 0px;" id="object_list">{% csrf_token %}
+                <table class="table table-striped table-condensed table-hover" style="margin-top: 10px;">
+                <tbody>
+                <tr>
+                    <th>Device</th>
+                    <th>MAC Address</th>
+                    <th>State</th>                                
+                </tr>
+                {% for object in object_list %}
+                <tr>
+                    <td style="border-top: none;"><a class="from" title="" href="{% url 'node:ViewNetworkDeviceIpv4Update' object.pk %}">{{object.name}}</a></td>
+                    <td style="border-top: none;">{{object.mac}}</td>
+                    <td style="border-top: none;">{{object.state}}</td>
+                </tr>
+                {% endfor %}  
+                </tbody>
+                </table>        
+                </form>
+            {% endif %}
+        </div>
+
+        
+        </div>
+    </section>
+
+    <section class="row-fluid">
+        <h3 class="box-header">Technical Info</h3>
+        <div class="box">
+        <p>Current network configuration is shown below (using <em>ip addr</em> or <em>ifconfig</em> commands).</p>
+            <pre>{{devices_dump}}</pre>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'antivirus/settings/icap.html' %}
+
+{% block toolbar_network %}class="active"{%endblock%}
+
+{% block page_content %}
+
+    <div class="box">
+
+
+        <!-- show a warning for enabled and matching antivirus module -->
+        {% if not form.instance.enable %}
+            <div class="alert alert-danger">
+                <strong>Warning</strong>: antivirus checking is disabled. Configured settings will have no effect.         
+            </div>  
+        {% else %}
+            {% if form.instance.av_type != 1 %}
+                <div class="alert alert-danger">
+                    <strong>Warning</strong>: ICAP antivirus module is not activated. Configured settings will have no effect.         
+                </div>  
+            {% endif %}
+        {% endif %}
+
+        <!-- show form errors -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        
+
+
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}    
+
+            <div class="control-group {% if form.avicap_address.errors %}error{%endif%}">
+                <label class="control-label" for="id_avicap_address">Network Address</label>
+                <div class="controls">                
+                    <div class="input-append">
+                        {{form.avicap_address}}
+                        <button class="btn" type="button" onclick="$('#id_avicap_address').val('127.0.0.1');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.avicap_address.errors %}
+                        <span class="help-block">{{form.avicap_address.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify IP address the anti virus ICAP server is listening on (usually 127.0.0.1)</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.avicap_port.errors %}error{%endif%}">
+                <label class="control-label" for="id_avicap_port">Network Port</label>
+                <div class="controls">
+                    <div class="input-append">
+                        {{form.avicap_port}}
+                        <button class="btn" type="button" onclick="$('#id_avicap_port').val('1345');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.avicap_port.errors %}
+                        <span class="help-block">{{form.avicap_port.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify IP port number the anti virus ICAP server is listening on (usually 1345). It MUST be different from ICAP web filter daemon port (usually 1344).</span>
+                    {%endif%}
+                </div>
+            </div>  
+            <div class="control-group {% if form.avicap_reqpath.errors %}error{%endif%}">
+                <label class="control-label" for="id_avicap_reqpath">REQMOD Path</label>
+                <div class="controls">                
+                    <div class="input-append">
+                        {{form.avicap_reqpath}}
+                        <button class="btn" type="button" onclick="$('#id_avicap_reqpath').val('av_scan');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.avicap_reqpath.errors %}
+                        <span class="help-block">{{form.avicap_reqpath.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify REQMOD path of anti virus ICAP request modification service URL (for example, for ESET it is <em>av_scan</em>). Consult the documentation of your ICAP anti virus product.</span>
+                    {%endif%}
+                </div>
+            </div>  
+            <div class="control-group {% if form.avicap_respath.errors %}error{%endif%}">
+                <label class="control-label" for="id_avicap_respath">RESPMOD Path</label>
+                <div class="controls">                
+                    <div class="input-append">
+                        {{form.avicap_respath}}
+                        <button class="btn" type="button" onclick="$('#id_avicap_respath').val('av_scan');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.avicap_respath.errors %}
+                        <span class="help-block">{{form.avicap_respath.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify RESPMOD path of anti virus ICAP request modification service URL (for example, for ESET it is <em>av_scan</em>). Consult the documentation of your ICAP anti virus product.</span>
+                    {%endif%}
+                </div>
+            </div> 
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls">
+                    <label class="checkbox inline">{{form.avicap_res_bypass}} Bypass intermittent errors in anti virus ICAP chain. If anti virus service is not available for any reason, ICAP transaction continues and non-scanned HTTP responses are still delivered to client browsers.</label>
+                </div>
+            </div>  
+            <div class="control-group {% if form.avicap_options.errors %}error{%endif%}">
+                <label class="control-label" for="id_avicap_options">Additional Options</label>
+                <div class="controls">                
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_avicap_options").addClass("input-block-level");
+                            $('#id_avicap_options').attr('rows', 3);
+                            $('#id_avicap_options').attr('size', 90);
+                       });
+                    </script>
+                    {{form.avicap_options}}
+                    {% if form.avicap_options.errors %}
+                        <span class="help-block">{{form.avicap_options.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify additional options for anti virus ICAP service if required. These are written to squid.conf as is so be careful!</span>
+                    {%endif%}
+                </div>
+            </div> 
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'squid/ssl/errors/form.html' %}
+
+{% block toolbar_ssl_error_ip %}class="active"{%endblock%}
+
+{% block value_name%}IP Address{%endblock%}
+{% block value_help%}Specify IP Address of the remote site to ignore SSL errors on. Sites with self generated SSL certificates or those SSL certificates of which cannot be mimicked are good examples.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewSslErrorIpList' %}{%endblock%}

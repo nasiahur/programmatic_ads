@@ -1,0 +1,20 @@
+{% extends 'safety/application.html' %}
+
+{% block navbar_subscriptions %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Definition Files</h2>
+    
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_subscriptions %}{%endblock%}>
+                <a href="{% url 'ViewSubscriptionsAdBlock' %}">Subscriptions</a>
+            </li>                        
+            <li {% block toolbar_updates %}{%endblock%}>
+                <a href="{% url 'ViewSafetyUpdateLog' %}">Updates</a>
+            </li>
+        </ul>  
+        {% block settings_content %}{% endblock %}
+    </section>        
+{% endblock %}

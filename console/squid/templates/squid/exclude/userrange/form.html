@@ -1,0 +1,16 @@
+{% extends 'squid/exclude/form.html' %}
+
+{% block exclude_user %}active{%endblock%}
+{% block header_tab %} / User IP Address Ranges{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the following local IP address ranges are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block value_name%}IP Address Range{%endblock%}
+{% block value_help%}Specify IP address range to add to exclusion list. For example, 192.168.1.70-192.168.1.100. Both IPv4 and IPv6 addresses are supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExcludeUserRangeList' %}{%endblock%}

@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_user %}active{%endblock%}
+{% block header_tab %} / User IP Address Ranges{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the following local IP address ranges are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeUserRangeCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeUserRangeUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeUserRangeUpdate' object.pk %}{%endblock%}
+
+

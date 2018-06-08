@@ -1,0 +1,21 @@
+{% extends 'traffic/monitor/monitor.html' %}
+
+{% block navbar_monitor %}class="active"{%endblock%}
+{% block leftbar_support %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Logs</h2>
+    <p>Various logs of monitoring subsystem.</p>
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_monitor_log %}{%endblock%}><a href="{% url 'traffic:View_MonitorUploadLog' %}">Monitor Log</a></li>
+            <li {% block toolbar_database_log %}{%endblock%}><a href="{% url 'traffic:View_MonitorDatabaseLog' %}">Database Log</a></li>
+            <li {% block toolbar_report_log %}{%endblock%}><a href="{% url 'traffic:View_MonitorInfo' %}">Technical Info</a></li>            
+        </ul>
+        {% block description %}{% endblock %}
+        {% block content %}{% endblock %}
+    </section>  
+
+{% endblock %}

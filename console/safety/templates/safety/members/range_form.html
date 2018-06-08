@@ -1,0 +1,12 @@
+{% extends 'safety/members/form.html' %}
+
+{% block toolbar_member_range %}class="active"{%endblock%}
+
+
+{% block value_name%}IP Address Range{%endblock%}
+{% block value_help%}Specify IP address range of the members of this policy. IP address ranges need to be specified as IP1-IP2. For example, 192.168.1.70-192.168.1.100 or 2607:f0d0:1002:0051:0000:0000:0000:0004-2607:f0d0:1002:0051:0000:0000:0000:0100. IPv4 and IPv6 addresses cannot be mixed in one range.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewMemberRangeList' policy.pk %}{%endblock%}

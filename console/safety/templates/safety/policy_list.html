@@ -1,0 +1,44 @@
+{% extends 'safety/application.html' %}
+{% block navbar_policies %}class="active"{%endblock%}
+{% block contents %}
+
+    <h2>Web Filtering Policies</h2>
+
+    <!-- check if HTTPS decryption is enabled (unless it is pfsense) -->
+    {% if not is_pfsense %}
+        {% if bumpmode.value == 0 %}
+        <div class="alert alert-warning"><a href="{% url 'ViewSslInfo' %}">HTTPS decryption</a> is set to targeted mode. Web filtering may not be as effective as desired. If possible and allowed, switch the blanket HTTPS decryption on.</div>
+        {% endif %}
+    {%endif%}
+
+    <p>Policies are used to organize proxy users into groups (based on their User Name, IP Address, Range or Subnet and LDAP or ActiveDirectory OUs) and apply common filtering settings to them. Such a pair of members and rules applied to them constitutes a Filtering Policy. As an example consider having two groups of proxy users - students and teachers. Teachers would like to block web site ads and students should not be able to get access to adult web sites. To solve the problem we create two policies - Strict and Relaxed, adjust blocking rules as needed and then assign teachers to the "Relaxed" policy and students to the "Strict" one.</p>
+
+    <section class="row-fluid">
+        <h3 class="box-header">Available Policies</h3>
+        <div class="box non-collapsible">
+            {% for object in object_list %}
+                <h4>
+                    <a id="policy_{{object.pk}}" href="{% url 'ViewRuleAdult' object.pk %}">{{object.name|title}}</a> 
+                    {%if not object.advanced.enable%}<span class="badge">disabled</span>{%endif%}
+                    {%if object.name != 'default'%}
+                        <form action="{% url 'View_PolicyMoveUp' object.pk %}" method="POST" id="policy_{{object.pk}}_priority_form">
+                            {% csrf_token %}
+                            <a class="box-collapse pull-right" href="#" onclick="$(this).closest('form').submit()">Priority: {{object.priority}}&nbsp;&nbsp;<i class="icon-caret-up"></i></a>
+                        </form>
+                    {%endif%}
+                </h4>
+                <p>{{object.advanced.comment}}</p>
+            {% endfor %}
+        </div>
+        <div class="btn-group">
+            <a id="button_add_new" class="btn btn-primary" href="{% url 'View_PolicyCreate' %}">Add New Policy</a>
+            <button id="button_dropdown_copy" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                {% for object in object_list %}
+                <li><a id="copy_policy_{{object.pk}}" href="{% url 'View_PolicyCopy' object.pk %}">Copy from {{object.name|title}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    
+{% endblock %}

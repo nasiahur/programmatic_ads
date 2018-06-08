@@ -1,0 +1,19 @@
+{% extends 'squid/auth/base.html' %}
+
+{% block title %}User Labelling{% endblock %}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">Even if proxy authentication is not enabled, it is possible to manually assign user names to IP addresses or MAC addresses of the devices connecting to proxy. This scenario is only usable in small (home) networks where IPs and MAC addresses are known to the the administrator and proxy users do not roam among devices.</p>
+{% endblock %}
+
+{% block base_contents %}
+
+	<section class="row-fluid">		
+		<ul class="nav nav-pills" id="myTab">
+            <li {% block auth_general %}{%endblock%}><a href="{% url 'ViewAuthLabelEdit' %}">General</a></li>
+            <li {% block auth_users %}{%endblock%}><a id="tab_list_of_users" href="{% url 'ViewAuthLabelList' %}">List of Users</a></li>            
+        </ul>
+        {%block tab_content %}{%endblock%}
+	</section>
+    
+{% endblock %}

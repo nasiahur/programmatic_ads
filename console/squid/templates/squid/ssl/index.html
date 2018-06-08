@@ -1,0 +1,28 @@
+{% extends 'squid/application.html' %}
+
+{% block navbar_ssl %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <!-- on pfsense we are not managing squid settings -->
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage Squid settings using pfSense's Web UI.
+        </div>
+    {% else %}      
+        <h2>HTTPS / SSL Filtering</h2>
+
+        {% block page_comment %}{% endblock %}
+
+        <section class="row-fluid">
+            <ul class="nav nav-pills">
+                <li {% block toolbar_ssl_mode %}{%endblock%}><a href="{% url 'ViewSslInfo' %}">SSL Decryption Mode</a></li>
+                <li {% block toolbar_ssl_targets %}{%endblock%}><a href="{% url 'ViewSslTargetDomainList' %}">Targets</a></li>            
+                <li {% block toolbar_ssl_errors %}{%endblock%}><a href="{% url 'ViewSslErrorDomainList' %}">Ignore SSL Errors</a></li>
+                <li {% block toolbar_ssl_missing %}{%endblock%}><a href="{% url 'ViewSslIntermediateCertList' %}">Missing Certificates</a></li>
+            </ul>  
+            {% block page_content %}{% endblock %}            
+        </section>
+    {% endif %}   
+    
+{% endblock %}

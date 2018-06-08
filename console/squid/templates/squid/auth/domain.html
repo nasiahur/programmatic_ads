@@ -1,0 +1,145 @@
+{% extends 'squid/auth/active_directory.html' %}
+
+{% block auth_ad_general %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+    <div class="box">
+            
+        <!-- modal dialog to show results of the detection -->     
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 id="myModalLabel">Detection Completed Successfully</h3>
+            </div>
+            <div class="modal-body">
+                <p>LDAP connection settings have been detected based on your current DHCP and DNS settings. Please make sure they make sense for your network environment, click <em>Save Changes</em> and then <em>Test Connection</em> buttons.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var DetectAutomatically = function () {
+
+                $.ajax({url: "{% url 'ViewAuthDetect' %}", success: function(result){
+                    
+                    $('#id_dc1addr').val(result[0].info.dc1addr);
+                    $('#id_dc2addr').val(result[0].info.dc2addr);
+                    $('#id_base_dn').val(result[0].info.rootdn);
+
+                    options = {}
+                    $('#myModal').modal(options)
+
+                }});
+
+            };
+        </script>
+
+    	
+    	{% if form.non_field_errors %}
+        <div class="alert alert-error"><strong>ERROR:</strong> 
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+    	<form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="control-group {% if form.dc1addr.errors %}error{%endif%}">
+                <label class="control-label" for="id_dc1addr">Primary DC Address</label>
+                <div class="controls">
+                    {{form.dc1addr}}
+                    {% if form.dc1addr.errors %}
+                        <span class="help-block">{{form.dc1addr.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the IP address or FQDN of the primary domain controller. For example, <em>dc1.example.lan</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.dc2addr.errors %}error{%endif%}">
+                <label class="control-label" for="id_dc2addr">Backup DC Address</label>
+                <div class="controls">
+                    {{form.dc2addr}}
+                    {% if form.dc2addr.errors %}
+                        <span class="help-block">{{form.dc2addr.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the IP address or FQDN of the backup domain controller. For example, <em>dc2.example.lan</em>. Optional.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.base_dn.errors %}error{%endif%}">
+                <label class="control-label" for="id_base_dn">Base DN</label>
+                <div class="controls">
+                    {{form.base_dn}}
+                    {% if form.base_dn.errors %}
+                        <span class="help-block">{{form.base_dn.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the Base DN to bind to when searching for the list of groups for authenticated user. For example, <em>dc=example,dc=lan</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.bind_user.errors %}error{%endif%}">
+                <label class="control-label" for="id_bind_user">User Name</label>
+                <div class="controls">
+                    {{form.bind_user}} 
+                    {% if form.bind_user.errors %}
+                        <span class="help-block">{{form.bind_user.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the name of the user who has read access to Active Directory. For example, <em>squid</em> or <em>squid@example.lan</em>. It will be used to bind to domain controllers to lookup security user-group membership and basic LDAP authentication.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.bind_pass.errors %}error{%endif%}">
+                <label class="control-label" for="id_bind_pass">User Password</label>
+                <div class="controls">
+                    {{form.bind_pass}} 
+                    {% if form.bind_pass.errors %}
+                        <span class="help-block">{{form.bind_pass.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the password for the user described above. This does not need to be an administrator, a simple non elevated user is typically good enough. If password is expired or not valid considerable time will be spent trying to bind to DC thus slowing down the browsing speed.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.lookup_mode.errors %}error{%endif%}">
+                <label class="control-label" for="id_lookup_mode">Connection Type</label>
+                <div class="controls">
+
+                    <style type="text/css">#id_lookup_mode {                         
+                        list-style-type: none;
+                        margin: 0;
+                        padding-top: 5px;
+                    </style>
+                    <ul id="id_lookup_mode">    
+                        <li>
+                            <label class="radio" for="id_lookup_mode_0" style="margin-bottom: 0;"><input id="id_lookup_mode_0" name="lookup_mode" value="389" type="radio" {% if form.lookup_mode.value == 389 %}checked="checked"{%endif%}> LDAP over port 389 (default).</label>                            
+                        </li>
+                        <li style="padding-top: 5px;">
+                            <label class="radio" for="id_lookup_mode_1" style="margin-bottom: 0;"><input id="id_lookup_mode_1" name="lookup_mode" value="636" type="radio" {% if form.lookup_mode.value == 636 %}checked="checked"{%endif%}> Secure LDAPS over port 636.</label>                            
+                        </li>
+                        <li style="padding-top: 5px;">
+                            <label class="radio" for="id_lookup_mode_2" style="margin-bottom: 0;"><input id="id_lookup_mode_2" name="lookup_mode" value="3268" type="radio" {% if form.lookup_mode.value == 3268 %}checked="checked"{%endif%}> LDAP connection to Global Catalog over port 3268 (multi-domain).</label>                            
+                        </li>
+                        <li style="padding-top: 5px;">
+                            <label class="radio" for="id_lookup_mode_3" style="margin-bottom: 0;"><input id="id_lookup_mode_3" name="lookup_mode" value="3269" type="radio" {% if form.lookup_mode.value == 3269 %}checked="checked"{%endif%}> Secure LDAPS connection to Global Catalog over port 3269 (multi-domain)</label>                            
+                        </li>
+                    </ul>
+                    <p>&nbsp;</p>
+                    <div class="alert alert-danger" style="margin-top: 5px;" id="tech_note">
+                    	Secure LDAPS (port 636) or secure Global Catalog (port 3269) connections can only be used if you manually enabled LDAPS protocol support on your domain controller. This can be done by installing Active Directory Certificate Services / Certification Authority server role and configuring it in Enterprise CA setup type mode. Click here to <a href='{% url 'ViewAuthDomainLdaps' %}'>view or edit currently configured LDAPS server certificates</a>.                    	
+                    </div>      
+                </div>
+            </div>            
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="javascript:DetectAutomatically()" class="btn">Detect Automatically</a>
+                    <a href="{% url 'ViewAuthDomainTest' %}" class="btn">Test Connection</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

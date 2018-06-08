@@ -1,0 +1,9 @@
+{% extends 'safety/exclusions/list.html' %}
+
+{% block toolbar_exclusion_ip %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>The following list contains IP addresses excluded from filtering. Click on the IP address to edit exclusion settings for it. Click <em>Add New</em> button to add new excluded IP address. Click <em>Remove</em> button to remove IP address from exclusion list.</p>{%endblock%}
+
+{% block addnew_href%}{% url 'ViewExclusionIpCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExclusionIpUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExclusionIpUpdate' policy.pk object.pk %}{%endblock%}

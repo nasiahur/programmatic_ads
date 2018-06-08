@@ -1,0 +1,28 @@
+{% extends 'squid/general/general.html' %}
+
+{% block toolbar_version %}class="active"{%endblock%}
+
+{% block page_comment %}<p>Squid version and compilation information are shown below.</p>{% endblock %}
+
+{% block page_content %}
+    
+    <div class="box">     
+    
+    <style type="text/css">
+        .wrapit {
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <pre class="wrapit" id="squid_version_output">{{version.get_str}}</pre>
+
+
+    {% if not sslbump_capable %}
+        <div class="alert alert-error">
+            <p><strong>ERROR:</strong> this Squid instance is not capable of HTTPS filtering. Please take a look at <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/install/ubuntu16/squid.html">our documentation site</a> for the instructions on how to install the HTTPS filtering capable Squid version.</p>
+        </div>
+    {%endif%}
+
+    </div>
+{% endblock %}

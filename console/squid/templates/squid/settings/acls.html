@@ -1,0 +1,157 @@
+{% extends 'squid/settings/index.html' %}
+
+{% block toolbar_acls %}class="active"{%endblock%}
+{% block page_comment %}<p>Various global settings of Squid.</p>{% endblock %}
+
+{% block page_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <script type="text/javascript">
+            var ResetToDefault = function () {
+                $('#id_allowed_src').val('10.0.0.0/8\n172.16.0.0/12\n192.168.0.0/16\nfc00::/7\nfe80::/10');
+                $('#id_denied_src').val('');
+                $('#id_additional_safeports').val('');
+                $('#id_additional_sslports').val('');
+                $('#id_advanced_access').val('');
+                $('#id_advanced_acl').val('');
+            };
+        </script>
+
+    <div class="box">
+
+    {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="control-group {% if form.allowed_src.errors %}error{%endif%}">
+                <label class="control-label" for="id_allowed_src">Allowed Subnets</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_allowed_src").addClass("input-block-level");
+                            $('#id_allowed_src').attr('rows', 5);
+                            $('#id_allowed_src').attr('size', 90);
+                       });
+                    </script>
+                    {{form.allowed_src}}
+                    {% if form.allowed_src.errors %}
+                        <span class="help-block">{{form.allowed_src.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the subnets in CIDR format that are allowed to use this proxy. For example <em>10.0.0.0/8</em>. Each subnet must be on a separate line. These subnets will form the <em>localnet</em> ACL in squid.conf.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.denied_src.errors %}error{%endif%}">
+                <label class="control-label" for="id_denied_src">Prohibited Subnets</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_denied_src").addClass("input-block-level");
+                            $('#id_denied_src').attr('rows', 5);
+                            $('#id_denied_src').attr('size', 90);
+                       });
+                    </script>
+                    {{form.denied_src}}
+                    {% if form.denied_src.errors %}
+                        <span class="help-block">{{form.denied_src.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the subnets in CIDR format that are prohibited from using this proxy. For example <em>10.0.0.0/8</em>. Each subnet must be on a separate line.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.additional_sslports.errors %}error{%endif%}">
+                <label class="control-label" for="id_additional_sslports">Additional SSL Ports</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_additional_sslports").addClass("input-block-level");
+                       });
+                    </script>
+                    {{form.additional_sslports}}
+                    {% if form.additional_sslports.errors %}
+                        <span class="help-block">{{form.additional_sslports.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the list of additional ports to allow establishing CONNECT tunnels to. Default ports are 443. Ports must be separated by space.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.additional_safeports.errors %}error{%endif%}">
+                <label class="control-label" for="id_additional_safeports">Additional Safe Ports</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_additional_safeports").addClass("input-block-level");
+                       });
+                    </script>
+                    {{form.additional_safeports}}
+                    {% if form.additional_safeports.errors %}
+                        <span class="help-block">{{form.additional_safeports.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the list of additional ports to allow to connect to. Default ports are <em>21 70 80 210 280 443 488 591 777 1025-65535</em>. Ports must be separated by space.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.advanced_acl.errors %}error{%endif%}">
+                <label class="control-label" for="id_advanced_acl">Advanced ACLs</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_advanced_acl").addClass("input-block-level");
+                            $('#id_advanced_acl').attr('rows', 5);
+                            $('#id_advanced_acl').attr('size', 90);
+                       });
+                    </script>
+                    {{form.advanced_acl}}
+                    {% if form.advanced_acl.errors %}
+                        <span class="help-block">{{form.advanced_acl.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the advanced acls you would like to put into configuration file. Lines are written to configuration file as-is so please be careful.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.advanced_access.errors %}error{%endif%}">
+                <label class="control-label" for="id_advanced_access">Advanced http_access</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_advanced_access").addClass("input-block-level");
+                            $('#id_advanced_access').attr('rows', 5);
+                            $('#id_advanced_access').attr('size', 90);
+                       });
+                    </script>
+                    {{form.advanced_access}}
+                    {% if form.advanced_access.errors %}
+                        <span class="help-block">{{form.advanced_access.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the <em>http_access</em> rules for the advanced ACLs above. Lines are written to configuration file as-is so please be careful.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                    <a href="javascript:ResetToDefault()" class="btn">Reset To Default</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

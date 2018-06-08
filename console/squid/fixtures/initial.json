@@ -1,0 +1,539 @@
+[
+    { "model": "squid.Administrative", "fields": {} },
+    { "model": "squid.Dns", "fields": {} },
+    { "model": "squid.Miscellaneous", "fields": {} },
+    { "model": "squid.Network", "fields": {} },
+    { "model": "squid.TroubleShooting", "fields": {} },
+
+    { "model": "squid.MemoryCache", "fields": {} },
+    { "model": "squid.DiskCache", "fields": {} },
+
+    { "model": "squid.ExcludeAdvanced",     "fields": {} },
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".windowsupdate.com" } },
+    { "model": "squid.ExcludeDomainSubnet", "fields": { "value" : "192.168.0.0/16" } },
+    { "model": "squid.ExcludeDomainSubnet", "fields": { "value" : "172.16.0.0/12" } },
+    { "model": "squid.ExcludeDomainSubnet", "fields": { "value" : "10.0.0.0/8" } },  
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".apple.com", "comment" : "Apple bypass (iTunes, iCloud, etc)" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".cdn-apple.com", "comment" : "Apple bypass (iTunes, iCloud, etc)" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".itunes.com", "comment" : "Apple bypass (iTunes, iCloud, etc)"}},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".icloud.com", "comment" : "Apple bypass (iTunes, iCloud, etc)" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".icloud-content.com", "comment" : "Apple bypass (iTunes, iCloud, etc)" }},    
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".mzstatic.com", "comment" : "Apple bypass (iTunes, iCloud, etc)" }},    
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" :".dropbox.com", "comment" : "Dropbox bypass" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".office.com", "comment" : "Office365 bypass" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".office365.com", "comment" : "Office365 bypass" }},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".webex.com", "comment" : "WebEx Conferencing bypass"}},
+    { "model": "squid.ExcludeDomainName",   "fields": { "value" : ".microsoft.com", "comment" : "Microsoft Windows updates bypass"}},
+    { "model": "squid.ExcludeContentType",  "fields": { "value" :"application/ocsp-response", "comment" : "Certificate validation response (recommended to exclude from filtering)" }},
+    { "model": "squid.ExcludeCategories",   "fields": {} },
+
+    { "model": "squid.AuthLabel", "fields": {} },
+    { "model": "squid.AuthLocalDb", "fields": {} },
+    { "model": "squid.AuthRadius", "fields": {} },
+    { "model": "squid.AuthAd", "fields": {} },
+    { "model": "squid.AuthPseudoAd", "fields": {} },    
+    
+    { "model": "squid.BumpMode", "fields": {} },
+    { "model": "squid.AclDefault", "fields": { "allowed_src" : "10.0.0.0/8\n172.16.0.0/12\n192.168.0.0/16\nfc00::/7\nfe80::/10"} },
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 0, 
+        "title"      : "Announcement Server",
+        "comment"    : "Announcement Server, Client Database, Debug Routines, DNS Resolver, Hash Tables, UFS Store Dump"
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 1, 
+        "title"      : "Main Loop",
+        "comment"    : "Main Loop, Startup and Main Loop"
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 2, 
+        "title"      : "Unlink Daemon",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 3, 
+        "title"      : "Configuration File Parsing",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 4, 
+        "title"      : "Error Generation",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 5, 
+        "title"      : "Comms, Socket Functions",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 6, 
+        "title"      : "Disk I/O Routines",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 7, 
+        "title"      : "Multicast",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 8, 
+        "title"      : "Swap File Bitmap",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 9, 
+        "title"      : "File Transfer Protocol (FTP)",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 10, 
+        "title"      : "Gopher",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 11, 
+        "title"      : "Hypertext Transfer Protocol (HTTP)",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 12, 
+        "title"      : "Internet Cache Protocol",
+        "comment"    : ""
+    }},
+
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 13, 
+        "title"      : "High Level Memory Pool Management",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 14, 
+        "title"      : "IP Cache",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 15, 
+        "title"      : "Neighbor Routines",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 16, 
+        "title"      : "Cache Manager Objects",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 17, 
+        "title"      : "Request Forwarding",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 18, 
+        "title"      : "Cache Manager Statistics",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 19, 
+        "title"      : "Store Memory Primitives",
+        "comment"    : ""
+    }},
+
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 20, 
+        "title"      : "Storage Manager",
+        "comment"    : "Storage Manager (Heap-based replacement, Logging Functions, MD5 Cache Keys, Swapfile Metadata, Swapfile Unpacker, Swapin Functions, Swapout Functions), Store Rebuild Routines, Swap Dir base object"
+    }},
+
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 21, 
+        "title"      : "Integer functions, Misc Functions, Time Functions",
+        "comment"    : ""
+    }},
+
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 22, 
+        "title"      : "Refresh Calculation",
+        "comment"    : ""
+    }},
+
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 23, 
+        "title"      : "URL Parsing, URL Scheme parsing",
+        "comment"    : ""
+    }},
+
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 25, 
+        "title"      : "MIME Parsing",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 26, 
+        "title"      : "Secure Sockets Layer Proxy",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 27, 
+        "title"      : "Cache Announcer",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 28, 
+        "title"      : "Access Control",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 29, 
+        "title"      : "Authenticator",
+        "comment"    : "Negotiate Authenticator and NTLM Authenticator"
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 30, 
+        "title"      : "Ident (RFC 931)",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 31, 
+        "title"      : "Hypertext Caching Protocol",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 32, 
+        "title"      : "Asynchronous Disk I/O",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 33, 
+        "title"      : "Client-side Routines",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 34, 
+        "title"      : "Dnsserver interface",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 35, 
+        "title"      : "FQDN Cache",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 37, 
+        "title"      : "ICMP Routines",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 38, 
+        "title"      : "Network Measurement Database",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 39, 
+        "title"      : "Cache Array Routing Protocol",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 40, 
+        "title"      : "Referer and User-Agent Logging",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 41, 
+        "title"      : "Event Processing",
+        "comment"    : ""
+    }},
+
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 42, 
+        "title"      : "ICMP Pinger program",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 43, 
+        "title"      : "AIOPS (Windows)",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 44, 
+        "title"      : "Peer Selection Algorithm",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 45, 
+        "title"      : "Callback Data Registry",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 46, 
+        "title"      : "Access Log",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 47, 
+        "title"      : "Store Directory Routines",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 48, 
+        "title"      : "Persistent Connections",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 49, 
+        "title"      : "SNMP support",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 50, 
+        "title"      : "Log file handling",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 51, 
+        "title"      : "Filedescriptor Functions",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 52, 
+        "title"      : "URN Parsing",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 53, 
+        "title"      : "AS Number handling",
+        "comment"    : "Radix Tree data structure implementation"
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 54, 
+        "title"      : "Interprocess Communication",
+        "comment"    : ""
+    }},
+            { "model": "squid.LogSection", "fields": {
+        "section_id" : 55, 
+        "title"      : "HTTP Header",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 56, 
+        "title"      : "HTTP Message Body",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 57, 
+        "title"      : "HTTP Status-line",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 58, 
+        "title"      : "HTTP Reply (Response)",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 59, 
+        "title"      : "auto-growing Memory Buffer with printf",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 60, 
+        "title"      : "Packer: A uniform interface to store-like modules",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 61, 
+        "title"      : "Redirector",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 62, 
+        "title"      : "Generic Histogram",
+        "comment"    : ""
+    }},    
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 63, 
+        "title"      : "Low Level Memory Pool Management",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 64, 
+        "title"      : "HTTP Range Header",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 65, 
+        "title"      : "HTTP Cache Control Header",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 66, 
+        "title"      : "HTTP Header Tools",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 67, 
+        "title"      : "String",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 68, 
+        "title"      : "HTTP Content-Range Header",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 69, 
+        "title"      : "HTTP Header: Extension Field",
+        "comment"    : ""
+    }},
+        { "model": "squid.LogSection", "fields": {
+        "section_id" : 70, 
+        "title"      : "Cache Digest",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 71, 
+        "title"      : "Store Digest Manager",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 72, 
+        "title"      : "Peer Digest Routines",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 73, 
+        "title"      : "HTTP Request",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 74, 
+        "title"      : "HTTP Message",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 75, 
+        "title"      : "WHOIS protocol",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 76, 
+        "title"      : "Internal Squid Object handling",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 77, 
+        "title"      : "Delay Pools",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 78, 
+        "title"      : "DNS lookups",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 79, 
+        "title"      : "Disk IO Routines",
+        "comment"    : "Squid-side Disk I/O functions. Storage Manager UFS Interface. Storage Manager COSS Interface."
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 80, 
+        "title"      : "WCCP Support",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 81, 
+        "title"      : "CPU Profiling Routines",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 82, 
+        "title"      : "External ACL",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 83, 
+        "title"      : "SSL accelerator support",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 84, 
+        "title"      : "Helper process maintenance",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 85, 
+        "title"      : "Client-side Request Routines",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 86, 
+        "title"      : "ESI processing",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 87, 
+        "title"      : "Client-side Stream routines.",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 88, 
+        "title"      : "Client-side Reply routines.",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 89, 
+        "title"      : "NAT / IP Interception",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 90, 
+        "title"      : "Storage Manager Client-Side Interface",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 92, 
+        "title"      : "Storage File System",
+        "comment"    : ""
+    }},
+    { "model": "squid.LogSection", "fields": {
+        "section_id" : 93, 
+        "title"      : "ICAP (RFC 3507) Client",
+        "comment"    : ""
+    }}
+]

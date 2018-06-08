@@ -1,0 +1,12 @@
+{% extends 'squid/ssl/target/base.html' %}
+
+{% block toolbar_ssl_target_ip %}class="active"{%endblock%}
+
+{% block ssl_target_desc %}
+<p>HTTPS connections to the following IP addresses are always decrypted. This is usually used in <em>intercept (transparent) proxy</em> deployments. If you have <em>explicit proxy</em> it is much easier to use the <a href="{% url 'ViewSslTargetDomainList' %}">domain name</a> targets.</p>
+{% endblock %}
+
+
+{% block addnew_href%}{% url 'ViewSslTargetIpCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslTargetIpUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslTargetIpUpdate' object.pk %}{%endblock%}

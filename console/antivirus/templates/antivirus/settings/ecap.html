@@ -1,0 +1,42 @@
+{% extends 'antivirus/application.html' %}
+
+{% block navbar_ecap %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+
+    <!-- on pfsense we are not managing squid settings -->
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage antivirus settings using pfSense's Web UI.
+        </div>
+    {% else %}  
+
+    	<h2>eCAP ClamAV<small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+        
+        {% block page_comment %}
+            <p>This option performs anti virus checking of HTTP objects using eCAP ClamAV adapter from <a href="http://e-cap.org/Home">e-cap.org</a>. This is the recommended way of deployment. If you have another third party anti virus it is possible to use ICAP integration scheme instead.</p> 
+        {% endblock %}
+
+        <section class="row-fluid">
+            <ul class="nav nav-pills">
+                <li {% block toolbar_actions %}{%endblock%}><a id="toolbar_actions" href="{% url 'ViewAvSettingsEcapActions'  %}">Actions</a></li>
+                <li {% block toolbar_trickling %}{%endblock%}><a id="toolbar_trickling" href="{% url 'ViewAvSettingsEcapTrickling' %}">Trickling</a></li>            
+            </ul>  
+            {% block page_content %}{% endblock %}        
+        </section>        
+
+    {% endif %}
+
+{% endblock %}

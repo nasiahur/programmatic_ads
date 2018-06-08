@@ -1,0 +1,39 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid runtime information retrieved using <em>squidclient mgr:active_requests</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_active_requests %}class="active"{%endblock%}
+{% block before_pre_content %}
+
+	<!-- call the active request method and store the result into variable -->
+	{% with result=client.active_requests %}     
+
+		{% if result.error %}
+			<div class="alert alert-error">ERROR: cannot get active requests!</div>
+			<p><pre class="wrapit">{{result.message}}</pre></p>
+		{%else%}
+			<table class="table table-striped table-condensed table-hover">
+			<thead>
+				<tr>
+					<th>User IP</th>
+					<th>User Name</th>
+					<th>Domain</th>
+					<th>URI</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in result.items %}
+					<tr>
+						<td>{{item.ip}}</td>
+						<td>{{item.user}}</td>
+						<td>{{item.host}}</td>
+						<td>{{item.uri}}</td>
+					</tr>
+				{% empty %}
+					<tr class="warning"><td colspan="4"><em>No active proxy requests found</em></td></tr>
+				{% endfor %}
+			</tbody>
+			</table>
+		{%endif%}
+	{% endwith %}
+
+{% endblock %}
+

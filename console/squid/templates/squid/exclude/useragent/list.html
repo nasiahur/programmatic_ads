@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_other %}active{%endblock%}
+{% block header_tab %} / Browser User Agent{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the browsers identified by the following User-Agent strings are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeUserAgentCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeUserAgentUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeUserAgentUpdate' object.pk %}{%endblock%}
+
+

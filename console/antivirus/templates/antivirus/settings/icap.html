@@ -1,0 +1,39 @@
+{% extends 'antivirus/application.html' %}
+
+{% block navbar_icap %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage antivirus settings using pfSense's Web UI.
+        </div>
+    {% else %}  
+
+    	<h2>ICAP Anti Virus<small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+        
+        {% block page_comment %}
+            <p>This option chains web filter with manually installed anti virus service (for example, ESET, C-ICAP or others). Use this module only if you have installed third party anti virus ICAP service yourself. In all other cases it is recommended to use eCAP antivirus.</p> 
+        {% endblock %}
+
+        <section class="row-fluid">
+            <ul class="nav nav-pills">
+                <li {% block toolbar_network %}{%endblock%}><a id="toolbar_network" href="{% url 'ViewAvSettingsIcap' %}">Network</a></li>            
+            </ul>  
+            {% block page_content %}{% endblock %}        
+        </section>        
+
+    {% endif %}
+    
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'antivirus/settings/ecap.html' %}
+
+{% block toolbar_actions %}class="active"{%endblock%}
+
+{% block page_content %}
+
+    <div class="box">
+
+
+        <!-- show a warning for enabled and matching antivirus module -->
+        {% if not form.instance.enable %}
+            <div class="alert alert-danger">
+                <strong>Warning</strong>: antivirus checking is disabled. Configured settings will have no effect.         
+            </div>  
+        {% else %}
+            {% if form.instance.av_type != 0 %}
+                <div class="alert alert-danger">
+                    <strong>Warning</strong>: eCAP antivirus module is not activated. Configured settings will have no effect.         
+                </div>  
+            {% endif %}
+        {% endif %}
+
+
+        <!-- show form errors -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+            <div class="control-group">
+                <div class="controls">     
+                    <label class="checkbox inline">{{form.ecap_clamav_async}} Scan objects in a new thread. If set each object is scanned in a separate thread improving utilization of multiple CPU machines. Default value is <em>Off</em>.</label>
+                </div>
+            </div> 
+
+            <div class="control-group {% if form.ecap_clamav_on_error_action.errors %}error{%endif%}">
+                <label class="control-label" for="id_ecap_clamav_on_error_action">Scan Error</label>
+                <div class="controls">  
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_ecap_clamav_on_error_action").addClass("input-xlarge");                        
+                       });
+                    </script>   
+                    {{form.ecap_clamav_on_error_action}}
+                    {% if form.ecap_clamav_on_error_action.errors %}
+                        <span class="help-block">{{form.ecap_clamav_on_error_action.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">What to do if the object cannot be scanned. For example, it is not possible to scan password protected archives. Default value is <em>Allow</em>.</span>
+                    {%endif%}
+                </div>
+            </div>  
+
+            <div class="control-group {% if form.ecap_clamav_message_size_max.errors %}error{%endif%}">
+                <label class="control-label" for="id_ecap_clamav_message_size_max">Max Scan Size</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_ecap_clamav_message_size_max { width: 100px; }</style>
+                        {{form.ecap_clamav_message_size_max}}
+                        <button class="btn" type="button" onclick="$('#id_ecap_clamav_message_size_max').val('10485760');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.ecap_clamav_message_size_max.errors %}
+                        <span class="help-block">{{form.ecap_clamav_message_size_max.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Maximum size of objects to scan in bytes. Objects larger than specified limit are allowed without scan. Default value is 10485760 bytes (10Mb).</span>
+                    {%endif%}
+                </div>
+            </div>  
+            <!--
+            <div class="control-group {% if form.ecap_clamav_staging_dir.errors %}error{%endif%}">
+                <label class="control-label" for="id_ecap_clamav_staging_dir">Temporary Dir</label>
+                <div class="controls">                
+                    <div class="input-append">
+                        {{form.ecap_clamav_staging_dir}}
+                        <button class="btn" type="button" onclick="$('#id_ecap_clamav_staging_dir').val('');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.ecap_clamav_staging_dir.errors %}
+                        <span class="help-block">{{form.ecap_clamav_staging_dir.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Objects which need to be scanned for presence of viruses are first stored in this directory. Default value is <em>/tmp/eclamavXXXXXX</em>. It is not recommeded to change this value unless absolutely necessary.</span>
+                    {%endif%}
+                </div>
+            </div>
+            -->
+
+            <div class="control-group">
+                <div class="controls">     
+                    <label class="checkbox inline">{{form.ecap_reqmod_bypass}} Bypass intermittent errors in anti virus eCAP request scanning. If anti virus service is not available for any reason, transaction continues and non-scanned HTTP requests are still delivered to remote servers.</label>
+                </div>
+            </div> 
+
+            <div class="control-group">
+                <div class="controls">     
+                    <label class="checkbox inline">{{form.ecap_respmod_bypass}} Bypass intermittent errors in anti virus eCAP response scanning. If anti virus service is not available for any reason, transaction continues and non-scanned HTTP responses are still delivered to client browsers.</label>
+                </div>
+            </div> 
+
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

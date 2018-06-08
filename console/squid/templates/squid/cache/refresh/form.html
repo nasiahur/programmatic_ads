@@ -1,0 +1,155 @@
+{% extends 'squid/cache/refresh/tabs.html' %}
+
+{% block box_content %}
+
+        {% block member_heading%}{%endblock%}
+
+        <style type="text/css">
+            input[type=number]::-webkit-outer-spin-button,
+            input[type=number]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type=number] {
+                -moz-appearance:textfield;
+            }
+        </style>
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.insensitive}} Match the regular expression case-insensitive. Default value is <em>On</em>.</label>
+                </div>
+            </div>
+            <div class="control-group {% if form.regex.errors %}error{%endif%}">
+                <label class="control-label" for="id_regex">Pattern Regex</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_regex").addClass("input-block-level");
+                            $('#id_regex').attr('rows', 5);
+                            $('#id_regex').attr('size', 90);
+                       });
+                    </script>
+                    {{form.regex}}                
+                    {% if form.regex.errors %}
+                        <span class="help-block">{{form.regex.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the regular expression for URL refresh pattern.</span>
+                    {%endif%}
+                </div>
+            </div>   
+            <div class="control-group {% if form.min_time.errors %}error{%endif%}">
+                <label class="control-label" for="id_min_time">Min Time</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_min_time { width: 70px; }</style>
+                        {{form.min_time}}
+                        <button class="btn" type="button" onclick="$('#id_min_time').val('0');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.min_time.errors %}
+                        <span class="help-block">{{form.min_time.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the min_time time (in minutes) an object without an explicit expiry time should be considered fresh. Default value is <em>0</em>.</span>
+                    {%endif%}
+                </div>
+            </div>     
+            <div class="control-group {% if form.percent.errors %}error{%endif%}">
+                <label class="control-label" for="id_percent">Percent</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_percent { width: 70px; }</style>
+                        {{form.percent}}
+                        <button class="btn" type="button" onclick="$('#id_percent').val('20');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.percent.errors %}
+                        <span class="help-block">{{form.percent.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the percentage of the objects age (time since last modification age) an object without explicit expiry time will be considered fresh. Default value is <em>20</em>.</span>
+                    {%endif%}
+                </div>
+            </div>    
+            <div class="control-group {% if form.max_time.errors %}error{%endif%}">
+                <label class="control-label" for="id_max_time">Max Time</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_max_time { width: 70px; }</style>
+                        {{form.max_time}}
+                        <button class="btn" type="button" onclick="$('#id_max_time').val('0');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.max_time.errors %}
+                        <span class="help-block">{{form.max_time.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the maximum upper limit on how long objects without an explicit expiry time will be considered fresh. Default value is <em>0</em>.</span>
+                    {%endif%}
+                </div>
+            </div> 
+
+
+            <div class="control-group">
+                <label class="control-label">Cache Options</label>
+                <div class="controls">
+                    <div class="row-fluid">
+                        <div class="span4"><label class="checkbox inline">{{form.override_expire}} Override Expire</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.override_lastmod}} Override Last-Modified</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.reload_into_ims}} Reload into If-Modified-Since</label></div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span4"><label class="checkbox inline">{{form.ignore_reload}} Ignore Reload</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.ignore_no_store}} Ignore No Store</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.ignore_must_revalidate}} Ignore Must-Revalidate</label></div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span4"><label class="checkbox inline">{{form.ignore_private}} Ignore Private</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.ignore_auth}} Ignore Auth</label></div>
+                        <div class="span4"><label class="checkbox inline">{{form.refresh_ims}} Refresh If-Modified-Since</label></div>
+                    </div>
+                    <div class="row-fluid">                            
+                        <div class="span4"><label class="checkbox inline">{{form.store_stale}} Store Stale</label></div>
+                        <div class="span4"><label class="checkbox inline">&nbsp;</label></div>
+                        <div class="span4"><label class="checkbox inline">&nbsp;</label></div>
+                    </div>                        
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.max_stale}} Use max stale value below. Default value is <em>Off</em>.</label>
+                </div>
+            </div>
+            <div class="control-group {% if form.max_stale_nn.errors %}error{%endif%}">
+                <label class="control-label" for="id_max_stale_nn">Max Stale</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_max_stale_nn { width: 70px; }</style>
+                        {{form.max_stale_nn}}
+                        <button class="btn" type="button" onclick="$('#id_max_stale_nn').val('0');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.max_stale_nn.errors %}
+                        <span class="help-block">{{form.max_stale_nn.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the max stale value. Default is <em>0</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary" id="button_save">Save Changes</button></div> 
+                    {% block cancel_button%}
+                    <div class="btn-group"><a href="{% block cancel_href%}{%endblock%}" class="btn">Cancel</a></div> 
+                    {%endblock%}
+                </div>
+            </div>
+        </form>
+
+{% endblock %}

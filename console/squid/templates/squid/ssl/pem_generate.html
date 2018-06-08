@@ -1,0 +1,153 @@
+{% extends 'squid/ssl/index.html' %}
+
+{% block toolbar_ssl_mode %}class="active"{%endblock%}
+
+{% block page_comment %}
+	
+{% endblock %}
+
+
+{% block page_content %}
+
+
+	<section class="container">
+		<div class="box">
+			<div class="alert">
+				Current Trusted Root CA certificate will be replaced with the new one. Squid's mimicked SSL certificate storage will be reinitialized. It is recommended to disconnect all users from Squid before generation. Do not forget to add the new certificate as Trusted Root CA in all your browsers as explained in <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/https_filtering/install_certificates/index.html">online documentation</a>!
+			</div>
+
+			{% if form.non_field_errors %}
+	        <div class="alert alert-error">
+	        	<p><strong>Certificate Generation Failed!</strong><p>
+	        	<p>
+	            {% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}
+	            </p>
+	        </div>  
+	        {% endif %}
+
+			<form class="form-horizontal" method="POST">
+	            {% csrf_token %}
+	            <div class="control-group {% if form.newCertCountry.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertCountry">Country</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+				    		{{form.newCertCountry}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertCountry').val('NL');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertCountry.errors %}
+                        	<span class="help-block">{{form.newCertCountry.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify 2-digit country code, for example NL, US, GB, DE or <a target="_new" href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">other countries</a>.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertState.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertState">State or Province</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+					    	{{form.newCertState}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertState').val('Noord-Holland');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertState.errors %}
+                        	<span class="help-block">{{form.newCertState.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the name of the state or province, for example Noord-Holland.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertCity.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertCity">City</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+					    	{{form.newCertCity}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertCity').val('Amsterdam');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertCity.errors %}
+                        	<span class="help-block">{{form.newCertCity.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the name of the city, for example Amsterdam.</span>
+                    	{%endif%}	    	
+				    </div>
+				</div>
+	            <div class="control-group {% if form.newCertOrganization.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertOrganization">Organization</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+					    	{{form.newCertOrganization}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertOrganization').val('Example Ltd.');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertOrganization.errors %}
+                        	<span class="help-block">{{form.newCertOrganization.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the name of your organization or business, for example Example Ltd.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertOU.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertOU">Organizational Unit</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+				    	    {{form.newCertOU}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertOU').val('IT');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertOU.errors %}
+                        	<span class="help-block">{{form.newCertOU.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the department name responsible for Squid Proxy, for example IT.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertSupportEMail.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertSupportEMail">Support E-Mail</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+				    	    {{form.newCertSupportEMail}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertSupportEMail').val('support@example.lan');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertSupportEMail.errors %}
+                        	<span class="help-block">{{form.newCertSupportEMail.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the e-mail address of the IT department responsible for Squid Proxy, for example support@example.lan.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertCommonName.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertCommonName">Common Name</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+					    	{{form.newCertCommonName}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertCommonName').val('Squid Proxy');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertCommonName.errors %}
+                        	<span class="help-block">{{form.newCertCommonName.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the Common Name to be used in the Squid Proxy certificate, for example Squid Proxy.</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group {% if form.newCertLifeTime.errors %}error{%endif%}">
+			    	<label class="control-label" for="id_newCertLifeTime">Lifetime Days</label>
+			    	<div class="controls">
+				    	<div class="input-append">
+					    	{{form.newCertLifeTime}}
+					    	<button class="btn" type="button" onclick="$('#id_newCertLifeTime').val('1825');"><i class="icon-magic"></i></button>
+					    </div>
+					    {% if form.newCertLifeTime.errors %}
+                        	<span class="help-block">{{form.newCertLifeTime.errors|striptags}}</span>
+                    	{% else %}
+                        	<span class="help-block">Specify the number of days the certificate should be valid, for example 1825 (for 5 years).</span>
+                    	{%endif%}
+				    </div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+					    <button type="submit" class="btn btn-primary">Generate Certificate</button>
+						<a class="btn" href="{% url 'ViewSslInfo' %}">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>
+    
+{% endblock %}

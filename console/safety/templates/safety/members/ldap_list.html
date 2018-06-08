@@ -1,0 +1,115 @@
+{% extends 'safety/members/index.html' %}
+
+{% block toolbar_member_ldap %}class="active"{%endblock%}
+
+{% block member_heading%}
+
+    {% if is_home %}
+        <div class="alert alert-error">
+            Your <a href="{% url 'node:ViewLicense' %}">license key</a> is <em>Personal / Home</em>. Active Directory group user name lookup is disabled in such a license. You need to have at least <em>Business</em> license to enable this functionality.
+        </div>
+    {% else %}
+        <p>
+            The following list contains members of policy designated by Active Directory security groups. 
+            Please note in order to be able to match a given user for Active Directory group 
+            {% if is_pfsense %}
+                proxy authentication needs to be correctly configured in pfSense's Squid UI 
+            {% else %}
+                <a href="{% url 'ViewAuthExplicit' %}">proxy authentication</a> needs to be correctly configured 
+            {% endif %}
+            and user names must be present in <em>Surfing Now</em> tab.
+        </p>
+    {%endif%}
+{%endblock%}
+    
+{% block member_content %}
+
+	<!-- modal dialog to confirm removal of selected items -->     
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3 id="myModalLabel" style="color: red;">Remove Selected Items</h3>
+        </div>
+        <div class="modal-body">
+            <p>Selected items will be removed. This is irreversible operation and cannot be undone. Please proceed only when absolutely necessary.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" onclick="javascript:$('form#object_list').submit();" >Remove Items</button>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var selectAll = function () {
+            $('.widget-messages input:not(:checked)').click();
+            
+        }, toggleSelection = function () {
+            $checked = $('.widget-messages input:checked');
+            $('.widget-messages input:not(:checked)').click();
+            $checked.click();
+
+        }, unselectAll = function () {
+            $('.widget-messages input:checked').click();
+
+        }, deleteMessages = function () {
+            $('.widget-messages input:checked').parents('.message').remove();
+        }, removeSelected = function () {
+            options = {}
+            $('#myModal').modal(options)
+        };
+    </script>
+
+    <div class="non-collapsible widget-messages">
+        <div class="message-actions">
+        
+            <div class="btn-group">
+                <a href="{% url 'ViewMemberLdapCreate' policy.pk %}" class="btn btn-primary btn-small">Add New</a>                
+            </div>
+            {% if object_list %}
+            <div class="btn-group">                
+                <a href="{% url 'ViewMemberLdapSearch' policy.pk %}" class="btn btn-small">Search for a User</a>                
+            </div>
+            {%endif%}
+            
+            <!--<button class="btn btn-primary btn-small pull-right"><i class="icon-refresh"></i></button>-->
+            <div style="margin: 0;" class="btn-toolbar pull-right">
+                <div class="btn-group">
+                <a class="btn btn-small" href="javascript:selectAll()">Select All</a>
+                <button data-toggle="dropdown" class="btn btn-small dropdown-toggle"><i class="icon-caret-down"></i></button>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:toggleSelection()">Toggle Selection</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:unselectAll()">Unselect All</a></li>
+                </ul>
+            </div>
+                <div class="btn-group">
+                    <a href="javascript:removeSelected()" class="btn btn-danger btn-small dropdown-toggle">Remove Selected</a>                    
+                </div>
+            </div>
+        </div>
+        
+        <form method="POST" style="margin-bottom: 0px;" id="object_list">{% csrf_token %}
+        <table class="table table-hover table-condensed" style="margin-top: 20px;">
+        {% for object in object_list %}
+            <tr>
+                <td style="border-top: none;">
+                    <input type="checkbox" value="{{object.pk}}" name="selected_id" style="margin-top: 0px;"> <a class="from" title="" href="{% url 'ViewMemberLdapUpdate' policy.pk object.pk %}">{{object.name|truncatechars:30}}</a>
+                </td>
+                <td style="border-top: none;">
+                    <a class="title" title="" href="{% url 'ViewMemberLdapUpdate' policy.pk object.pk %}">{{object.dn|truncatechars:60}}</a>
+                </td>
+                <td style="border-top: none;">
+                    <a class="title" title="" href="{% url 'ViewMemberLdapUpdate' policy.pk object.pk %}">{{object.comment|truncatechars:60}}</a>
+                </td>
+                <td style="text-align: right; border-top: none;">
+                    <i class="{% if object.recursive %}icon-ok{% else%}icon-minus{%endif%}"></i>
+                </td>
+            </tr>            
+        {% empty %}
+            <tr><td colspan="3"  style="border-top: none;"><small><em>No items found, click Add New to add a new item.</em></small></td></tr>
+        {% endfor %}  
+        </table>    
+        </form>
+    </div>
+    
+{% endblock %}

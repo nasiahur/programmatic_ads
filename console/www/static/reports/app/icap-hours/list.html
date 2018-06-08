@@ -1,0 +1,83 @@
+<md-toolbar layout="row" layout-align="space-around center">
+    <h3>{{meta.name}}</h3>
+    <md-button aria-label="The Button" href="#/log"> Log </md-button>
+</md-toolbar>
+
+<div flex layout="row">
+
+    <md-sidenav md-is-locked-open="true" class="md-whiteframe-z2">
+        <md-list>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Report Name</h3>
+                    <p>{{meta.name}}</p>                    
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Report Description</h3>
+                    <p>{{meta.name}}</p>                    
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>            
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Time Frame</h3>
+                    <p>{{meta.start}} to {{meta.end}}</p>                    
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Was Built On</h3>
+                    <p>{{meta.builtOn | date:"yyyy-MM-dd 'at' HH:mm:ss"}}</p>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-list-item class="md-1-line">
+                <div class="md-list-item-text">
+                    <h3>Template Type</h3>
+                    <p>{{meta.template}}</p>                    
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+
+    <md-content flex id="content">
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column><span>Hour</span></th>
+                    <th md-column md-numeric><span>Total Requests</span></th>
+                    <th md-column md-numeric>Requests %</th>
+                    <th md-column md-numeric>Offensive Requests</th>
+                    <th md-column md-numeric>Unproductive Requests</th>
+                    <th md-column md-numeric>Size</th>
+                    <th md-column md-numeric>Size %</th>
+                    <th md-column md-numeric>Domains</th>
+                    <th md-column md-numeric>Ips</th>
+                    <th md-column md-numeric>Users</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="hour in hours">
+                    <td md-cell>{{hour.hour}}</a></td>
+                    <td md-cell>{{hour.hits}}</td>
+                    <td md-cell>{{hour.hits_rate}}</td>
+                    <td md-cell>{{hour.offensive}}</td>
+                    <td md-cell>{{hour.unproductive}}</td>
+                    <td md-cell>{{hour.size | bytes}}</td>
+                    <td md-cell>{{hour.size_rate}}</td>
+		    <td md-cell>{{hour.tlds}}</td>
+		    <td md-cell>{{hour.ips}}</td>
+		    <td md-cell>{{hour.users}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>        
+    </md-content>
+</div>
+        

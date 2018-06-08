@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_other %}active{%endblock%}
+{% block header_tab %} / Response Content Type{% endblock %}
+
+{% block page_comment %}
+<p>HTTP / HTTPS responses with the following Content-Type field are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeContentTypeCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeContentTypeUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeContentTypeUpdate' object.pk %}{%endblock%}
+
+

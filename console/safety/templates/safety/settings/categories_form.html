@@ -1,0 +1,411 @@
+{% extends 'safety/settings/settings.html' %}
+
+{% block toolbar_categories %}class="active"{%endblock%}
+
+{% block settings_content %}
+
+    <p>The following list shows <em>trusted site categories</em>. If a given site is known to be part of a trusted category then all HTML pages on this site are not scanned with adult language detection module. This helps to reduce the excessive blocking on sites which rarely contain explicit adult only materials - like government sites, wikipedia or sites of financial institutions.</p>
+
+    <script type="text/javascript">
+        var resetToDefault = function () {
+
+        	var checked     = [
+        		"#id_trust_advertising", 
+        		"#id_trust_automotive", 
+        		"#id_trust_banking_insurance_finance",
+        		"#id_trust_business_services_industry",
+        		"#id_trust_ecommerce_shopping",
+        		"#id_trust_education_science_research",
+        		"#id_trust_fashion_beauty_cosmetics",
+        		"#id_trust_food_dining_restaurants",
+        		"#id_trust_government",
+        		"#id_trust_health_medicine_fitness",
+        		"#id_trust_jobs_employment_career",
+        		"#id_trust_movies",
+        		"#id_trust_music_radio",
+        		"#id_trust_network_infrastructure",
+        		"#id_trust_news_media",
+        		"#id_trust_politics",
+        		"#id_trust_real_estate_home_interior",
+        		"#id_trust_religious",
+        		"#id_trust_social_networking",
+        		"#id_trust_software_technology_hardware",
+        		"#id_trust_sports",
+        		"#id_trust_television",
+        		"#id_trust_travel",
+        		"#id_trust_webmail"
+        	];
+
+        	for (var i = 0; i < checked.length; i++) {
+        		$(checked[i]).prop("checked", true);
+			}
+
+        	var not_checked = [
+        		"#id_use_ml_domains", 
+        		"#id_trust_adult_themes_sexuality", 
+        		"#id_trust_alcohol_tobacco", 
+        		"#id_trust_anime_manga_webcomic",
+        		"#id_trust_arts_society_culture",
+        		"#id_trust_blogs_personal",
+        		"#id_trust_classifieds_auctions",
+        		"#id_trust_content_delivery_networks",
+        		"#id_trust_cracks_hacking_illegal",
+        		"#id_trust_dating",
+        		"#id_trust_drugs",
+        		"#id_trust_entertainment_humor_hobby",
+        		"#id_trust_expired_parked",
+        		"#id_trust_file_storage",
+        		"#id_trust_forums_message_boards",
+        		"#id_trust_gambling",
+        		"#id_trust_games",
+        		"#id_trust_generic_non_categorized",
+        		"#id_trust_hate_discrimination_violence",
+        		"#id_trust_messaging_chat",
+        		"#id_trust_nudity_pornography",
+        		"#id_trust_p2p_file_sharing",
+        		"#id_trust_photo_sharing",
+        		"#id_trust_portals",
+        		"#id_trust_proxy_anonymizer",
+        		"#id_trust_search_engines",
+        		"#id_trust_user_tracking",
+        		"#id_trust_video_sharing", 
+        		"#id_trust_weapons"
+        	];
+
+        	for (var i = 0; i < not_checked.length; i++) {
+        		$(not_checked[i]).prop("checked", false);
+			}
+        };
+    </script>
+
+    <div class="box">    
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+        
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+        
+            <table class="table table-condensed table-striped table-hover">
+                <tr>
+                    <td>
+                        <label for="id_trust_adult_themes_sexuality" style="font-weight: normal;{% if form.trust_adult_themes_sexuality.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_adult_themes_sexuality}} Adult Themes / Sexuality
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_drugs" style="font-weight: normal;{% if form.trust_drugs.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_drugs}} Drugs
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_hate_discrimination_violence" style="font-weight: normal;{% if form.trust_hate_discrimination_violence.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_hate_discrimination_violence}} Hate / Discrimination / Violence
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_proxy_anonymizer" style="font-weight: normal;{% if form.trust_proxy_anonymizer.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_proxy_anonymizer}} Proxy / Anonymizer
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_advertising" style="font-weight: normal;{% if form.trust_advertising.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_advertising}} Advertising
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_ecommerce_shopping" style="font-weight: normal;{% if form.trust_ecommerce_shopping.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_ecommerce_shopping}} E-Commerce / Shopping
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_health_medicine_fitness" style="font-weight: normal;{% if form.trust_health_medicine_fitness.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_health_medicine_fitness}} Health / Medicine / Fitness
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_real_estate_home_interior" style="font-weight: normal;{% if form.trust_real_estate_home_interior.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_real_estate_home_interior}} Real Estate / Home / Interior
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_alcohol_tobacco" style="font-weight: normal;{% if form.trust_alcohol_tobacco.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_alcohol_tobacco}} Alcohol / Tobacco
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_education_science_research" style="font-weight: normal;{% if form.trust_education_science_research.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_education_science_research}} Education / Science / Research
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_jobs_employment_career" style="font-weight: normal;{% if form.trust_jobs_employment_career.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_jobs_employment_career}} Jobs / Employment / Career
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_religious" style="font-weight: normal;{% if form.trust_religious.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_religious}} Religious
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_anime_manga_webcomic" style="font-weight: normal;{% if form.trust_anime_manga_webcomic.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_anime_manga_webcomic}} Anime / Manga / Webcomic
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_entertainment_humor_hobby" style="font-weight: normal;{% if form.trust_entertainment_humor_hobby.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_entertainment_humor_hobby}} Entertainment / Humor / Hobby
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_messaging_chat" style="font-weight: normal;{% if form.trust_messaging_chat.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_messaging_chat}} Messaging / Chat
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_search_engines" style="font-weight: normal;{% if form.trust_search_engines.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_search_engines}} Search Engines
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_arts_society_culture" style="font-weight: normal;{% if form.trust_arts_society_culture.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_arts_society_culture}} Arts / Society / Culture
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_expired_parked" style="font-weight: normal;{% if form.trust_expired_parked.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_expired_parked}} Expired / Parked Domains
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_movies" style="font-weight: normal;{% if form.trust_movies.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_movies}} Movies
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_social_networking" style="font-weight: normal;{% if form.trust_social_networking.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_social_networking}} Social Networking
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_automotive" style="font-weight: normal;{% if form.trust_automotive.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_automotive}} Automotive
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_fashion_beauty_cosmetics" style="font-weight: normal;{% if form.trust_fashion_beauty_cosmetics.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_fashion_beauty_cosmetics}} Fashion / Beauty / Cosmetics
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_music_radio" style="font-weight: normal;{% if form.trust_music_radio.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_music_radio}} Music / Radio
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_software_technology_hardware" style="font-weight: normal;{% if form.trust_software_technology_hardware.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_software_technology_hardware}} Software / Technology / Hardware
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_banking_insurance_finance" style="font-weight: normal;{% if form.trust_banking_insurance_finance.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_banking_insurance_finance}} Banking / Insurance / Finance
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_file_storage" style="font-weight: normal;{% if form.trust_file_storage.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_file_storage}} File Storage
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_network_infrastructure" style="font-weight: normal;{% if form.trust_network_infrastructure.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_network_infrastructure}} Network Infrastructure
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_sports" style="font-weight: normal;{% if form.trust_sports.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_sports}} Sports
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_blogs_personal" style="font-weight: normal;{% if form.trust_blogs_personal.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_blogs_personal}} Blogs / Personal Sites
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_food_dining_restaurants" style="font-weight: normal;{% if form.trust_food_dining_restaurants.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_food_dining_restaurants}} Food / Dining / Restaurants
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_news_media" style="font-weight: normal;{% if form.trust_news_media.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_news_media}} News / Media
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_television" style="font-weight: normal;{% if form.trust_television.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_television}} Television
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_business_services_industry" style="font-weight: normal;{% if form.trust_business_services_industry.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_business_services_industry}} Business Services / Industry
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_forums_message_boards" style="font-weight: normal;{% if form.trust_forums_message_boards.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_forums_message_boards}} Forums / Message Boards
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_nudity_pornography" style="font-weight: normal;{% if form.trust_nudity_pornography.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_nudity_pornography}} Nudity / Pornography
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_travel" style="font-weight: normal;{% if form.trust_travel.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_travel}} Travel
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_classifieds_auctions" style="font-weight: normal;{% if form.trust_classifieds_auctions.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_classifieds_auctions}} Classifieds / Auctions
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_gambling" style="font-weight: normal;{% if form.trust_gambling.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_gambling}} Gambling
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_p2p_file_sharing" style="font-weight: normal;{% if form.trust_p2p_file_sharing.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_p2p_file_sharing}} P2P File Sharing
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_user_tracking" style="font-weight: normal;{% if form.trust_user_tracking.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_user_tracking}} User Tracking Scripts and Beacons 
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_content_delivery_networks" style="font-weight: normal;{% if form.trust_content_delivery_networks.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_content_delivery_networks}} Content Delivery Networks
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_games" style="font-weight: normal;{% if form.trust_games.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_games}} Games
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_photo_sharing" style="font-weight: normal;{% if form.trust_photo_sharing.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_photo_sharing}} Photo Sharing
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_video_sharing" style="font-weight: normal;{% if form.trust_video_sharing.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_video_sharing}} Video Sharing
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_cracks_hacking_illegal" style="font-weight: normal;{% if form.trust_cracks_hacking_illegal.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_cracks_hacking_illegal}} Hacking, Cracking and Illegal Content
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_generic_non_categorized" style="font-weight: normal;{% if form.trust_generic_non_categorized.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_generic_non_categorized}} Generic / Non-categorized Sites 
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_politics" style="font-weight: normal;{% if form.trust_politics.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_politics}} Politics
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_weapons" style="font-weight: normal;{% if form.trust_weapons.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_weapons}} Weapons
+                        </label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="id_trust_dating" style="font-weight: normal;{% if form.trust_dating.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_dating}} Dating
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_government" style="font-weight: normal;{% if form.trust_government.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_government}} Government
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_portals" style="font-weight: normal;{% if form.trust_portals.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_portals}} Portals
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_trust_webmail" style="font-weight: normal;{% if form.trust_webmail.value %}color: green;{%endif%}" class="checkbox">
+                            {{form.trust_webmail}} Web Mail
+                        </label>
+                    </td>
+                </tr>
+        </table>  
+        <div class="form-group">
+            <div class="col-lg-4">
+                <div class="well alert">
+                    <label for="id_use_ml_domains" style="font-weight: normal;{% if form.use_ml_domains.value %}color: green;{%endif%}" class="checkbox"> {{form.use_ml_domains}} <strong>Use machine learned domain categories in addition to human verified domain categories. Machine learned categories are not always correct but selecting this checkbox may greatly improve the number of sites in each category. Default value is <em>Off</em>.</strong></label>                
+            </div>                                   
+        </div>
+    </div>
+        <div class="form-group">
+            <div class="col-lg-4">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+                <a href="javascript:resetToDefault()" class="btn">Reset To Default</a>            
+            </div>            
+        </div>
+        </form>
+       
+    </div>
+
+{% endblock %}
+

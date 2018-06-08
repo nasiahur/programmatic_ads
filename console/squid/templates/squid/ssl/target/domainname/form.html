@@ -1,0 +1,11 @@
+{% extends 'squid/ssl/target/form.html' %}
+
+{% block toolbar_ssl_target_domain %}class="active"{%endblock%}
+
+{% block value_name%}Domain Name{%endblock%}
+{% block value_help%}Specify domain name HTTPS connections to which should always be decrypted. Prefix a domain name with a . (dot) to include all subdomains. For example <em>.facebook.com</em> will match all subdomains of <em>facebook.com</em> (as well as top level <em>facebook.com</em> itself). Wildcards are not supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewSslTargetDomainList' %}{%endblock%}

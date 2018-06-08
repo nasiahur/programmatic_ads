@@ -1,0 +1,13 @@
+{% extends 'squid/ssl/target/form.html' %}
+
+{% block toolbar_ssl_target_subnet %}class="active"{%endblock%}
+
+{% block member_heading%}{%endblock%}
+
+{% block value_name%}IP Subnet{%endblock%}
+{% block value_help%}Specify IP subnet HTTPS connections to which should always be decrypted.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewSslTargetSubnetList' %}{%endblock%}

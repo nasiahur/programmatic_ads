@@ -1,0 +1,27 @@
+{% extends 'node/network/index.html' %}
+{% block toolbar_devices %}class="active"{%endblock%}
+
+{% block subtitle %} <small>/ {{object.name}}</small>{% endblock %}
+
+{% block boxed_content %}
+    
+    <ul class="nav nav-tabs" id="squid_general_runtime_list">
+        <li {% block toolbar_ipv4 %}{%endblock%}><a href="{% url 'node:ViewNetworkDeviceIpv4Update' object.pk %}">IPv4 Address</a></li>
+        <li {% block toolbar_ipv6 %}{%endblock%}><a href="{% url 'node:ViewNetworkDeviceIpv6Update' object.pk %}">IPv6 Address</a></li>
+    </ul>
+
+    <section class="row-fluid">
+        <div class="box">
+            {% block tab_content %}{% endblock %}
+        </div>
+    </section>
+
+    <section class="row-fluid">
+        <h3 class="box-header">Technical Info</h3>
+        <div class="box">
+        <p>Current network configuration of device <em>{{object.name}}</em> is shown below.</p>
+            <pre>{{device_dump}}</pre>
+        </div>
+    </section>
+
+{% endblock %}

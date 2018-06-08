@@ -1,0 +1,48 @@
+{% extends 'squid/auth/index.html' %}
+
+
+{% block title %}Pseudo Proxy Auth{% endblock %}
+{% block toolbar_auth_pseudo %}class="active"{%endblock%}
+
+{% block header_tab %}{% endblock %}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">Pseudo proxy authentication allows the administrator to transparently map a given IP address to the User Name or MAC address <em>without requiring browser to login</em>. This type of pseudo authentication is typically used in transparent deployments or in small networks where administrator manages IP or MAC addresses manually.</p>
+{% endblock %}
+
+
+{% block page_content %}
+
+    <div class="box">
+
+        {% if is_pfsense %}
+            On pfSense, authentication settings in this UI are disabled and hidden as this needs to be completely managed by pfSense UI.
+        {% else %}
+
+            <h4>
+                <a href="{% url 'ViewAuthPseudoEdit' %}">Active Directory Inspector</a>                 
+                {%if authpseudoad.enable %}
+                    <span class="badge badge-blue pull-right">Activated</span>
+                {% else %}
+                    <span class="badge pull-right">Inactive</span>
+                {%endif%}
+            </h4>
+            <p>Active Directory Inspector authenticator allows administrator to automatically map IP addresses of browsers connecting through the proxy to user names. If enabled, UI periodically connects to any Active Directory Inspector server that administrator installs on a domain controller within the network and maps IP address provided by Squid to user name. See <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/active_directory/index.html">online documentation</a> for more information.</p>
+            <p>&nbsp;</p>
+
+            <h4>
+                <a id="auth_mode_user_labelling" href="{% url 'ViewAuthLabelEdit' %}">User Labelling</a>
+                {%if authlabel.enable %}
+                    <span class="badge badge-blue pull-right">Activated</span>
+                {% else %}
+                    <span class="badge pull-right">Inactive</span>
+                {%endif%}
+            </h4>
+            <p>It is also possible to manually assign user names to IP addresses or MAC addresses of the devices connecting to proxy. This scenario is only usable in small (home) networks where IPs and MAC addresses are known to the the administrator and proxy users do not roam among devices.</p>
+            <p>&nbsp;</p>  
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

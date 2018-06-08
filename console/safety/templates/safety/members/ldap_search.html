@@ -1,0 +1,67 @@
+{% extends 'safety/members/index.html' %}
+
+{% block toolbar_member_ldap %}class="active"{%endblock%}
+
+    {% block member_heading%}{%endblock%}
+{% block member_content %}
+
+
+    
+        <p>Please type the user name to search for, select the Active Directory security group to 
+           search this user in and press the <em>Perform LDAP Search</em> button.</p>
+        
+        <form action="" method="GET" class="form-horizontal">     
+            {% csrf_token %}    
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox inline"><input id="id_all" name="all" value="1" type="checkbox" checked> Search in all groups configured in this policy. Clear this checkbox to search only in the selected group below.</label>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label" for="id_group">Group Name</label>
+                <div class="controls">                
+                    <select class="span6" id="id_group" name="group" {% if not groups %}disabled{%endif%}>
+                    {% for group in groups %}
+                        <option value="{{group.pk}}" {% if group.pk == selected_group_pk %}selected{% endif %}>{{group.name}}</option>                    
+                    {% endfor %}
+                    </select>
+                    <span class="help-block">Select Active Directory group to search user in.</span>
+                </div>
+            </div>
+            <div class="control-group ">
+                <label class="control-label" for="id_user">User Name</label>
+                <div class="controls">                
+                    <input id="id_user" maxlength="200" name="user" type="text" value="{{selected_user}}" class="span6" {% if not groups %}disabled{%endif%}>
+                    <span class="help-block">User name should be in a format that Squid publishes in its <a href="{% url 'ViewAccessLog' %}">access log</a> when authentication is enabled. For example if you have enabled Kerberos authentication for Active Directory user name will usually look like <em>user@example.lan</em>.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls">                
+                    <div class="btn-group"><button type="submit" name="action" value="seach" class="btn btn-primary" {% if not groups %}disabled{%endif%}>Perform LDAP Search</button></div> 
+                    <div class="btn-group"><a class="btn btn-default" href="{% url 'ViewMemberLdapList' policy.pk %}">Cancel</a></div>
+                </div>
+            </div>
+        </form>
+        
+        {% if search_result %}
+            <style type="text/css">
+                .wrapit {
+                    white-space: pre-wrap;
+                }
+            </style>
+            {% if search_result.result %}
+                <div class="alert alert-success">
+                <h3>LDAP Search Successful</h3>
+                <pre class="wrapit">{{search_result.output}}</pre>
+                </div>
+            {% else %}
+                <div class="alert alert-error">
+                <h3>LDAP Search Failed</h3>
+                <pre class="wrapit">{{search_result.error}}{{search_result.output}}</pre>
+                </div>
+            {% endif %}
+            
+        {% endif %}
+    
+{% endblock %}

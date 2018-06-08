@@ -1,0 +1,43 @@
+{% extends 'node/timezone/index.html' %}
+
+{% block content %}
+
+    {% if reboot.required %}
+        <div class="alert alert-error"><strong>Warning</strong>: Configured time zone <em>{{reboot.configured_tz}}</em> is different from time zone used by some running processes <em>{{reboot.running_tz}}</em>. This usually happens when you set a new time zone. You need to reboot the system to force all processes to use only configured time zone.
+        </div>  
+    {% endif %}
+
+    {% if reboot.error %}
+        <div class="alert alert-error"><strong>Warning</strong>: Cannot check configured and running time zones. Error <em>{{reboot.error_msg}}</em>.</div>  
+    {% endif %}
+
+    <p>When filtering HTTPS traffic it is very important to have correct date, time and time zone settings on your proxy box. Current time and time zone is used in web filtering when matching policy schedules, mimicked HTTPS certificate generation, Active Directory Kerberos authentication and a lot of other places.</p>
+    <p>&nbsp;</p>
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR</strong>: 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+        <div class="control-group {% if form.value.errors %}error{%endif%}">
+            <label class="control-label" for="id_value">Current Time Zone</label>
+            <div class="controls">
+                {{form.value}}
+                {% if form.value.errors %}
+                    <span class="help-block">{{form.value.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify here the time zone your proxy is deployed in. For example <em>Europe/Amsterdam</em>. Please note, changing time zone affects all running processes and requires full system restart.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+    </form>
+{% endblock %}

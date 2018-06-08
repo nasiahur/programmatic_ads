@@ -1,0 +1,42 @@
+{% extends 'squid/auth/localdb.html' %}
+
+{% block auth_localdb_users %}class="active"{%endblock%}
+
+
+{% block tab_content %}
+
+
+	<section class="container">
+		<div class="box">
+			<div class="alert"><strong>Warning!</strong> Current local users database file <em>/opt/websafety/etc/users.htpasswd</em> will be replaced with the imported one.</div>
+
+			{% if form.non_field_errors %}
+	        <div class="alert alert-error">
+	        	<p><strong>Cannot Upload Local User Database file!</strong><p>
+	        	<p>
+	            {% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}
+	            </p>
+	        </div>  
+	        {% endif %}
+
+	        <form enctype="multipart/form-data" class="form-horizontal" method="POST">
+				{% csrf_token %}
+				<div class="control-group {% if form.file.errors %}error{%endif%}">
+					<div class="controls">
+						<input type="file" name="file" id="id_file">
+						<span class="help-block"><p>Browse to your local users database file in <em>htpasswd</em> format and click <em>Import File</em> button.</p></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn btn-primary">Import File</button>
+						<a class="btn" href="{% url 'ViewAuthLocalDbUsersList' %}">Cancel</a>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</section>
+</div>
+    
+{% endblock %}

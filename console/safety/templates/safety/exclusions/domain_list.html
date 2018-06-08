@@ -1,0 +1,9 @@
+{% extends 'safety/exclusions/list.html' %}
+
+{% block toolbar_exclusion_name %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>The following list contains domain names excluded from filtering. Click on the domain name to edit activation settings. Click <em>Add New</em> button to add new excluded domain. Click <em>Remove</em> button to remove domain from exclusion list.</p>{%endblock%}
+
+{% block addnew_href%}{% url 'ViewExclusionDomainCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExclusionDomainUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExclusionDomainUpdate' policy.pk object.pk %}{%endblock%}

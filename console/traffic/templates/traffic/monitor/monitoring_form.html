@@ -1,0 +1,22 @@
+{% extends 'traffic/monitor/monitor.html' %}
+{% block navbar_monitor %}class="active"{%endblock%}
+{% block leftbar_settings %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Monitor Settings</h2>
+
+    <p>Traffic information is periodically written to /opt/websafety/var/db/monitor.sqlite or local MySQL/MariaDB instance (as indicated in the <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/traffic_monitoring/index.html">documentation</a>). Only blocked requests/responses are written by default. Please ensure you have plenty of disk space and powerful CPU if monitoring of all requests/responses is desired.</p>
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_globals %}{%endblock%}><a href="{% url 'traffic:View_MonitoringUpdateGlobals' %}">Globals</a></li>
+            <li {% block toolbar_channels %}{%endblock%}><a href="{% url 'traffic:View_MonitoringUpdateChannels' %}">Channels</a></li>
+            <li {% block toolbar_smtp %}{%endblock%}><a href="{% url 'traffic:View_MonitoringUpdateSmtpConnector' %}">SMTP Connector</a></li>
+            <li {% block toolbar_advanced %}{%endblock%}><a href="{% url 'traffic:View_MonitoringUpdateAdvanced' %}">Advanced</a></li>            
+        </ul>  
+        <div class="box">
+            {% block page_content %}{% endblock %}
+        </div>
+    </section>   
+{% endblock %}

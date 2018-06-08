@@ -1,0 +1,77 @@
+{% extends 'traffic/report/report.html' %}
+
+{% block toolbar_daily %}class="active"{%endblock%}
+
+{% block report_name %}Daily Statistics{%endblock%}
+
+{% block banner %}
+    {% if meta.hits = 0 %}
+    <div class="alert alert-warning">Report generation script has not run yet. It usually runs every hour. If more than an hour has passed since the installation, please see the <a href="{% url 'View_ReportLog' %}">Report Upload Log</a> for possible errors or warnings.</div>
+    {% endif %}
+{% endblock %}
+
+{% block description %}<p>TODO - WRITE REPORT DESCRIPTION.</p>{%endblock%}
+
+{% block content %}
+
+    
+    
+    <table class="table table-condensed">
+        <tr>
+            <th width="40%">Count of</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Hits in Database</td>
+            <td>{{meta.hits}}</td>
+        </tr>
+        <tr>
+            <td>Domains Filtered</td>
+            <td>{{meta.hosts}}</td>
+        </tr>
+        <tr>
+            <td>IPs Filtered</td>
+            <td>{{meta.ips}}</td>
+        </tr>
+        <tr>
+            <td>Users Filtered</td>
+            <td>{{meta.users}}</td>
+        </tr>
+        <tr>
+            <td>Database Size</td>
+            <td>{{size}}</td>
+        </tr>
+        <tr>
+            <td>Size of Collected but not Processed Events</td>
+            <td>{{folder}} (events are processed and uploaded to this database every hour)</td>
+        </tr>
+    </table>
+    <p>&nbsp;</p>
+    
+    <table class="table table-condensed">
+        <tr>
+            <th>Day</th>
+            <th>Hits</th>
+            <th>IPs</th>
+            <th>Users</th>
+            <th>Domains</th>
+            <th>Size</th>
+            <th>Duration</th>
+        </tr>
+        {% for item in day_list %}
+        <tr>
+            <td><a href="/report/day/{{item.day|date:'Y-m-d'}}/">{{ item.day|date:'Y-m-d' }}</a></td>
+            <td>{{item.hits}}</td>
+            <td>{{item.ips}}</td>
+            <td>{{item.users}}</td>
+            <td>{{item.hosts}}</td>
+            <td>{{item.size}}</td>
+            <td>{{item.duration}}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7"><em>No data available</em></td></tr>
+        {% endfor %}
+    </table>
+    <p>&nbsp;</p>
+    
+{% endblock %}

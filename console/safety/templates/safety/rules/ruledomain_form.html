@@ -1,0 +1,11 @@
+{% extends 'safety/rules/ruledomainbase_form.html' %}
+
+{% block rule_desc%}<p>Block specific domains.</p>{%endblock%}
+
+{% block value_name%}Domain Name{%endblock%}
+{% block value_help%}Specify domain name access to which needs to be blocked. For example .quintolabs.com blocks access to quintolabs.com domain and all its subdomains. Please note wildcards are not supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleDomainList' policy.pk %}{%endblock%}

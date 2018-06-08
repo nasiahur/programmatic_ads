@@ -1,0 +1,434 @@
+{% extends 'safety/rules/rulecategorybase.html' %}
+
+{% block rule_desc %}<p>Dynamic categorization allows to classify requests and reponses in real time. Classification is done based on textual contents of response pages or request parameters.</p>{%endblock%}
+
+{% block rule_content %}
+
+    
+
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+
+    {% block member_heading%}{%endblock%}
+    
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="policy" value="{{policy.pk}}">
+
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.enabled}} Enable dynamic site categorization in real time.</label>
+            </div>
+        </div>
+        <div class="control-group {% if form.classify_type.errors %}error{%endif%}">
+            <label class="control-label" for="id_classify_type">Categorization Type</label>
+            <div class="controls">        
+                {{form.classify_type}}                
+                {% if form.classify_type.errors %}
+                    <span class="help-block">{{form.classify_type.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify what categories of sites are to be classified in real time. Default value is <em>Unknown and Untrusted Sites</em>, meaning that all sites with unknown and <a href="{% url 'ViewSettingsTrustedCategories' %}">untrusted categories</a> are classified.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.analyze_request}} Scan URL request parameters, remote site domain name and SNI (if available).</label>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.analyze_response}} Parse and detect textual contents in HTTP responses (HTML pages, JSON objects and plain text content).</label>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls">
+                The following dynamic categorization modules are available. More and more modules are added with each release of the application.<br>&nbsp;
+        </div>
+            <div class="controls">
+
+
+                <table class="table table-condensed table-striped table-hover">
+                <tr>
+                    <td>
+                        <label for="id_classify_adult_themes_sexuality" style="font-weight: normal;{% if not form.classify_adult_themes_sexuality.value %}color: #999;{%endif%}" class="checkbox">
+                            {{form.classify_adult_themes_sexuality}} Adult Themes / Sexuality
+                        </label>
+                    </td>
+                    
+                    <td>
+                        <label for="id_classify_drugs" style="font-weight: normal;{% if not form.classify_drugs.value %}color: #999;{%endif%}" class="checkbox">
+                            {{form.classify_drugs}} Drugs
+                        </label>
+                    </td>
+                    <td>
+                    	<!--
+                        <label for="id_classify_hate_discrimination_violence" style="font-weight: normal;{% if form.classify_hate_discrimination_violence.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_hate_discrimination_violence}} Hate / Discrimination / Violence
+                        </label>
+                    -->
+                    </td>
+                    <td>
+                    	<!--
+                        <label for="id_classify_proxy_anonymizer" style="font-weight: normal;{% if form.classify_proxy_anonymizer.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_proxy_anonymizer}} Proxy / Anonymizer
+                        </label>
+                        -->
+                    </td>
+                    
+                </tr>
+                
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_advertising" style="font-weight: normal;{% if form.classify_advertising.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_advertising}} Advertising
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_ecommerce_shopping" style="font-weight: normal;{% if form.classify_ecommerce_shopping.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_ecommerce_shopping}} E-Commerce / Shopping
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_health_medicine_fitness" style="font-weight: normal;{% if form.classify_health_medicine_fitness.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_health_medicine_fitness}} Health / Medicine / Fitness
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_real_estate_home_interior" style="font-weight: normal;{% if form.classify_real_estate_home_interior.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_real_estate_home_interior}} Real Estate / Home / Interior
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_alcohol_tobacco" style="font-weight: normal;{% if form.classify_alcohol_tobacco.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_alcohol_tobacco}} Alcohol / Tobacco
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_education_science_research" style="font-weight: normal;{% if form.classify_education_science_research.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_education_science_research}} Education / Science / Research
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_jobs_employment_career" style="font-weight: normal;{% if form.classify_jobs_employment_career.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_jobs_employment_career}} Jobs / Employment / Career
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_religious" style="font-weight: normal;{% if form.classify_religious.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_religious}} Religious
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_anime_manga_webcomic" style="font-weight: normal;{% if form.classify_anime_manga_webcomic.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_anime_manga_webcomic}} Anime / Manga / Webcomic
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_entertainment_humor_hobby" style="font-weight: normal;{% if form.classify_entertainment_humor_hobby.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_entertainment_humor_hobby}} Entertainment / Humor / Hobby
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_messaging_chat" style="font-weight: normal;{% if form.classify_messaging_chat.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_messaging_chat}} Messaging / Chat
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_search_engines" style="font-weight: normal;{% if form.classify_search_engines.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_search_engines}} Search Engines
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_arts_society_culture" style="font-weight: normal;{% if form.classify_arts_society_culture.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_arts_society_culture}} Arts / Society / Culture
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_expired_parked" style="font-weight: normal;{% if form.classify_expired_parked.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_expired_parked}} Expired / Parked Domains
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_movies" style="font-weight: normal;{% if form.classify_movies.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_movies}} Movies
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_social_networking" style="font-weight: normal;{% if form.classify_social_networking.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_social_networking}} Social Networking
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_automotive" style="font-weight: normal;{% if form.classify_automotive.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_automotive}} Automotive
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_fashion_beauty_cosmetics" style="font-weight: normal;{% if form.classify_fashion_beauty_cosmetics.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_fashion_beauty_cosmetics}} Fashion / Beauty / Cosmetics
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_music_radio" style="font-weight: normal;{% if form.classify_music_radio.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_music_radio}} Music / Radio
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_software_technology_hardware" style="font-weight: normal;{% if form.classify_software_technology_hardware.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_software_technology_hardware}} Software / Technology / Hardware
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_banking_insurance_finance" style="font-weight: normal;{% if form.classify_banking_insurance_finance.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_banking_insurance_finance}} Banking / Insurance / Finance
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_file_storage" style="font-weight: normal;{% if form.classify_file_storage.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_file_storage}} File Storage
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_network_infrastructure" style="font-weight: normal;{% if form.classify_network_infrastructure.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_network_infrastructure}} Network Infrastructure
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_sports" style="font-weight: normal;{% if form.classify_sports.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_sports}} Sports
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+                <!--
+                <tr>
+                    <td>
+                        <label for="id_classify_blogs_personal" style="font-weight: normal;{% if form.classify_blogs_personal.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_blogs_personal}} Blogs / Personal Sites
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_food_dining_restaurants" style="font-weight: normal;{% if form.classify_food_dining_restaurants.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_food_dining_restaurants}} Food / Dining / Restaurants
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_news_media" style="font-weight: normal;{% if form.classify_news_media.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_news_media}} News / Media
+                        </label>
+                    </td>
+                    <td>
+                        <label for="id_classify_television" style="font-weight: normal;{% if form.classify_television.value %}color: red;{%endif%}" class="checkbox">
+                            {{form.classify_television}} Television
+                        </label>
+                    </td>
+                </tr>
+                -->
+
+            <tr>
+                
+                <td>
+                	<label for="id_classify_nudity_pornography" style="font-weight: normal;{% if not form.classify_nudity_pornography.value %}color: #999;{%endif%}" class="checkbox">
+                        {{form.classify_nudity_pornography}} Nudity / Pornography
+                    </label>
+                	<!--
+                    <label for="id_classify_business_services_industry" style="font-weight: normal;{% if form.classify_business_services_industry.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_business_services_industry}} Business Services / Industry
+                    </label>
+                -->
+                </td>
+                <td>&nbsp;
+                	<!--
+                    <label for="id_classify_forums_message_boards" style="font-weight: normal;{% if form.classify_forums_message_boards.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_forums_message_boards}} Forums / Message Boards
+                    </label>
+                    -->
+                </td>
+            
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+
+                <!--
+                <td>
+                    <label for="id_classify_travel" style="font-weight: normal;{% if form.classify_travel.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_travel}} Travel
+                    </label>
+                </td>
+            -->
+            </tr>
+
+            <tr>
+                <td>
+                	<label for="id_classify_gambling" style="font-weight: normal;{% if not form.classify_gambling.value %}color: #999;{%endif%}" class="checkbox">
+                        {{form.classify_gambling}} Gambling
+                    </label>
+                    <!--
+
+                    <label for="id_classify_classifieds_auctions" style="font-weight: normal;{% if form.classify_classifieds_auctions.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_classifieds_auctions}} Classifieds / Auctions
+                    </label>
+                    -->
+                </td>
+            
+                <td>&nbsp;
+                    
+                </td>
+                
+                <td>
+                	<!--
+                    <label for="id_classify_p2p_file_sharing" style="font-weight: normal;{% if form.classify_p2p_file_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_p2p_file_sharing}} P2P File Sharing
+                    </label>
+                    -->
+                </td>
+                <td>
+                	<!--
+                    <label for="id_classify_user_tracking" style="font-weight: normal;{% if form.classify_user_tracking.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_user_tracking}} User Tracking Scripts and Beacons 
+                    </label>
+                    -->
+                </td>
+            
+            </tr>
+        
+
+<!--
+            <tr>
+                <td>
+                    <label for="id_classify_content_delivery_networks" style="font-weight: normal;{% if form.classify_content_delivery_networks.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_content_delivery_networks}} Content Delivery Networks
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_games" style="font-weight: normal;{% if form.classify_games.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_games}} Games
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_photo_sharing" style="font-weight: normal;{% if form.classify_photo_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_photo_sharing}} Photo Sharing
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_video_sharing" style="font-weight: normal;{% if form.classify_video_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_video_sharing}} Video Sharing
+                    </label>
+                </td>
+            </tr>
+-->
+<!--
+            <tr>
+                <td>
+                    <label for="id_classify_cracks_hacking_illegal" style="font-weight: normal;{% if form.classify_cracks_hacking_illegal.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_cracks_hacking_illegal}} Hacking, Cracking and Illegal Content
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_generic_non_categorized" style="font-weight: normal;{% if form.classify_generic_non_categorized.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_generic_non_categorized}} Generic / Non-categorized Sites 
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_politics" style="font-weight: normal;{% if form.classify_politics.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_politics}} Politics
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_weapons" style="font-weight: normal;{% if form.classify_weapons.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_weapons}} Weapons
+                    </label>
+                </td>
+            </tr>
+        -->
+        <!--
+
+            <tr>
+                <td>
+                    <label for="id_classify_dating" style="font-weight: normal;{% if form.classify_dating.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_dating}} Dating
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_government" style="font-weight: normal;{% if form.classify_government.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_government}} Government
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_portals" style="font-weight: normal;{% if form.classify_portals.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_portals}} Portals
+                    </label>
+                </td>
+                <td>
+                    <label for="id_classify_webmail" style="font-weight: normal;{% if form.classify_webmail.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.classify_webmail}} Web Mail
+                    </label>
+                </td>
+            </tr>
+        -->
+    </table>  
+
+                
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div> 
+                <div class="btn-group"><a href="{% url 'ViewRuleCategoryDynamic' policy.pk %}" class="btn">Cancel</a></div> 
+            </div>
+        </div>
+    </form>
+
+
+        
+
+{% endblock %}

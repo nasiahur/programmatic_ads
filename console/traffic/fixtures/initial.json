@@ -1,0 +1,52 @@
+[
+    { "model": "traffic.Traffic", "fields": {} },
+    { "model": "traffic.Reporter", "fields": {} },
+    { "model": "traffic.WsMgrd", "fields": {} },
+    { "model": "traffic.Monitoring", "fields": {} },
+
+    { "model": "traffic.Job", "fields": { 
+            
+            "name"          : "User Activities", 
+            "comments"      : "Complete list of activities for all users. Includes user names, visited domains and access time.",
+            "template_type" : "squid-user-activities",
+            "schedule_hour" : 2,
+            "schedule_min"  : 30
+        } 
+    },
+    { "model": "traffic.Job", "fields": { 
+            
+            "name"          : "Top Domains By Requests", 
+            "comments"      : "Domains with the most requests.",
+            "template_type" : "icap-domains-top-by-requests",
+            "schedule_hour" : 3,
+            "schedule_min"  : 0
+        } 
+    },
+    { "model": "traffic.Job", "fields": { 
+            
+            "name"          : "Top Users By Requests", 
+            "comments"      : "Users with the most requests.",
+            "template_type" : "icap-users-top-by-requests",
+            "schedule_hour" : 3,
+            "schedule_min"  : 30
+        } 
+    },
+    { "model": "traffic.Job", "fields": { 
+            
+            "name"          : "Top Policies By Requests", 
+            "comments"      : "Policies with the most requests.",
+            "template_type" : "icap-policies-top-by-requests",
+            "schedule_hour" : 4,
+            "schedule_min"  : 0
+        } 
+    },
+    { "model": "traffic.Job", "fields": { 
+            
+            "name"          : "User Search Queries", 
+            "comments"      : "User search queries in Google.",
+            "template_type" : "icap-users-search-queries",
+            "schedule_hour" : 4,
+            "schedule_min"  : 30
+        } 
+    }
+]

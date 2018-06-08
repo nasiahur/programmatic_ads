@@ -1,0 +1,4 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid runtime information retrieved using <em>squidclient mgr:60min</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_60min %}class="active"{%endblock%}
+{% block pre_content %}{{client.min60_str}}{% endblock %}

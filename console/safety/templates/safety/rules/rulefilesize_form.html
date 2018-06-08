@@ -1,0 +1,48 @@
+{% extends 'safety/rules/rule.html' %}
+
+{% block toolbar_rule_file %}active{%endblock%}
+
+{% block rule_desc %}<p>Block files larger than specified number of bytes. Files are blocked by analyzing the <em>Content-Length</em> HTTP response header.</p>{%endblock%}
+
+{% block rule_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox inline">{{form.enable}} Prohibit downloading of files larger than the number of bytes specified below. Default value is off (i.e. all files are allowed).</label>                                   
+            </div>
+        </div>         
+        <div class="control-group {% if form.max_size.errors %}error{%endif%}">
+            <label class="control-label" for="id_max_size">Block Large Files</label>
+            <div class="controls">
+                <div class="input-append">
+                    <input id="id_max_size" class="span2" maxlength="512" name="max_size" size="60" type="text" value="{{form.max_size.value}}">
+                    <a class="btn" type="button" onclick="$('#id_max_size').val(1048576);"><i class="icon-magic"></i></a>
+                </div>
+                {% if form.max_size.errors %}
+                    <span class="help-block">{{form.max_size.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Files larger than specified maximum size in bytes will be blocked. Default value is 1048576 bytes (1 Mb). Minimum value is 4096 bytes (4Kb).</span>
+                {%endif%}
+            </div>
+        </div> 
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group">
+                    <button class="btn btn-primary">Save Changes</button>                
+                </div> 
+            </div>
+        </div>
+    </form>
+    
+        
+{% endblock %}

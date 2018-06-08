@@ -1,0 +1,347 @@
+{% extends 'traffic/report/report.html' %}
+
+{% block toolbar_templates %}class="active"{%endblock%}
+
+{% block 1page_comment %}<p>List of scheduled report jobs. </p>{% endblock %}
+{% block subheader %}<small> / Create or Edit a Report Job of Type <strong>{{type}}</strong></small>{%endblock%}
+
+{% block tab_content %}
+
+	<script>
+	    $(document).ready(function() {
+	        $('.datepicker').datepicker();
+	    });
+	</script>
+
+	<style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <div class="box">
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error"><strong>Failure</strong> - Cannot add new report job. Error -
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>
+        {% endif %}
+
+        <form class="form-horizontal" method="POST" id="new_report_job">
+            {% csrf_token %}
+
+            <input type="hidden" name="traffic" value="{{user.profile.traffic.pk}}">
+            <input type="hidden" name="template_type" value="{{type}}">
+
+
+            <!-- step 1 -->
+            <div id="myWizard" class="wizard">
+				<ul class="steps"><li data-target="#step1" class="active"><span class="badge badge-info">1</span>Name</li></ul>
+			</div>
+			<div class="step-content">
+				<div class="step-pane active" id="step1">
+					<div style="margin-top: 20px;">
+						<div class="control-group">
+			                <label class="control-label">&nbsp;</label>
+			                <div class="controls"><label class="checkbox inline">{{form.enabled}} Enable report job. Clear this checkbox to disable it. Disabled report job does not generate report and is only visible in the Web UI.</label>
+			                </div>
+			            </div>
+		                <div class="control-group {% if form.name.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Name</label>
+		                    <div class="controls">
+		                        {{form.name}}
+		                        {% if form.name.errors %}
+		                            <span class="help-block">{{form.name.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Each report job must have a unique name. The name can only contain ASCII characters and digits.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.comments.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Description</label>
+		                    <div class="controls">
+		                        {{form.comments}}
+		                        {% if form.comments.errors %}
+		                            <span class="help-block">{{form.comments.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Specify report description for your own use. This will be displayed as report subheader in the generated HTML or PDF.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.email.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_email">E-Mail report to</label>
+		                    <div class="controls">
+		                        {{form.email}}
+		                        {% if form.email.errors %}
+		                            <span class="help-block">{{form.email.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">If needed, specify here the list of e-mail addresses separated by comma to whom to send the generated report.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+	            	</div>
+				</div>
+			</div>
+
+			<!-- step 2 -->
+			<div id="myWizard" class="wizard">
+				<ul class="steps">
+					<li data-target="#step1" class="active"><span class="badge badge-info">2</span>Schedule</li>
+				</ul>
+			</div>
+			<div class="step-content">
+				<div class="step-pane active" id="step2">
+					<div style="margin-top: 30px;">
+						<!--
+		                <div class="control-group {% if form.schedule_type.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Run this job</label>
+		                    <div class="controls">
+		                        {{form.schedule_type}}
+		                        {% if form.schedule_type.errors %}
+		                            <span class="help-block">{{form.schedule_type.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Select if job is to be run manually or automatically on a periodic basis. In case job is manual the following fields are not used.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                -->
+		                <div class="control-group {% if form.schedule_min.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Minutes</label>
+		                    <div class="controls">
+		                        {{form.schedule_min}}
+		                        {% if form.schedule_min.errors %}
+		                            <span class="help-block">{{form.schedule_min.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Run the report job every N minutes of an hour. Default value is <em>*</em>. Possible values are 0 - 59. See the <a target="_new" href="https://help.ubuntu.com/community/CronHowto#Crontab_Sections">cron task manual</a> on how to set this value as you desire.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.schedule_hour.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Hours</label>
+		                    <div class="controls">
+		                        {{form.schedule_hour}}
+		                        {% if form.schedule_hour.errors %}
+		                            <span class="help-block">{{form.schedule_hour.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Run the report job every N hours of an day. Default value is <em>*</em>. Possible values are 0 - 23. See the <a target="_new" href="https://help.ubuntu.com/community/CronHowto#Crontab_Sections">cron task manual</a> on how to set this value as you desire.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.schedule_dom.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Day of Month</label>
+		                    <div class="controls">
+		                        {{form.schedule_dom}}
+		                        {% if form.schedule_dom.errors %}
+		                            <span class="help-block">{{form.schedule_dom.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Run the report job on the following day of month. Default value is <em>*</em>. Possible values are 0 - 31. See the <a target="_new" href="https://help.ubuntu.com/community/CronHowto#Crontab_Sections">cron task manual</a> on how to set this value as you desire.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.schedule_month.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Month</label>
+		                    <div class="controls">
+		                        {{form.schedule_month}}
+		                        {% if form.schedule_month.errors %}
+		                            <span class="help-block">{{form.schedule_month.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Run the report job on the following month. Default value is <em>*</em>. Possible values are 1 - 12. See the <a target="_new" href="https://help.ubuntu.com/community/CronHowto#Crontab_Sections">cron task manual</a> on how to set this value as you desire.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.schedule_dow.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Day of Week</label>
+		                    <div class="controls">
+		                        {{form.schedule_dow}}
+		                        {% if form.schedule_dow.errors %}
+		                            <span class="help-block">{{form.schedule_dow.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Run the report job on the following day of week. Default value is <em>*</em>. Possible values are 0 - 6. 0 means Sunday. See the <a target="_new" href="https://help.ubuntu.com/community/CronHowto#Crontab_Sections">cron task manual</a> on how to set this value as you desire.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+            		</div>
+				</div>
+			</div>
+
+			<!-- step 3 -->
+			<div id="myWizard" class="wizard">
+				<ul class="steps"><li data-target="#step1" class="active"><span class="badge badge-info">3</span>Parameters</li></ul>
+			</div>
+			<div class="step-content">
+				<div class="step-pane active" id="step3">
+					<div style="margin-top: 30px;">
+                		<div class="control-group {% if form.timeframe_type.errors %}error{%endif%}">
+	                    	<label class="control-label" for="id_value">Time Frame</label>
+		                    <div class="controls">
+		                        {{form.timeframe_type}}
+		                        {% if form.timeframe_type.errors %}
+		                            <span class="help-block">{{form.timeframe_type.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Report will include specific number of days/weeks/months. The actual number to include is specified below. It is possible to exactly specify the date interval to include.</span>
+		                        {%endif%}
+		                    </div>
+	                	</div>
+		                <div class="control-group {% if form.timeframe_value.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Time Frame Value</label>
+		                    <div class="controls">
+		                        {{form.timeframe_value}}
+		                        {% if form.timeframe_value.errors %}
+		                            <span class="help-block">{{form.timeframe_value.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">The actual number of days/weeks/months to be included into report (see above). Please note having a higher number of months here might mean your monitoring database will be overloaded when generating the report.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.timeframe_from.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Date From</label>
+		                    <div class="controls">
+		                        <div class="input-append">
+		                            {{form.timeframe_from}}
+		                        </div>
+		                        {% if form.timeframe_from.errors %}
+		                            <span class="help-block">{{form.timeframe_from.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Include only records starting from the specified date into report. Valid only if 'Specific date interval' is selected as time frame. Must be lower than Date To.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.timeframe_to.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Date To</label>
+		                    <div class="controls">
+		                        {{form.timeframe_to}}
+		                        {% if form.timeframe_to.errors %}
+		                            <span class="help-block">{{form.timeframe_to.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Include only records up to and including the specified date into report. Valid only if 'Specific date interval' is selected as time frame. Must be higher than Date From.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.include_current.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Include Current Date</label>
+		                    <div class="controls">
+		                        {{form.include_current}}
+		                        {% if form.include_current.errors %}
+		                            <span class="help-block">{{form.include_current.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Specifies if the current date needs to be included when generating the <em>Last N</em> types of reports.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.limit_n_entries.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Limit Records To</label>
+		                    <div class="controls">
+		                        {{form.limit_n_entries}}
+		                        {% if form.limit_n_entries.errors %}
+		                            <span class="help-block">{{form.limit_n_entries.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Specifies what number of top records is to be included into report.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+		                <div class="control-group {% if form.limit_n_drilldown.errors %}error{%endif%}">
+		                    <label class="control-label" for="id_value">Limit Drill Down To</label>
+		                    <div class="controls">
+		                        {{form.limit_n_drilldown}}
+		                        {% if form.limit_n_drilldown.errors %}
+		                            <span class="help-block">{{form.limit_n_drilldown.errors|striptags}}</span>
+		                        {% else %}
+		                            <span class="help-block">Specifies what number of records is to be included into drill down section of report.</span>
+		                        {%endif%}
+		                    </div>
+		                </div>
+            		</div>
+				</div>
+			</div>
+
+			<!-- step 4 -->
+            <div id="myWizard" class="wizard">
+				<ul class="steps"><li data-target="#step4" class="active"><span class="badge badge-info">4</span>Inclusions</li></ul>
+			</div>
+			<div class="step-content">
+				<div class="step-pane active" id="step4">
+					<div style="margin-top: 30px;">
+						<div class="control-group {% if form.include_domains.errors %}error{%endif%}">
+	                        <label class="control-label" for="id_value">Include Domains</label>
+	                        <div class="controls">
+	                            {{form.include_domains}}
+	                            {% if form.include_domains.errors %}
+	                                <span class="help-block">{{form.include_domains.errors|striptags}}</span>
+	                            {% else %}
+	                                <span class="help-block">Specify what domain names are to be included into report. Empty value equals *. Separate entries with comma.</span>
+	                            {%endif%}
+	                        </div>
+	                    </div>
+	                    <div class="control-group {% if form.include_users.errors %}error{%endif%}">
+	                        <label class="control-label" for="id_value">Include Users</label>
+	                        <div class="controls">
+	                            {{form.include_users}}
+	                            {% if form.include_users.errors %}
+	                                <span class="help-block">{{form.include_users.errors|striptags}}</span>
+	                            {% else %}
+	                                <span class="help-block">Specify what user names are to be included into report. Empty value equals *. Separate entries with comma.</span>
+	                            {%endif%}
+	                        </div>
+	                    </div>
+	                    <div class="control-group {% if form.include_ips.errors %}error{%endif%}">
+	                        <label class="control-label" for="id_value">Include IPs</label>
+	                        <div class="controls">
+	                            {{form.include_ips}}
+	                            {% if form.include_ips.errors %}
+	                                <span class="help-block">{{form.include_ips.errors|striptags}}</span>
+	                            {% else %}
+	                                <span class="help-block">Specify what user IPs are to be included into report. Empty value equals *. Separate entries with comma.</span>
+	                            {%endif%}
+	                        </div>
+	                    </div>
+	                    <div class="control-group {% if form.include_policies.errors %}error{%endif%}">
+	                        <label class="control-label" for="id_value">Include Policies</label>
+	                        <div class="controls">
+	                            {{form.include_policies}}
+	                            {% if form.include_policies.errors %}
+	                                <span class="help-block">{{form.include_policies.errors|striptags}}</span>
+	                            {% else %}
+	                                <span class="help-block">Specify what policies are to be included into report. Empty value equals *. Separate entries with comma.</span>
+	                            {%endif%}
+	                        </div>
+	                    </div>
+	                    <!--
+	                    <div class="control-group {% if form.include_categories.errors %}error{%endif%}">
+	                        <label class="control-label" for="id_value">Include Categories</label>
+	                        <div class="controls">
+	                            {{form.include_categories}}
+	                            {% if form.include_categories.errors %}
+	                                <span class="help-block">{{form.include_categories.errors|striptags}}</span>
+	                            {% else %}
+	                                <span class="help-block">Specify what categories are to be included into report. Empty value equals *. Separate entries with comma.</span>
+	                            {%endif%}
+	                        </div>
+	                    </div>
+	                    -->
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+                <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>
+                <div class="btn-group"><a href="{% url 'traffic:ViewReportTemplates' %}" class="btn">Cancel</a></div>
+            </div>
+
+			</form>
+    </div>
+
+    <script type="text/javascript">
+	    $('#myWizard').on('finished', function(e, data) {
+	    	$("#new_report_job").submit();
+	  		console.log('finished');
+		});
+    </script>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'safety/exclusions/form.html' %}
+
+{% block toolbar_exclusion_subnet %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>Disable filtering on the remote servers from specific IP address subnet. Please note, Web Safety does not do the reverse DNS lookup of the domain names, it just sees if the domain is specified as IP address and if yes, applies exclusions specified.</p>{%endblock%}
+
+{% block value_name%}Domain IP Subnet{%endblock%}
+{% block value_help%}Specify domain IP subnet to exclude from filtering. Sample value for IP subnet is 10.0.0.0/24{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExclusionSubnetList' policy.pk %}{%endblock%}

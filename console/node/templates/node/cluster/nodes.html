@@ -1,0 +1,44 @@
+{% extends 'node/cluster/index.html' %}
+
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+
+{% block toolbar_nodes %}class="active"{%endblock%}
+
+{% block clustering_content %}
+
+    {% if nodes.error %}
+        <div class="alert alert-error"><strong>ERROR</strong>: {{nodes.desc}}</div>  
+    {% else %}
+        <p>List of connected cluster nodes.</p>
+
+        <table class="table table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>Config Version</th>
+                <th>Time</th>
+                <th>Host</th>                
+                <th>Product Version</th>
+                <th>IP Address</th>
+                <th>OS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in nodes.items %}
+                <tr>
+                    <td>{{item.config_version}}</td>
+                    <td>{{item.timestamp}}</td>
+                    <td>{{item.hostname}}</td>
+                    <td>{{item.product_version}}</td>
+                    <td>{{item.ip}}</td>
+                    <td>{{item.os}}</td>
+                </tr>
+            {% empty %}
+                <tr class="warning"><td colspan="6"><em>No connected cluster nodes found</em></td></tr>
+            {% endfor %}
+        </tbody>
+        </table>
+
+    {% endif %}
+
+
+{% endblock %}

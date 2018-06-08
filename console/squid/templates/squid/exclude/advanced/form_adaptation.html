@@ -1,0 +1,26 @@
+{% extends 'squid/exclude/advanced/form.html' %}
+
+{% block header_subtab %} / ICAP and eCAP Web Filter{% endblock %}
+
+
+{% block advanced_value_control%}
+
+	<div class="control-group {% if form.value_adaptation.errors %}error{%endif%}">
+        <label class="control-label" for="id_value_adaptation">&nbsp;</label>
+        <div class="controls">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#id_value_adaptation").addClass("input-block-level");
+               });
+            </script>
+            {{form.value_adaptation}}                
+            {% if form.value_adaptation.errors %}
+                <span class="help-block">{{form.value_adaptation.errors|striptags}}</span>
+            {% else %}
+                <span class="help-block">Specify here raw Squid ACLs for ICAP and eCAP web filter and anti virus. See Squid's <a target="_new" href="http://www.squid-cache.org/Doc/config/acl/">online documentation</a> for more information. The contents of this field will be written to squid.conf as-is so please be careful.</span>
+            {%endif%}
+        </div>
+    </div>
+{%endblock%}
+
+

@@ -1,0 +1,31 @@
+{% extends 'safety/support/application.html' %}
+{% block toolbar_system %}class="active"{%endblock%}
+{% block content %}
+
+
+	<div class="box">  
+
+    <div class="alert{% if info.need_to_upgrade == 0 %} alert-success{% elif info.need_to_upgrade == 1 %}{% elif info.need_to_upgrade == 2 %} alert-info{% elif info.need_to_upgrade == 3 %} alert-error{% endif %}"
+        >
+            {% if info.need_to_upgrade == 0 %}Your build version of Web Safety ICAP web filter is up-to-date.
+            {% elif info.need_to_upgrade == 1 %}A new build is available on <a data-toggle="tooltip" data-placement="right" title="{{info.whats_new}}" target="_new" href="https://www.diladele.com/">diladele.com</a>. Please upgrade only if you have any issues. Otherwise continue running the current build.
+            {% elif info.need_to_upgrade == 2 %}A new build is available on <a data-toggle="tooltip" data-placement="right" title="{{info.whats_new}}" target="_new" href="https://www.diladele.com/">diladele.com</a>. Please consider upgrading when time permits.
+            {% elif info.need_to_upgrade == 3 %}Your version is out-of-date. <a data-toggle="tooltip" data-placement="right" title="{{info.whats_new}}" target="_new" href="https://www.diladele.com/">Strongly consider upgrading in the near future</a>.
+            {% else %}Cannot retrieve information about latest available version.
+            {%endif%}
+        </div>   
+    
+        <table class="table table-striped table-condensed table-hover">        
+            <tr><td width="20%"><strong>Product Name</strong></td><td>{{info.product_name}}</td></tr>
+            <tr><td width="20%"><strong>ETC_DIR</strong></td><td>{{WEBSAFETY_ETC_DIR}} (size is {{WEBSAFETY_ETC_DIR_SIZE | filesizeformat  }})</td></tr>
+            <tr><td width="20%"><strong>VAR_DIR</strong></td><td>{{WEBSAFETY_VAR_DIR}} (size is {{WEBSAFETY_VAR_DIR_SIZE | filesizeformat  }})</td></tr>
+            <tr><td width="20%"><strong>BIN_DIR</strong></td><td>{{WEBSAFETY_BIN_DIR}} (size is {{WEBSAFETY_BIN_DIR_SIZE | filesizeformat  }})</td></tr>
+            <tr><td width="20%"><strong>SYSTEM / ARCH / DISTRIB</strong></td><td>{{WEBSAFETY_SYSTEM}} / {{WEBSAFETY_ARCH}} / {{WEBSAFETY_DISTRIB}}</td></tr>            
+            <tr><td width="20%"><strong>BUILD NUMBER</strong></td><td>{{WEBSAFETY_VERSION}}</td></tr>
+            <tr><td width="20%"><strong>Stable Version on Site</strong></td><td>{{info.latest_version}}</td></tr>            
+            
+        </table> 
+
+              
+    </div>
+{% endblock %}

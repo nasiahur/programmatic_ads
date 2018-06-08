@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block navigation %}
+    
+    <nav id="left-panel">
+        <div id="left-panel-content">
+            <ul>
+                <li {% block leftbar_dash %}{%endblock%}>
+                    <a href="{% url 'node:ViewDashboard' %}"><span class="icon-dashboard"></span>Dashboard</a>
+                </li>                
+                <li {% block leftbar_license %}{%endblock%}>
+                    <a href="{% url 'node:ViewLicense' %}"><span class="icon-key"></span>License</a>
+                </li>
+                {% if node.can_manage_network %}
+                <li {% block leftbar_timezone %}{%endblock%}>
+                    <a href="{% url 'node:ViewTimeZone' %}"><span class="icon-time"></span>Timezone</a>
+                </li>                
+                <li {% block leftbar_hostname %}{%endblock%}>
+                    <a href="{% url 'node:ViewHostName' %}"><span class="icon-hdd"></span>Hostname</a>
+                </li>                
+                <li {% block leftbar_network %}{%endblock%}>
+                    <a href="{% url 'node:ViewNetworkDeviceList' %}"><span class="icon-sitemap"></span>Network</a>
+                </li>                
+                {% endif %}
+                <li {% block leftbar_cluster %}{%endblock%}>
+                    <a href="{% url 'node:ViewClusterServer' %}"><span class="icon-exchange"></span>Config Sync</a>
+                </li>
+                <li {% block leftbar_tools %}{%endblock%}>
+                    <a href="{% url 'node:ViewDataChoices' %}"><span class="icon-wrench"></span>Tools</a>
+                </li>
+            </ul>
+        </div>
+        <div class="icon-caret-down"></div>
+        <div class="icon-caret-up"></div>
+    </nav>    
+{% endblock %}
+

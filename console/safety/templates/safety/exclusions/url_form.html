@@ -1,0 +1,13 @@
+{% extends 'safety/exclusions/form.html' %}
+
+{% block toolbar_exclusion_uri %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>Disables filtering for the URLs matching Perl style regular expressions. Please note, having way too many regular expressions here is inefficient in terms of CPU processing power so consider creating a "relaxed" policy for users who need non filtered access to the Internet and put the unfiltered domains or subdomains there.</p>{%endblock%}
+
+{% block value_name%}Request URL{%endblock%}
+{% block value_help%}Specify regular expression for request URL{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExclusionUrlList' policy.pk %}{%endblock%}

@@ -1,0 +1,9 @@
+{% extends 'safety/members/list.html' %}
+
+{% block toolbar_member_ip %}class="active"{%endblock%}
+
+{% block member_heading%}<p>The following list contains members of policy designated by IP address (both IPv4 and IPv6).</p>{%endblock%}
+
+{% block addnew_href%}{% url 'ViewMemberIpCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewMemberIpUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewMemberIpUpdate' policy.pk object.pk %}{%endblock%}

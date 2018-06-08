@@ -1,0 +1,23 @@
+{% extends 'safety/subscriptions/settings.html' %}
+
+{% block toolbar_subscriptions %}class="active"{%endblock%}
+
+{% block settings_content %}
+
+    <ul class="nav nav-tabs" id="myTab">
+        <li {% block toolbar_subscriptions_adblock %}{%endblock%}><a href="{% url 'ViewSubscriptionsAdBlock' %}">Block Advertisements</a></li>
+        <li {% block toolbar_subscriptions_privacy %}{%endblock%}><a href="{% url 'ViewSubscriptionsPrivacy' %}">Block Annoyances</a></li>
+        <li {% block toolbar_subscriptions_custom_categories %}{%endblock%}><a href="{% url 'ViewCustomCategories' %}">Third Party Block Lists</a></li>
+        <li {% block toolbar_subscriptions_advanced %}{%endblock%}><a href="{% url 'ViewSubscriptionsAdvanced' %}">Advanced</a></li>
+    </ul>
+    
+    {% block subscriptions_desc %}{%endblock%}
+        
+    <div class="tab-content" id="myTabContent" style="margin-bottom: 10px;">
+        <div class="tab-pane fade in active" id="home">
+            <div class="box">    
+                {% block subscriptions_content %}{%endblock%}    
+            </div>        
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'safety/exclusions/list.html' %}
+
+{% block toolbar_exclusion_uri %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>The following list contains regular expressions for HTTP/HTTPS request URLs to be excluded from filtering. Click on the URL to edit exclusion settings for it. Click <em>Add New</em> button to add new excluded URL regular expression. Click <em>Remove</em> button to remove URL regular expression from exclusion list.</p>{%endblock%}
+
+{% block addnew_href%}{% url 'ViewExclusionUrlCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExclusionUrlUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExclusionUrlUpdate' policy.pk object.pk %}{%endblock%}

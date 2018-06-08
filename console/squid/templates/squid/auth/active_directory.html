@@ -1,0 +1,32 @@
+{% extends 'squid/auth/base.html' %}
+
+{% block title %}Active Directory Authentication{% endblock %}
+
+{% block page_comment %}
+
+    <p style="margin-bottom: 15px;">
+        {% if is_pfsense %}
+            On pfSense, authentication settings in this UI are disabled and hidden as this needs to be completely managed by pfSense UI. Web Safety only needs configured LDAP settings to match authenticated user name to a given policy.
+        {% else %}            
+    	   Active Directory authentication allows Squid to limit access to proxy based on user names and security groups stored in Microsoft AD. It is possible to authenticate to AD using Kerberos, NTLM and/or Basic LDAP authentication schemes. Please <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/active_directory/index.html">consult online documentation</a> before configuring these settings.
+        {% endif%}
+    </p>
+
+{% endblock %}
+
+{% block base_contents %}
+
+	<section class="row-fluid">		
+		<ul class="nav nav-pills" id="myTab">
+            <li {% block auth_ad_general %}{%endblock%}><a href="{% url 'ViewAuthDomainEdit' %}">LDAP Integration</a></li>
+            {% if not is_pfsense %}
+                <li {% block auth_ad_scheme_krb5 %}{%endblock%}><a href="{% url 'ViewAuthNegotiateSchemeEdit' %}">Kerberos</a></li>
+                <li {% block auth_ad_scheme_ntlm %}{%endblock%}><a href="{% url 'ViewAuthNtlmSchemeEdit' %}">NTLM</a></li>
+                <li {% block auth_ad_scheme_ldap %}{%endblock%}><a href="{% url 'ViewAuthLdapSchemeEdit' %}">LDAP</a></li>
+                <li {% block auth_ad_groups %}{%endblock%}><a href="{% url 'ViewAuthGroupMembershipEdit' %}">Group Membership</a></li>
+            {% endif %}
+        </ul>
+        {%block tab_content %}{%endblock%}
+	</section>
+    
+{% endblock %}

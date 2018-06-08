@@ -1,0 +1,38 @@
+{% extends 'safety/rules/rule.html' %}
+
+{% block toolbar_rule_annoyances %}class="active"{%endblock%}
+
+{% block rule_desc %}{%endblock%}
+
+{% block rule_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
+        <div class="control-group">     
+            <div class="controls">       
+                <label class="checkbox inline">{{form.block_ads}} Block excessive web advertisements. Block requests for well-known web ads and ad networks. Block flash and introductory ads in YouTube.</label>                                           
+            </div>
+        </div>         
+        <div class="control-group">            
+            <div class="controls">
+                <label class="checkbox inline">{{form.protect_privacy}} Block online annoyances and privacy trackers. Block requests for well known tracking networks, privacy exposing scripts and behavioral data trackers.</label>                                               
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-group">
+                    <button class="btn btn-primary">Save Changes</button>                
+                </div> 
+            </div>
+        </div>
+    </form>
+        
+{% endblock %}

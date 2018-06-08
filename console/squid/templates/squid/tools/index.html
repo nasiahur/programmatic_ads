@@ -1,0 +1,22 @@
+{% extends 'squid/application.html' %}
+{% block navbar_tools %}class="active"{%endblock%}
+{% block contents %}
+
+    <h2>Tools</h2>
+    {% block page_comment %}{% endblock %}
+
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_upload %}{%endblock%}><a href="{% url 'ToolsUploadSquidFile' %}">Upload File</a></li>
+            <li {% block toolbar_wpad %}{%endblock%}><a href="{% url 'ToolsUploadWpad' %}">WPAD</a></li>
+            <li {% block toolbar_sslservertest %}{%endblock%}><a href="{% url 'ToolsSslServerTest' %}">SSL Server Test</a></li>
+        </ul>  
+        {% block non_box_contents %}
+        <div class="box">
+            {% block box_contents %}{% endblock %}
+        </div>
+        {% endblock %}
+    </section>
+
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% load staticfiles %}<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Logged Out</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <script src="{% static 'javascripts/1.3.0/adminflare-demo-init.min.js' %}" type="text/javascript"></script>
+
+    {% include "fonts.html" %}
+    
+    <script type="text/javascript">
+        // Include Bootstrap stylesheet 
+        document.write('<link href="/static/css/' + DEMO_ADMINFLARE_VERSION + '/' + DEMO_CURRENT_THEME + '/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" id="bootstrap-css">');
+        // Include AdminFlare stylesheet 
+        document.write('<link href="/static/css/' + DEMO_ADMINFLARE_VERSION + '/' + DEMO_CURRENT_THEME + '/adminflare.min.css" media="all" rel="stylesheet" type="text/css" id="adminflare-css">');
+        // Include AdminFlare page stylesheet 
+        document.write('<link href="/static/css/' + DEMO_ADMINFLARE_VERSION + '/pages.min.css" media="all" rel="stylesheet" type="text/css">');
+    </script>
+    
+    <script src="{% static 'javascripts/1.3.0/modernizr-jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'javascripts/1.3.0/adminflare-demo.min.js' %}" type="text/javascript"></script>
+
+    <!--[if lte IE 9]>
+        <script src="{% static 'javascripts/jquery.placeholder.min.js' %}" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('input, textarea').placeholder();
+            });
+        </script>
+    <![endif]-->
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            
+            var updateBoxPosition = function() {
+                $('#signin-container').css({
+                    'margin-top': ($(window).height() - $('#signin-container').height()) / 2
+                });
+            };
+            $(window).resize(updateBoxPosition);
+            setTimeout(updateBoxPosition, 50);
+            $("#theme_switcher").hide();
+        });
+    </script>
+</head>
+<body class="signin-page">
+    
+    <section id="signin-container" style="width: 400px;">
+        <a href="http://www.diladele.com/" title="Diladele Web Safety" target="_new" class="header" style="width: 350px;">
+            <img src="{% static 'images/af-logo-signin.png' %}" alt="Logged Out of Diladele Web Safety"/>
+            <span>Logged out of<br><strong>Diladele Web Safety</strong></span>
+        </a>
+        
+        <div class="alert alert-danger">
+            <p>You have been logged out. Please close the browser to improve security and prevent possible automatic logins.</p>
+        </div>  
+        <form role="form" action="{% url 'admin:index' %}" method="GET">
+            <div class="form-group">                            
+                {% csrf_token %}
+                <button id="login_again" type="submit" class="btn btn-primary btn-block" tabindex="4">Log In Again</button>  
+            </div>
+        </form>
+    </section>
+</body>
+</html>

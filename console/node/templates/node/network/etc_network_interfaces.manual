@@ -1,0 +1,4 @@
+#
+# additional manual configuration for network included from /etc/network/interfaces file (may be empty)
+#
+{{manual}}

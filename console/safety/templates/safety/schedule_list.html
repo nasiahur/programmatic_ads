@@ -1,0 +1,107 @@
+{% extends 'safety/policy.html' %}
+
+{% block toolbar_schedule %}class="active"{%endblock%}
+{% block policy_content %}
+
+    <p>Policy may be scheduled always or only at specific time intervals. If no schedules are configured then policy is always activated (unless <a href="{% url 'ViewAdvanced' policy.pk %}">not enabled</a>). Multiple schedules are processed one by one from top to bottom.</p>
+
+    <div class="box">    
+    
+        {% if policy.name == 'default' %}
+            <div class="alert alert-info"><p>Default filtering policy is used when proxy user can not be found in other policies so there is no need to configure schedule of the default policy. It is always switched on.</p></div>    
+        {% else %}
+
+            <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h3 id="myModalLabel" style="color: red;">Remove Selected Items</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Selected items will be removed. This is irreversible operation and cannot be undone. Please proceed only when absolutely necessary.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" onclick="javascript:$('form#object_list').submit();" >Remove Items</button>
+                    <button class="btn" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+            <!-- various jscript helpers to select / deselect items -->
+            <script type="text/javascript">
+                var selectAll = function () {
+                    $('.widget-messages input:not(:checked)').click();            
+                }, toggleSelection = function () {
+                    $checked = $('.widget-messages input:checked');
+                    $('.widget-messages input:not(:checked)').click();
+                    $checked.click();
+                }, unselectAll = function () {
+                    $('.widget-messages input:checked').click();
+                }, deleteMessages = function () {
+                    $('.widget-messages input:checked').parents('.message').remove();
+                }, removeSelected = function () {
+                    options = {}
+                    $('#myModal').modal(options)
+                };
+            </script>
+
+            <div class="non-collapsible widget-messages">
+                <div class="message-actions">
+                    <div class="btn-group">
+                        <a href="{% url 'ViewScheduleCreate' policy.pk %}" class="btn btn-primary btn-small">Add New</a>                            
+                    </div>
+                    <div style="margin: 0;" class="btn-toolbar pull-right">
+                        <div class="btn-group">
+                            <a class="btn btn-small" href="javascript:selectAll()">Select All</a>
+                            <button data-toggle="dropdown" class="btn btn-small dropdown-toggle"><i class="icon-caret-down"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:toggleSelection()">Toggle Selection</a></li>
+                                <li class="divider"></li>
+                                <li><a href="javascript:unselectAll()">Unselect All</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <a href="javascript:removeSelected()" class="btn btn-danger btn-small dropdown-toggle">Remove Selected</a>                    
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="POST" style="margin-bottom: 0px;" id="object_list">{% csrf_token %}
+                <table class="table table-hover table-condensed" style="margin-top: 20px;">
+                    {% if object_list %}
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th style="text-align: center;">Monday</th>                        
+                        <th style="text-align: center;">Tuesday</th>                        
+                        <th style="text-align: center;">Wednesday</th>                        
+                        <th style="text-align: center;">Thursday</th>                        
+                        <th style="text-align: center;">Friday</th>                        
+                        <th style="text-align: center;">Saturday</th>                        
+                        <th style="text-align: center;">Sunday</th>                        
+                        <th>Time Duration</th>                        
+                        </tr>
+                    </thead>
+                    {% endif %}
+                {% for object in object_list %}
+                    <tr>
+                        <td  style="border-top: none;"><input type="checkbox" value="{{object.pk}}" name="selected_id" style="margin-top: 0px;"> <a class="from" title="" href="{% block edit1_href%}{%endblock%}">{{object.value|truncatechars:30}}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_mon %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_tue %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_wed %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_thu %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_fri %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_sat %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;text-align: center;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{% if object.on_sun %}<i class="icon-ok"></i>{%endif%}</a></td>
+                        <td  style="border-top: none;"><a class="title" title="" href="{% url 'ViewScheduleUpdate' policy.pk object.pk %}">{{object.from_hours|stringformat:"02d"}}:{{object.from_mins|stringformat:"02d"}} - {{object.to_hours|stringformat:"02d"}}:{{object.to_mins|stringformat:"02d"}}</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td  style="border-top: none;" colspan="9"><small><em>No schedules are configured for this policy. It means the policy will be active always. If you need to activate policy only on specific time intervals, click Add New button to create new activation schedule.</em></small></td>
+                    </tr>
+                {% endfor %}  
+                </table>        
+                </form>
+            </div>
+                  
+        {% endif %}
+    </div>
+{% endblock %}

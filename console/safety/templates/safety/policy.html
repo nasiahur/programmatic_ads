@@ -1,0 +1,33 @@
+{% extends 'safety/application.html' %}
+
+{% block navbar_policies %}class="active"{%endblock%}
+
+{% block contents %}
+    
+    <h2>{{policy.name|title}}</h2>
+    <p>{{policy.advanced.comment}}</p>
+    
+    <section class="row-fluid">
+        <ul class="nav nav-tabs" id="toolbar">
+            <li {% block toolbar_rules %}{%endblock%}>
+                <a href="{% url 'ViewRuleAdult' policy.pk %}">Filtering Rules</a>
+            </li>
+            <li {% block toolbar_members %}{%endblock%}>
+                <a href="{% url 'ViewMemberNameList' policy.pk %}">Members</a>
+            </li>
+            <li {% block toolbar_exclusions %}{%endblock%}>
+                <a href="{% url 'ViewExclusionDomainList' policy.pk %}">Exclusions</a>
+            </li>
+            <li {% block toolbar_schedule %}{%endblock%}>
+                <a href="{% url 'ViewScheduleList' policy.pk %}">Schedule</a>
+            </li>
+            <li {% block toolbar_bypass %}{%endblock%}>
+                <a href="{% url 'ViewByPass' policy.pk %}">Blocked Page</a>
+            </li>
+            <li {% block toolbar_advanced %}{%endblock%}>
+                <a id="toolbar_advanced" href="{% url 'ViewAdvanced' policy.pk %}">Advanced</a>
+            </li>
+        </ul>  
+        {% block policy_content %}{% endblock %}
+    </section>        
+{% endblock %}

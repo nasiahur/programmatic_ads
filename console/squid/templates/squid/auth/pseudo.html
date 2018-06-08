@@ -1,0 +1,19 @@
+{% extends 'squid/auth/base.html' %}
+
+{% block title %}Active Directory Inspector <small><font color="red">Experimental Feature</font></small>{% endblock %}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">Active Directory Inspector authenticator allows administrator to automatically map IP addresses of browsers connecting through the proxy to user names. If enabled, UI periodically connects to any Active Directory Inspector server that administrator installs on a domain controller within the network and maps IP address provided by Squid to user name. See <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/proxy_authentication/index.html">online documentation</a> for more information.</p>
+{% endblock %}
+
+{% block base_contents %}
+
+	<section class="row-fluid">		
+		<ul class="nav nav-pills" id="myTab">
+            <li {% block auth_general %}{%endblock%}><a href="{% url 'ViewAuthPseudoEdit' %}">General</a></li>
+            <li {% block auth_users %}{%endblock%}><a id="tab_list_of_users" href="{% url 'ViewAuthPseudoList' %}">Available Users</a></li>            
+        </ul>
+        {%block tab_content %}{%endblock%}
+	</section>
+    
+{% endblock %}

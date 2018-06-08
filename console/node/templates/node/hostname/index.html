@@ -1,0 +1,20 @@
+{% extends 'node/application.html' %}
+
+{% block leftbar_hostname %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Host Name</h2>
+    <section class="row-fluid">
+        <!--
+        <ul class="nav nav-pills">
+        	<li class="active"><a href="{% url 'node:ViewTimeZone' %}">General</a></li>            
+        </ul>  
+        -->
+        {% block boxed_content %}
+            <div class="box">
+            	{% block content %}{% endblock %}	
+            </div>
+        {% endblock %}    
+    </section>        
+{% endblock %}

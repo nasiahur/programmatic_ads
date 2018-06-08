@@ -1,0 +1,19 @@
+{% extends 'node/application.html' %}
+
+{% block leftbar_network %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <h2>Network Settings{% block subtitle %}{% endblock %}</h2>
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+        	<li {% block toolbar_devices %}{%endblock%}><a href="{% url 'node:ViewNetworkDeviceList' %}">Devices</a></li>            
+            <li {% block toolbar_manual %}{%endblock%}><a href="{% url 'node:ViewNetworkManual' %}">Manual</a></li>
+        </ul>  
+        {% block boxed_content %}
+            <div class="box">
+            	{% block content %}{% endblock %}	
+            </div>
+        {% endblock %}    
+    </section>        
+{% endblock %}

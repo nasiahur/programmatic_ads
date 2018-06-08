@@ -1,0 +1,61 @@
+{% extends 'antivirus/settings/settings.html' %}
+
+{% block toolbar_mode %}class="active"{%endblock%}
+
+{% block page_comment %}    
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="box">
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+            <div class="control-group">
+                
+                    <label class="checkbox inline">{{form.enable}} Enable antivirus checking. Default value is <em>Off</em>. Ensure you have a modern CPU and decent amount of RAM of your server before enabling this setting.</label>
+            </div>  
+            <div class ="well">
+
+            <div class="control-group {% if form.av_type.errors %}error{%endif%}">
+                <label class="control-label" for="id_av_type">Antivirus Mode</label>
+                <div class="controls">  
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_av_type").addClass("input-xlarge");                        
+                       });
+                    </script>   
+                    {{form.av_type}}
+                    {% if form.av_type.errors %}
+                        <span class="help-block">{{form.av_type.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Antivirus checking on proxy may be implemented in two ways. Choose between eCAP ClamAV adapter (default) and third party ICAP server (requires manual installation). Then configure corresponding eCAP or ICAP settings on the next tabs. See <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/antivirus/index.html">online documentation</a> for more info.</span>
+                    {%endif%}
+                </div>
+            </div>   
+
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.bypass_to_localnet}} Never scan connections to IP addresses within local private LAN (RFC 1918). Default and recommended value is <em>On</em>.</label>
+                </div>
+            </div>                                
+        </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                     
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

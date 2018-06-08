@@ -1,0 +1,88 @@
+{% extends 'node/application.html' %}
+{% block leftbar_license %}class="active"{%endblock%}
+{% block contents %}
+
+
+    <!-- header -->
+    <h2>License Key Information</h2>
+
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <p><strong>Warning!</strong></p> 
+            <p>Cannot upload license key, errors: {% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}</p>
+            <pre>{{form.errors.traceback}}</pre>
+        </div>
+    {% endif %} 
+
+
+
+    {% if license.valid != "1" %}
+        <div class="alert alert-error">
+            <p><strong>Warning!</strong></p> 
+            <p>Your license key is not valid or expired. Web filtering is switched off. To enable web filtering you need to have a valid license key. <a target="new" href="https://www.diladele.com/licensing.html">Please get a valid license key from Diladele B.V.</a> and upload it to the application using the <em>Upload License Key</em> button below.</p>
+
+            <p><em>Technical information: {{error}}. {% if is_key %} Note: you might be uploading a 4.2 style license.key file. This version requires license.pem instead. Contact support@diladele.com to get it.{% endif %}</em></p>
+        </div>
+    {% endif %} 
+
+    <div class="box">  
+        <table class="table table-striped table-condensed table-hover">
+             <tr>
+                <td><strong>Your license key expires on</strong></td>
+                <td>{{license.expires}}</td>
+            </tr>
+            <tr>
+                <td><strong>Your license key expires within two weeks</strong></td>
+                <td>{%if license.expires_soon == "0"%}No{%else%}Yes. Please contact <a href="mailto:support@diladele.com">support@diladele.com</a> to renew the license.{%endif%}</td>
+            </tr>
+            <tr>
+                <td><strong>Days remaining till license expiration</strong></td>
+                <td>{{license.expires_in}}</td>
+            </tr>
+            <tr>
+                <td><strong>License key type</strong></td>
+                <td>{{license.type}}</td>
+            </tr>
+            <tr>
+                <td><strong>Registered to</strong></td>
+                <td>{{license.email}}</td>
+            </tr>
+            <tr>
+                <td><strong>Count of distinct filtered devices or proxy users per day</strong></td>
+                <td {% if filtered > maxcount %}style="color: red"{% endif %}>Maximum: {{license.user_count}}; Actual: {{filtered}}.
+                {% if filtered > maxcount %} You are violating the license! Please contact support@diladele.com.{%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>License scheme version</strong></td>
+                <td>{{license.version}}</td>
+            </tr>
+            <tr>
+                <td><strong>License key fingerprint</strong></td>
+                <td>{{license.fingerprint}}</td>
+            </tr>
+        </table> 
+
+        <form method="POST" class="form-horizontal" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="control-group {% if form.file.errors %}error{%endif%}">
+                <label class="control-label" for="id_file">Path to license.pem</label>
+                <div class="controls">
+                    {{form.file}}   
+                     {% if form.file.errors %}
+                        <span class="help-block">{{form.file.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Please browse to <em>license.pem</em> file you have received from Diladele B.V. and click <em>Upload License Key</em>. Do not forget to <a href="{% url 'frame:ApplyView' %}">Apply New Settings and Restart the ICAP server</a> afterwards.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Upload License Key</button>                            
+                    </div>
+                </div>
+        </form>
+
+    </div>
+{% endblock %}

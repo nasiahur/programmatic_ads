@@ -1,0 +1,43 @@
+{% extends 'safety/rules/rulecategorybase.html' %}
+
+{% block rule_desc %}<p>List of custom web site categories that are blocked in this policy. Set the checkbox to block a category and unset to allow. <a href="{% url 'ViewCustomCategories' %}">Click here to configure available custom categories</a>.</p>{%endblock%}
+
+{% block rule_content %}
+
+    {% if empty %}
+        <div class="alert alert-info">No custom categories configured. Click here to configure available custom categories.</div>        
+    {% else %}    
+    
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+        
+        <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+        <table class="table table-condensed table-striped table-hover">
+            {% for name, title, enable in categories %}
+                <tr>
+                    <td width="25%">
+                        {% if name %}
+                        <label for="{{name}}" style="font-weight: normal;{% if enable %}color: red;{%endif%}" class="checkbox">
+                            <input id="{{name}}" type="checkbox" name="{{name}}" {% if enable %}checked{%endif%}> {{title}}
+                        </label>
+                        {% else %}
+                        &nbsp;
+                        {% endif %}
+                    </td>                                    
+                </tr>
+            {% endfor %}
+        </table>  
+        <div class="form-group">
+            <div class="col-lg-4">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+        </form>
+    {% endif %}
+        
+{% endblock %}

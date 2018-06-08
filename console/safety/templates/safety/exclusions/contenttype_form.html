@@ -1,0 +1,13 @@
+{% extends 'safety/exclusions/form.html' %}
+
+{% block toolbar_exclusion_ctypes %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>Disables filtering of the responses with specific Content-Type. Exclusion of HTTP/HTTPS responses with content types such as image/gif, image/png, image/jpeg may lower the CPU usage of filtering server and make web browsing faster.</p>{%endblock%}
+
+{% block value_name%}Content Type{%endblock%}
+{% block value_help%}Specify content type of HTTP/HTTPS responses to be excluded from filtering. For example, to exclude GIF images add Content-Type exclusion with value image/gif{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExclusionContentTypeList' policy.pk %}{%endblock%}

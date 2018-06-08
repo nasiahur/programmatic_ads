@@ -1,0 +1,16 @@
+{% extends 'squid/exclude/form.html' %}
+
+{% block exclude_domain %}active{%endblock%}
+{% block header_tab %} / Domain Names{% endblock %}
+
+{% block page_comment %}
+<p>Connections to the following remote domains are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block value_name%}Domain Name{%endblock%}
+{% block value_help%}Specify domain name to add to exclusion list. Prefix a domain name with a . (dot) to exclude all subdomains. For example <em>.youtube.com</em> will match all subdomains of <em>youtube.com</em> (as well as top level <em>youtube.com</em> itself). Wildcards are not supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExcludeDomainNameList' %}{%endblock%}

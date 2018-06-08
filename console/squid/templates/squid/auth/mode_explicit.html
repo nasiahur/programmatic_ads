@@ -1,0 +1,65 @@
+{% extends 'squid/auth/index.html' %}
+
+{% block title %}Explicit Proxy Auth{% endblock %}
+
+{% block toolbar_auth_explicit %}class="active"{%endblock%}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">If explicit proxy authentication is enabled only authenticated users will be able to access the Internet through this proxy. Squid will request user credentials from the browser (using such single-sign-on schemes as Kerberos or NTLM or asking user to type valid login/password into popup box) as described in <a href="http://wiki.squid-cache.org/Features/Authentication" target="new">Squid Wiki article</a>. This type of authentication can be used in case of <em>explicit proxy deployment only</em>, when browser is configured to use the proxy.</p>
+{% endblock %}
+
+
+{% block page_content %}
+
+    <div class="box">
+
+        <h4>
+            <a href="{% url 'ViewAuthDomainEdit' %}">Active Directory Authentication</a> 
+            {% if not is_pfsense %}
+                {%if authad.ldap_enable or authad.ntlm_enable or authad.krb5_enable %}
+                    <span class="badge badge-blue pull-right">Activated</span>
+                {% else %}
+                    <span class="badge pull-right">Inactive</span>
+                {%endif%}
+            {%endif%}
+        </h4>
+        <p>            
+            {% if is_pfsense %}
+                On pfSense, authentication settings in this UI are disabled and hidden as this needs to be completely managed by pfSense UI. Web Safety only needs configured LDAP settings to match authenticated user name to a given policy.
+            {% else %}
+                Active Directory authentication allows Squid to limit access to proxy based on user names and security groups stored in Microsoft AD. It is possible to authenticate to AD using Kerberos, NTLM and/or Basic LDAP authentication schemes. 
+                
+                Please <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/active_directory/index.html">consult online documentation</a> before configuring these settings.
+            {% endif %}
+        </p>
+        <p>&nbsp;</p>
+
+
+        {% if not is_pfsense %}
+
+            <h4>
+                <a href="{% url 'ViewAuthLocalDbEdit' %}">Local User Authentication</a>
+                {%if authlocaldb.enable %}
+                    <span class="badge badge-blue pull-right">Activated</span>
+                {% else %}
+                    <span class="badge pull-right">Inactive</span>
+                {%endif%}
+            </h4>
+            <p>Local user authentication allows administrator to create a predefined list of users and passwords for this proxy. When a user tries to connect, a popup is presented with request to enter user credentials. Squid verifies the validity of provided credentials and allows or denies web access. This method of authentication is common in small networks with limited number of users.</p>
+            <p>&nbsp;</p> 
+
+            <h4>
+                <a id="auth_mode_radius" href="{% url 'ViewAuthRadiusEdit' %}">Radius Authentication</a>
+                {%if authradius.enable %}
+                    <span class="badge badge-blue pull-right">Activated</span>
+                {% else %}
+                    <span class="badge pull-right">Inactive</span>
+                {%endif%}
+            </h4>
+            <p>Radius authentication allows administrator to authenticate proxy users with help of external Radius server. When a user tries to connect, a popup is presented requiring him to enter his credentials. Squid sends provided credentials to configured Radius server and allows or denies web access based on the Radius response.</p>
+            <p>&nbsp;</p> 
+
+        {% endif %}
+    </div>
+
+{% endblock %}

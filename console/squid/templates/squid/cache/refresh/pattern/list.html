@@ -1,0 +1,12 @@
+{% extends 'squid/cache/refresh/list.html' %}
+
+{% block header_subtab %}{% endblock %}
+
+{% block page_comment %}<p>List of refresh patterns overriding default caching rules. Please take a look at <a href="http://www.squid-cache.org/Doc/config/refresh_pattern/" target="blank">Squid documentation</a> before changing anything.</p>{% endblock %}
+
+{% block addnew_href%}{% url 'ViewCacheRefreshPatternCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewCacheRefreshPatternUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewCacheRefreshPatternUpdate' object.pk %}{%endblock%}
+
+
+

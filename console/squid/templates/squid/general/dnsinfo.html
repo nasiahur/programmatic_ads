@@ -1,0 +1,4 @@
+{% extends 'squid/general/runtime.html' %}
+{% block page_comment %}<p>Squid DNS runtime information retrieved using <em>squidclient mgr:idns</em> is shown below.</p>{% endblock %}
+{% block toolbar_runtime_dnsinfo %}class="active"{%endblock%}
+{% block pre_content %}{{client.dnsinfo_str}}{% endblock %}

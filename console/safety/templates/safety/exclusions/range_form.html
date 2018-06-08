@@ -1,0 +1,13 @@
+{% extends 'safety/exclusions/form.html' %}
+
+{% block toolbar_exclusion_range %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>Disables filtering on the remote servers from specific IP address range. Please note, Web Safety does not do the reverse DNS lookup of the domain names.</p>{%endblock%}
+
+{% block value_name%}Domain IP Range{%endblock%}
+{% block value_help%}Specify domain IP range to exclude from filtering. Sample value for this member type is 192.168.1.70-192.168.1.100{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExclusionRangeList' policy.pk %}{%endblock%}

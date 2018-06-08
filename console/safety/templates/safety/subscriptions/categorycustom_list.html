@@ -1,0 +1,34 @@
+{% extends 'safety/subscriptions/subscriptions.html' %}
+
+{% block toolbar_subscriptions_custom_categories %}class="active"{%endblock%}
+
+{% block subscriptions_desc %}<p>The following list contains custom domain name categories. In order to create a new custom category, make a new folder in <em>/opt/websafety/var/spool/custom_categories</em> and within that folder create a file named <em>domains</em>. Put domain names belonging into this custom category in this file one domain name per line. Then select the desired policy and mark this category as blocked. Restart ICAP server afterwards.</p>{%endblock%}
+
+{% block subscriptions_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+    
+    <table class="table table-striped table-condensed table-hover">
+        <thead><tr><th>Custom Category</th><th>Folder</th><th>Size On Disk</th><th>Last Modified</th></tr></thead>
+        <tbody>
+            {% for item in object_list %}
+            <tr>
+                <td>{{item.title}}</td>
+                <td>{{item.dir}}</td>
+                <td>{{item.size|filesizeformat}}</td>
+                <td>{{item.modified}}</td>                
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="warning"><em>No custom categories found</em></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'node/tools/index.html' %}
+{% block leftbar_tools %}class="active"{%endblock%}
+
+{% block toolbar_restore %}class="active"{%endblock%}
+
+{% block box_contents %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <p><strong>Warning!</strong></p> 
+            <p>
+                Cannot restore configuration, errors: {% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %} 
+            </p>
+
+            <pre>{{form.errors.traceback}}</pre>
+        </div>
+    {% else %}
+        <div class="alert alert-error"><strong>Danger!</strong> Because of unsuccessful restore, your current configuration may be overwritten and completely lost, including Web UI user name and password. Do make a new backup before trying to restore. It might be required to manually do restore from console if unexpected error happens. It is also advisable to check the <em>Only Test Import</em> option first.</div>
+    {% endif %} 
+
+    <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="control-group {% if form.file.errors %}error{%endif%}">
+            <label class="control-label" for="id_file">Path to archive</label>
+            <div class="controls">
+                {{form.file}}   
+                 {% if form.file.errors %}
+                    <span class="help-block">{{form.file.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Please browse to the previously backed up configuration zip archive and click <em>Restore</em>. Also specify if you are restoring from the archive for an older version of the product.</span>
+                {%endif%}            
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Action</label>
+            <div class="controls">
+            	{% for action in form.action %}
+	            	<label for="{{ action.id_for_label }}" class="radio" {% if action.id_for_label == "id_action_2" %}style="color: red;"{%endif%}>
+	            		{{ action.tag }}
+				        {{ action.choice_label }}				        
+				    </label>
+				    {% if action.id_for_label == "id_action_1" %}
+				        	<div style="margin-left: 50px;">
+				        		<div class="row-fluid">
+                    				<div class="span12"><label class="checkbox inline">{{form.dryrun}} Only test import, do not actually write anything to the configuration database.</label></div>                    
+                				</div>                
+                				<div class="row-fluid">
+                    				<div class="span8"><label class="checkbox inline">{{form.restore_config}} Restore JSON configuration files at <em>/opt/websafety/etc</em> (recommended).</label></div>                    
+                				</div>
+                				<div class="row-fluid">
+                    				<div class="span8"><label class="checkbox inline">{{form.restore_htmls}} Restore customized access denied HTML templates from <em>/opt/websafety/etc/*.html</em>.</label></div>
+                				</div>
+                				<div class="row-fluid">
+                    				<div class="span8"><label class="checkbox inline">{{form.restore_lic}} Restore license key at <em>/opt/websafety/etc/license.pem</em>.</label></div>
+                				</div>
+                				<div class="row-fluid">
+                    				<div class="span12"><label class="checkbox inline">{{form.restore_certs}} Restore HTTPS decryption certificates (requires restart of Squid proxy daemon, not recommended)</label></div>                    
+                				</div>                             
+                				<div class="row-fluid">
+                    				<div class="span12"><label class="checkbox inline">{{form.restore_ad}} Restore Active Directory integration artifacts (Kerberos keytab, LDAPS certificate, etc (recommended).</label></div>                    
+                				</div>    
+                				   				
+            				</div>
+				    {% endif %}
+				{% endfor %}
+        	</div>
+        </div>
+        
+        <div class="control-group">
+            <div class="controls" style="margin-top: 10px;">
+            	<button type="submit" class="btn btn-danger">Execute</button>            	
+            </div>
+        </div>
+    </form>
+
+
+    
+
+{% endblock %}
+

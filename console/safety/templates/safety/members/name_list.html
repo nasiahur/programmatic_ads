@@ -1,0 +1,23 @@
+{% extends 'safety/members/list.html' %}
+
+{% block toolbar_member_name %}class="active"{%endblock%}
+
+{% block member_heading%}
+
+<p>
+    The following list contains members of policy designated by user name. 
+    Please note in order to be able to specify a given user as policy member
+    {% if is_pfsense %}
+        proxy authentication needs to be correctly configured in pfSense's Squid UI 
+    {% else %}
+        <a href="{% url 'ViewAuthExplicit' %}">proxy authentication</a> needs to be correctly configured 
+    {% endif %}
+    and user names must be present in <em>Surfing Now</em> tab.
+</p>
+
+{%endblock%}
+
+{% block addnew_href%}{% url 'ViewMemberNameCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewMemberNameUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewMemberNameUpdate' policy.pk object.pk %}{%endblock%}
+

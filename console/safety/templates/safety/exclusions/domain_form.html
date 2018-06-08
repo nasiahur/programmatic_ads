@@ -1,0 +1,13 @@
+{% extends 'safety/exclusions/form.html' %}
+
+{% block toolbar_exclusion_name %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>Disables filtering for trusted domains based on their domain name. Prepend domain name with "." (dot) to disable filtering on all subdomains of a given domain. Wildcards in domain names are not supported.</p>{%endblock%}
+
+{% block value_name%}Domain Name{%endblock%}
+{% block value_help%}Specify domain name to exclude from filtering. For example, to disable filtering on Microsoft Windows update servers type <em>.windowsupdate.com</em>{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExclusionDomainList' policy.pk %}{%endblock%}

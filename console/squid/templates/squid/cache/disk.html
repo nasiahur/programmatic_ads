@@ -1,0 +1,141 @@
+{% extends 'squid/cache/index.html' %}
+
+{% block toolbar_disk %}class="active"{%endblock%}
+{% block page_comment %}{% endblock %}
+
+{% block page_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+
+    <div class="box">
+		<section class="row-fluid">			
+			<p>This page is used to enable and configure disk cache. By default disk cache is <em>disabled</em>. Please study <a target="blank" href="http://www.squid-cache.org/Doc/config/cache_dir/">Squid documentation</a> before enabling cache. Cache folder is <em>{{object.cache_dir}}</em>.
+		</section>
+		<section class="row-fluid" style="margin-top: 10px;">			
+			<form name="cache" method="POST" action="{% url 'ViewCacheDiskEnable' %}">
+				{% csrf_token %}
+			    <section class="row-fluid">
+			    	<div class="span6">   
+		            	<button class="btn btn-block btn-large{% if object.enabled %} btn-primary{% endif %}" type="submit" name="enabled" value="1">Enable Disk Cache</button>
+			        </div>
+			        <div class="span6">
+			            <button class="btn btn-block btn-large{% if not object.enabled %} btn-primary{% endif %}" type="submit" name="enabled" value="0">Disable Disk Cache</button>
+			        </div>        
+			    </section>
+		    </form>
+		</section>
+		<section class="row-fluid">			
+			<div class="span12 alert alert-error">
+				<p style="margin-bottom: 0px;"><strong>Warning!</strong> If you are enabling cache for the first time or you have selected different cache type below, click <a href="{% url 'ViewCacheDiskReset' %}">Re-Initialize Cache Directory</a> link to erase and re-initialize cache directory. Only after this is done, enable the cache!</p>
+			</div>
+		</section>
+		</div>
+
+	<section class="row-fluid">
+		<h3 class="box-header">Disk Cache Settings</h3>
+		
+
+    <div class="box">
+
+
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group {% if form.cache_replacement_policy.errors %}error{%endif%}">
+                <label class="control-label" for="id_cache_replacement_policy">Replacement Policy</label>
+                <div class="controls">
+                    <style>#id_memory_replacement_policy { width: 120px; }</style>
+                    {{form.cache_replacement_policy}}
+                    {% if form.cache_replacement_policy.errors %}
+                        <span class="help-block">{{form.cache_replacement_policy.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Disk cache replacement policy parameter determines which objects are purged from disk when more space is needed. Default value is <em>LRU</em>. See <a href="http://www.squid-cache.org/Doc/config/cache_replacement_policy/" target="blank">Squid documentation</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.minimum_object_size.errors %}error{%endif%}">
+                <label class="control-label" for="id_minimum_object_size">Min Object Size (KB)</label>
+                <div class="controls">
+                    <style>#id_minimum_object_size { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.minimum_object_size}}
+                        <button class="btn" type="button" onclick="$('#id_minimum_object_size').val('0');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.minimum_object_size.errors %}
+                        <span class="help-block">{{form.minimum_object_size.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the minimum size of the object to be stored in disk cache. Objects smaller than this size will not be saved on disk. Default value is <em>0 KB</em> meaning that all objects can be stored. See <a href="http://www.squid-cache.org/Doc/config/minimum_object_size/" target="blank">Squid documentation</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.maximum_object_size.errors %}error{%endif%}">
+                <label class="control-label" for="id_maximum_object_size">Max Object Size (KB)</label>
+                <div class="controls">
+                    <style>#id_maximum_object_size { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.maximum_object_size}}
+                        <button class="btn" type="button" onclick="$('#id_maximum_object_size').val('4096');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.maximum_object_size.errors %}
+                        <span class="help-block">{{form.maximum_object_size.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the maximum size of object to be stored in disk cache. Default value is <em>4096 KB</em>. Objects bigger than this value are not saved into disk cache. See <a href="http://www.squid-cache.org/Doc/config/maximum_object_size/" target="blank">Squid documentation</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.cache_type.errors %}error{%endif%}">
+                <label class="control-label" for="id_cache_type">Cache Type</label>
+                <div class="controls">
+                    <style>#id_cache_type { width: 120px; }</style>
+                    {{form.cache_type}}
+                    {% if form.cache_type.errors %}
+                        <span class="help-block">{{form.cache_type.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Cache type specifies the kind of storage system to use. Default value is <em>ufs</em>. See <a href="http://www.squid-cache.org/Doc/config/cache_dir/" target="blank">Squid documentation</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.ufs_mb.errors %}error{%endif%}">
+                <label class="control-label" for="id_ufs_mb">UFS Disk Space (MB)</label>
+                <div class="controls">
+                    <style>#id_ufs_mb { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.ufs_mb}}
+                        <button class="btn" type="button" onclick="$('#id_ufs_mb').val('100');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.ufs_mb.errors %}
+                        <span class="help-block">{{form.ufs_mb.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the amount of disk space (MB) to use under cache directory. Default value is <em>100 MB</em>. See <a href="http://www.squid-cache.org/Doc/config/cache_dir/" target="blank">Squid documentation</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </section>
+    
+{% endblock %}

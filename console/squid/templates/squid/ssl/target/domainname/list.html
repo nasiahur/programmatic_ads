@@ -1,0 +1,12 @@
+{% extends 'squid/ssl/target/base.html' %}
+
+{% block toolbar_ssl_target_domain %}class="active"{%endblock%}
+
+{% block ssl_target_desc %}
+<p>HTTPS connections to the following domains are always decrypted. Please note - enforcing SSL decryption by domain name works only in <em>explicit proxy</em> deployment scenario!</p>
+{% endblock %}
+
+
+{% block addnew_href%}{% url 'ViewSslTargetDomainCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslTargetDomainUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslTargetDomainUpdate' object.pk %}{%endblock%}

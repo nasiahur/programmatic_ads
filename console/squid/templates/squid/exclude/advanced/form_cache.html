@@ -1,0 +1,26 @@
+{% extends 'squid/exclude/advanced/form.html' %}
+
+{% block header_subtab %} / Proxy Cache{% endblock %}
+
+
+{% block advanced_value_control%}
+
+	<div class="control-group {% if form.value_cache.errors %}error{%endif%}">
+        <label class="control-label" for="id_value_cache">&nbsp;</label>
+        <div class="controls">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $("#id_value_cache").addClass("input-block-level");
+               });
+            </script>
+            {{form.value_cache}}                
+            {% if form.value_cache.errors %}
+                <span class="help-block">{{form.value_cache.errors|striptags}}</span>
+            {% else %}
+                <span class="help-block">Specify here raw Squid ACLs for proxy cache exclusions. See Squid's <a target="_new" href="http://www.squid-cache.org/Doc/config/acl/">online documentation</a> for more information. The contents of this field will be written to squid.conf as-is so please be careful.</span>
+            {%endif%}
+        </div>
+    </div>
+{%endblock%}
+
+

@@ -1,0 +1,28 @@
+{% extends 'antivirus/application.html' %}
+
+{% block navbar_general %}class="active"{%endblock%}
+
+{% block contents %}
+
+
+	{% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage antivirus settings using pfSense's Web UI.
+        </div>
+    {% else %}  
+
+
+		<h2>General<small>{% block header_tab %}{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+	    
+	    {% block page_comment %}{% endblock %}
+
+	    <section class="row-fluid">
+	        <ul class="nav nav-pills">
+	            <li {% block toolbar_mode %}{%endblock%}><a id="toolbar_mode" href="{% url 'ViewAvSettingsMode' %}">Antivirus Mode</a></li>            
+	        </ul>  
+	        {% block page_content %}{% endblock %}        
+	    </section>        
+
+	{% endif %}
+	
+{% endblock %}

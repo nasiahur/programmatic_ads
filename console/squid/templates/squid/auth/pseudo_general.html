@@ -1,0 +1,171 @@
+{% extends 'squid/auth/pseudo.html' %}
+
+{% block auth_general %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<div class="box">
+
+		{% if form.non_field_errors %}
+	    <div class="alert alert-error"><strong>ERROR</strong>: 
+	         {% for error in form.non_field_errors %}
+	             <span>{{ error|escape }}</span>
+	         {% endfor %}
+	    </div>  
+	    {% endif %}
+
+        {% if not allow_enable %}
+        <div class="alert alert-error">
+            <strong>ERROR</strong>: Cannot enable Active Directory Inspector authenticator because one (or more) of explicit proxy authenticators is enabled! <em>Save Changes</em> button was hidden. Please disable <a href="{% url 'ViewAuthExplicit' %}">all explicit proxy authenticators</a> and try again!
+        </div>  
+        {% endif %}
+
+	    <form class="form-horizontal" method="POST">
+        	{% csrf_token %}
+        	<input type="hidden" name="squid" value="{{squid.pk}}">
+
+	        <div class="control-group">
+	            <label class="control-label">&nbsp;</label>
+	            <div class="controls"><label class="checkbox inline">{{form.enable}} Activate Active Directory Inspector pseudo proxy authenticator.</label>
+	            </div>
+	        </div>
+	        <div class="control-group {% if form.server1.errors or form.port1.errors %}error{%endif%}">
+                <label class="control-label" for="id_server1">Server 1</label>
+                <div class="controls">
+                    {{form.server1}} <div class="input-append"><style>#id_port1 { width: 60px; }</style>{{form.port1}}<button class="btn" type="button" onclick="$('#id_port1').val('8443');"><i class="icon-magic"></i></button></div>  
+                    {% if form.server1.errors or form.port1.errors %}
+                        <span class="help-block">{{form.server1.errors|striptags}} {{form.port1.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the IP address or FQDN and port of the primary server where Active Directory Inspector runs. This is typically a primary domain controller. For example, <em>dc1.example.lan</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.server2.errors or form.port2.errors %}error{%endif%}">
+                <label class="control-label" for="id_server2">Server 2</label>
+                <div class="controls">
+                    {{form.server2}} <div class="input-append"><style>#id_port2 { width: 60px; }</style>{{form.port2}}<button class="btn" type="button" onclick="$('#id_port2').val('8443');"><i class="icon-magic"></i></button></div>  
+                    {% if form.server2.errors or form.port2.errors %}
+                        <span class="help-block">{{form.server2.errors|striptags}} {{form.port2.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the IP address or FQDN of the backup server where Active Directory Inspector runs. This is typically a backup domain controller. For example, <em>dc2.example.lan</em>. Optional.</span>
+                    {%endif%}
+                </div>
+            </div>
+
+
+            <div class="control-group {% if form.token.errors %}error{%endif%}">
+                <label class="control-label" for="id_user">Password</label>
+                <div class="controls">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $("#id_user").addClass("input-block-level");
+                       });
+                    </script>
+                    {{form.token}}                
+                    {% if form.token.errors %}
+                        <span class="help-block">{{form.token.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">To protect data being sent from authenticator to Active Directory Inspector you can set up an optional password. <em>Warning:</em> the same password must be configured in Active Directory Inspector settings, as described in the <a href="https://docs.diladele.com/administrator_guide_6_1/active_directory/index.html">online documentation</a>.</span>
+                    {%endif%}
+                </div>
+            </div>
+
+
+
+            <div class="control-group {% if form.positive_ttl.errors %}error{%endif%}">
+                <label class="control-label" for="id_positive_ttl">Positive TTL</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_positive_ttl { width: 70px; }</style>
+                        {{form.positive_ttl}}
+                        <button class="btn" type="button" onclick="$('#id_positive_ttl').val('600');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.positive_ttl.errors %}
+                        <span class="help-block">{{form.positive_ttl.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Number of seconds to cache the successful IP to User Name mapping. Default value is 600 seconds (10 minutes).</span>
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="control-group {% if form.negative_ttl.errors %}error{%endif%}">
+                <label class="control-label" for="id_negative_ttl">Negative TTL</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_negative_ttl { width: 70px; }</style>
+                        {{form.negative_ttl}}
+                        <button class="btn" type="button" onclick="$('#id_negative_ttl').val('300');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.negative_ttl.errors %}
+                        <span class="help-block">{{form.negative_ttl.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Number of seconds to cache the failed IP to User Name mapping. Default value is 300 seconds (5 minutes).</span>
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="control-group {% if form.helper_total.errors %}error{%endif%}">
+                <label class="control-label" for="id_helper_total">Auth Helpers (Total)</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_helper_total { width: 70px; }</style>
+                        {{form.helper_total}}
+                        <button class="btn" type="button" onclick="$('#id_helper_total').val('20');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.helper_total.errors %}
+                        <span class="help-block">{{form.helper_total.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Total number of authentication helpers to run. It is recommended to set it equal to the approximate number of proxy users in your network.</span>
+                    {%endif%}
+                </div>
+            </div>        
+
+            <div class="control-group {% if form.helper_idle.errors %}error{%endif%}">
+                <label class="control-label" for="id_helper_idle">Auth Helpers (Idle)</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_helper_idle { width: 70px; }</style>
+                        {{form.helper_idle}}
+                        <button class="btn" type="button" onclick="$('#id_helper_idle').val('10');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.helper_idle.errors %}
+                        <span class="help-block">{{form.helper_idle.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Idle number of authentication helpers to run. It is recommended to make it equal to approximately 1/2 of the total number of users in your network.</span>
+                    {%endif%}
+                </div>
+            </div>        
+
+            <div class="control-group {% if form.helper_startup.errors %}error{%endif%}">
+                <label class="control-label" for="id_helper_startup">Auth Helpers (Startup)</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <style>#id_helper_startup { width: 70px; }</style>
+                        {{form.helper_startup}}
+                        <button class="btn" type="button" onclick="$('#id_helper_startup').val('5');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.startup.errors %}
+                        <span class="help-block">{{form.helper_startup.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Number of authentication helpers to run at startup of Squid. It is recommended to make it equal to approximately 1/4 of the total number of users in your network.</span>
+                    {%endif%}
+                </div>
+            </div>  
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+                <div class="controls"><label class="checkbox inline">{{form.helper_verbose}} Enable debugging of Active Directory Inspector pseudo authentication helper. Debug output will be dumped to <a href="{% url 'ViewCacheLog' %}">Squid cache log</a>.</label>
+                </div>
+            </div>
+            {% if allow_enable %}
+	        <div class="control-group">
+	            <div class="controls">
+	                <div class="btn-group"><button id="button_save" type="submit" class="btn btn-primary">Save Changes</button></div>                
+	            </div>
+	        </div>
+            {% endif %}
+    </form>
+
+    {% block member_heading%}{%endblock%}    
+
+    </div>
+{% endblock %}

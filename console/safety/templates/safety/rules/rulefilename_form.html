@@ -1,0 +1,11 @@
+{% extends 'safety/rules/rulefile_form.html' %}
+
+{% block rule_desc%}<p>Block downloads of files with specific names. Names of files are read from the Content-Disposition header and may not always match files without explicit names specified.</p>{%endblock%}
+
+{% block value_name%}File Name Regex{%endblock%}
+{% block value_help%}Specify Perl style regular expression as the Rule Value. This regex will be used for matching against the name of the file. For example the <em>.*\.exe</em> blocks all executable files ending with <em>.exe</em> file extension.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleFileNameList' policy.pk %}{%endblock%}

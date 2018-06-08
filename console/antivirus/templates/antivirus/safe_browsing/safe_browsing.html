@@ -1,0 +1,44 @@
+{% extends 'antivirus/application.html' %}
+
+{% block navbar_malware %}class="active"{%endblock%}
+
+{% block contents %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+
+    <!-- on pfsense we are not managing squid settings -->
+    {% if is_pfsense %}
+        <div class="alert alert-danger">
+            <strong>Warning</strong>! You seem to be running this instance of Web Safety on pfSense. In this case you have to manage antivirus settings using pfSense's Web UI.
+        </div>
+    {% else %}  
+
+    	<h2>Safe Browsing <small>{% block header_tab %}<font color="red">Experimental Feature</font>{% endblock %}{% block header_subtab %}{% endblock %}</small></h2>
+        
+        {% block page_comment %}
+            <p><a target="new" href="https://safebrowsing.google.com/">Google Safe Browsing</a> protects proxy clients by showing warnings to users when they attempt to navigate to dangerous sites or download dangerous files. If enabled, every URL accessed through this proxy will be checked by Safe Browsing Update API v4. See <a target="new" href="https://developers.google.com/safe-browsing/v4/">online documentation</a> for possible pitfalls and drawbacks before enabling this feature!</p> 
+        {% endblock %}
+
+        <section class="row-fluid">
+            <ul class="nav nav-pills">
+                <li {% block toolbar_settings %}{%endblock%}><a id="toolbar_settings" href="{% url 'ViewSafeBrowsingEdit'  %}">Settings</a></li>
+                <li {% block toolbar_helpers %}{%endblock%}><a id="toolbar_helpers" href="{% url 'ViewSafeBrowsingHelpers'  %}">Helpers</a></li>
+                <li {% block toolbar_status %}{%endblock%}><a id="toolbar_status" href="{% url 'ViewSafeBrowsingStatus'  %}">Status</a></li>
+                <li {% block toolbar_log %}{%endblock%}><a id="toolbar_log" href="{% url 'ViewSafeBrowsingLog'  %}">Log</a></li>
+            </ul>  
+            {% block page_content %}{% endblock %}        
+        </section>        
+
+    {% endif %}
+
+{% endblock %}

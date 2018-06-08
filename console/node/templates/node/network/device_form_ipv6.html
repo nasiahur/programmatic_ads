@@ -1,0 +1,117 @@
+{% extends 'node/network/device_form.html' %}
+{% block toolbar_ipv6 %}class="active"{%endblock%}
+
+{% block tab_content %}
+
+	<p style="margin-bottom: 20px;">Please note, changing network settings affects all running processes and requires full system restart.</p>
+
+
+	{% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR</strong>: 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+    	<div class="control-group {% if form.ip6_config.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_config">Configuration Type</label>
+            <div class="controls">
+                {{form.ip6_config}}
+                {% if form.ip6_config.errors %}
+                    <span class="help-block">{{form.ip6_config.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Select DHCP to automatically obtain IP address or Static to manually specify it. It is recommended to set configuration type to <em>None</em> unless you have configured IPv6 in your network yourself.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_address.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_address">IP Address</label>
+            <div class="controls">
+            	<style>#id_ip6_address { width: 300px; }</style>
+                {{form.ip6_address}}
+                {% if form.ip6_address.errors %}
+                    <span class="help-block">{{form.ip6_address.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify static IPv6 address. This setting is ignored when address is assigned using DHCP or set to None.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_subnet.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_subnet">Subnet Prefix Len</label>
+            <div class="controls">
+            	<style>#id_ip6_subnet { width: 50px; }</style>
+            	<style type="text/css">
+			        input[type=number]::-webkit-outer-spin-button,
+			        input[type=number]::-webkit-inner-spin-button {
+			            -webkit-appearance: none;
+			            margin: 0;
+			        }
+			        input[type=number] {
+			            -moz-appearance:textfield;
+			        }
+			    </style>
+
+                {{form.ip6_subnet}}
+                {% if form.ip6_subnet.errors %}
+                    <span class="help-block">{{form.ip6_subnet.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify subnet prefix length. For example, <em>64</em>. This setting is ignored when address is assigned using DHCP or set to None.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_gateway.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_gateway">Default Gateway</label>
+            <div class="controls">
+            	<style>#id_ip6_gateway { width: 300px; }</style>
+                {{form.ip6_gateway}}
+                {% if form.ip6_gateway.errors %}
+                    <span class="help-block">{{form.ip6_gateway.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the default gateway. This setting is ignored when address is assigned using DHCP  or set to None.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_dns_srv1.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_dns_srv1">DNS Server 1</label>
+            <div class="controls">
+                {{form.ip6_dns_srv1}}
+                {% if form.ip6_dns_srv1.errors %}
+                    <span class="help-block">{{form.ip6_dns_srv1.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the first DNS server. This setting is ignored when DNS info is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_dns_srv2.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip4_dns_srv2">DNS Server 2</label>
+            <div class="controls">
+                {{form.ip6_dns_srv2}}
+                {% if form.ip6_dns_srv2.errors %}
+                    <span class="help-block">{{form.ip6_dns_srv2.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify IP address of the second DNS server (optional). This setting is ignored when DNS info is assigned using DHCP.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.ip6_dns_search.errors %}error{%endif%}">
+            <label class="control-label" for="id_ip6_dns_search">DNS Search Suffix</label>
+            <div class="controls">
+                {{form.ip6_dns_search}}
+                {% if form.ip6_dns_search.errors %}
+                    <span class="help-block">{{form.ip6_dns_search.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify suffix to be appended to records without domain part. If you are using Active Directory specify here the lowercase name of your domain, for example, <em>example.lan</em>.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+                <a href="{% url 'node:ViewNetworkDeviceList' %}" class="btn">Cancel</a>            
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

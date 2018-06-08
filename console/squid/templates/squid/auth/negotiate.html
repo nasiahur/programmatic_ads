@@ -1,0 +1,184 @@
+{% extends 'squid/auth/active_directory.html' %}
+
+{% block auth_ad_scheme_krb5 %}class="active"{%endblock%}
+
+{% block tab_content %}
+	<div class="box">
+
+		<p>Kerberos is the most secure authentication scheme in Active Directory. Kerberos authentication is done by running the authenticator as specially configured user from your Active Directory as <a target="new" href="https://docs.diladele.com/administrator_guide_6_1/active_directory/create_user/index.html">explained in the documentation</a>. Please read it carefully and understand what you are doing before enabling Kerberos authentication!</p>
+
+	<script type="text/javascript">
+        function DetectSpn(){
+			$.ajax({url: "{% url 'ViewAuthDetect' %}", success: function(result){
+    			$('#id_krb5_spn').val(result[0].info.spn);
+		    }});
+    	}
+    	function DetectRealm(){
+			$.ajax({url: "{% url 'ViewAuthDetect' %}", success: function(result){
+    			$('#id_realm').val(result[0].info.realm);
+		    }});
+    	}
+    	
+    </script>
+
+	{% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR:</strong> 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+	<form class="form-horizontal" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+	        <div class="controls">
+	        	<label class="checkbox inline">{{form.krb5_enable}} Activate Kerberos proxy authenticator.</label>
+      		</div>
+        </div>
+        <div class="control-group {% if form.realm.errors %}error{%endif%}">
+                <label class="control-label" for="id_realm">Kerberos REALM</label>
+                <div class="controls">
+                	<div class="input-append">
+                		<style type="text/css">#id_realm { width: 250px; }</style>
+                    	{{form.realm}}
+                    	<button class="btn" type="button" onclick="DetectRealm()"><i class="icon-magic"></i></button>
+	            	</div>               
+                    {% if form.realm.errors %}
+                        <span class="help-block">{{form.realm.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify the Kerberos realm your proxy users belong to. This is typically the name of your domain written in UPPERCASE. For example if your domain name is <em>example.lan</em> then the Kerberos realm is <em>EXAMPLE.LAN</em>. Click the wizard button to try autodetection based on your DNS and DHCP settings.</span>
+                    {%endif%}
+                </div>
+            </div>
+        <div class="control-group {% if form.krb5_spn.errors %}error{%endif%}">
+	        <label class="control-label" for="id_krb5_spn">Service Principal Name</label>
+	        <div class="controls">
+	            <div class="input-append">
+	            	<style type="text/css">#id_krb5_spn { width: 400px; }</style>
+	                {{form.krb5_spn}}
+	                <button class="btn" type="button" onclick="DetectSpn()"><i class="icon-magic"></i></button>
+	            </div>               
+	            {% if form.krb5_spn.errors %}
+	                <span class="help-block">{{form.krb5_spn.errors|striptags}}</span>
+	            {% else %}
+	                <span class="help-block">Specify here Service Principal Name (SPN) for this proxy. It is usually constructed from the hostname of the proxy and Kerberos realm automatically. For example, <em>HTTP/proxy.example.lan@EXAMPLE.LAN</em> (case is important). Click the wizard button to try autodetection based on your DNS and DHCP settings.</span>
+	            {%endif%}
+	        </div>
+	    </div>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.krb5_use_gssnoname}} Use GSS_NONAME in Kerberos authentication. If this checkbox is set then explicit SPN specified above is not used (but needs to be present) and authenticator tries to lookup correct SPN in the keytab according to the SPN contained in the request initiated by the browser. This is typically used in <a href="https://docs.diladele.com/administrator_guide_6_1/active_directory_extra/redundancy/index.html" target="new">cluster deployments</a>.</label>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.krb5_no_replay_cache}} Disable Kerberos replay cache. If Kerberos authenticators consume a lot of CPU it is possible to disable replay cache to greatly speed up authentication. Beware this lowers the overall security of your proxy and is not generally recommended.</label>
+            </div>
+        </div>
+        <div class="control-group {% if form.keytab.errors %}error{%endif%}">
+            <label class="control-label" for="id_spn">KeyTab file for SPN</label>
+            <div class="controls">
+                {{form.keytab}}
+                {% if form.keytab.errors %}
+                    <span class="help-block">{{form.keytab.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Specify here the KeyTab file you have generated for the above mentioned Service Principal Name (SPN). The keytab contains entries required to do the Kerberos authentication and is the most vital component of the authentication scheme. <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/active_directory/kerberos/keytab.html">See documentation of how to generate it</a>. {% if object.keytab_exists %}Currently uploaded key tab can be downloaded by <a href="{% url 'ViewAuthNegotiateSchemeGetKeyTab' %}">clicking here</a>.{%endif%}</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.krb5_helper_total.errors %}error{%endif%}">
+                <label class="control-label" for="id_krb5_helper_total">Auth Helpers (Total)</label>
+                <div class="controls">
+                    <div class="input-append">
+                    	<style>#id_krb5_helper_total { width: 70px; }</style>
+                        {{form.krb5_helper_total}}
+                        <button class="btn" type="button" onclick="$('#id_krb5_helper_total').val('70');"><i class="icon-magic"></i></button>
+                    </div>           
+                    {% if form.krb5_helper_total.errors %}
+                        <span class="help-block">{{form.krb5_helper_total.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Total number of authentication helpers to run. It is recommended to set it equal to the approximate number of proxy users in your network.</span>
+                    {%endif%}
+                </div>
+            </div>        
+
+	            <div class="control-group {% if form.krb5_helper_idle.errors %}error{%endif%}">
+	                <label class="control-label" for="id_krb5_helper_idle">Auth Helpers (Idle)</label>
+	                <div class="controls">
+	                    <div class="input-append">
+	                    	<style>#id_krb5_helper_idle { width: 70px; }</style>
+	                        {{form.krb5_helper_idle}}
+	                        <button class="btn" type="button" onclick="$('#id_krb5_helper_idle').val('25');"><i class="icon-magic"></i></button>
+	                    </div>           
+	                    {% if form.krb5_helper_idle.errors %}
+	                        <span class="help-block">{{form.krb5_helper_idle.errors|striptags}}</span>
+	                    {% else %}
+	                        <span class="help-block">Idle number of authentication helpers to run. It is recommended to make it equal to approximately 1/2 of the total number of users in your network.</span>
+	                    {%endif%}
+	                </div>
+	            </div>        
+
+	            <div class="control-group {% if form.krb5_helper_startup.errors %}error{%endif%}">
+	                <label class="control-label" for="id_krb5_helper_startup">Auth Helpers (Startup)</label>
+	                <div class="controls">
+	                    <div class="input-append">
+	                    	<style>#id_krb5_helper_startup { width: 70px; }</style>
+	                        {{form.krb5_helper_startup}}
+	                        <button class="btn" type="button" onclick="$('#id_krb5_helper_startup').val('10');"><i class="icon-magic"></i></button>
+	                    </div>           
+	                    {% if form.krb5_helper_startup.errors %}
+	                        <span class="help-block">{{form.krb5_helper_startup.errors|striptags}}</span>
+	                    {% else %}
+	                        <span class="help-block">Number of authentication helpers to run at startup of Squid. It is recommended to make it equal to approximately 1/4 of the total number of users in your network.</span>
+	                    {%endif%}
+	                </div>
+	            </div>  
+
+
+	            <div class="control-group">
+	                <label class="control-label">&nbsp;</label>
+	                <div class="controls"><label class="checkbox inline">{{form.krb5_helper_verbose}} Enable debugging of Kerberos authentication helpers. Debug output will be dumped to <a href="{% url 'ViewCacheLog' %}">Squid cache log</a>.</label>
+	                </div>
+	            </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Changes</button>                
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                
+            </div>
+        </div>
+    </form>    
+
+
+
+	</div>
+
+
+	<section class="row-fluid">
+		
+		<h3 class="box-header">Technical Info for Kerberos Authenticator</h3>
+		<div class="box">
+
+			<p style="margin-top: 10px;">Contents of currently uploaded <em>/opt/websafety/etc/krb5.keytab</em> and automatically constructed <em>/opt/websafety/etc/krb5.conf</em> are shown below.</p>
+
+			<pre style="margin-top: 10px;">{{keytab}}</pre>
+			<pre style="margin-top: 10px;">{{krb5conf}}</pre>
+			
+
+			<p style="margin-top: 10px;">Active Directory authentication result (running of <em>kinit</em>) for the above key tab and Kerberos configuration file.</p>
+			<pre style="margin-top: 10px;" {% if not kinit_result %}class="alert-error"{%endif%}>{{kinit_output}}</pre>
+
+            <p style="margin-top: 10px;">Active Directory KVNO keytab check result (looking up of <em>msDS-KeyVersionNumber</em> value in LDAP).</p>
+            <pre style="margin-top: 10px;" {% if not kvno_result %}class="alert-error"{%endif%}>{{kvno_output}}</pre>
+
+		</div>
+	</section>
+	
+{% endblock %}
+

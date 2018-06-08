@@ -1,0 +1,53 @@
+{% extends 'squid/exclude/index.html' %}
+
+{% block page_content %}
+
+    <ul class="nav nav-pills" id="myTab">
+        <li class="dropdown {% block exclude_domain %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_domain" role="button" href="#" data-toggle="dropdown">Domain <b class="caret"></b></a>
+            <ul id="menu_address" class="dropdown-menu" role="menu" aria-labelledby="drop_domain">
+                <li><a href="{% url 'ViewExcludeDomainNameList' %}"   id="drop_menu_domain_name">Name</a></li>
+                <li><a href="{% url 'ViewExcludeDomainIpList' %}"     id="drop_menu_domain_ip">IP Address</a></li>
+                <li><a href="{% url 'ViewExcludeDomainRangeList' %}"  id="drop_menu_domain_range">IP Address Range</a></li>
+                <li><a href="{% url 'ViewExcludeDomainSubnetList' %}" id="drop_menu_domain_subnet">IP Subnet</a></li>
+            </ul>
+        </li>
+        <li class="dropdown {% block exclude_user %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_user" role="button" href="#" data-toggle="dropdown">User <b class="caret"></b></a>
+            <ul id="menu_address" class="dropdown-menu" role="menu" aria-labelledby="drop_user">
+                <li><a href="{% url 'ViewExcludeUserIpList' %}"     id="drop_menu_user_ip">IP Address</a></li>
+                <li><a href="{% url 'ViewExcludeUserRangeList' %}"  id="drop_menu_user_range">IP Address Range</a></li>
+                <li><a href="{% url 'ViewExcludeUserSubnetList' %}" id="drop_menu_user_subnet">IP Subnet</a></li>                    
+            </ul>
+        </li>
+        <li class="dropdown {% block exclude_category %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_category" role="button" href="#" data-toggle="dropdown">Category <b class="caret"></b></a>
+            <ul id="menu_address" class="dropdown-menu" role="menu" aria-labelledby="drop_category">
+                <li><a href="{% url 'ViewExcludeCategoryUpdate' %}" id="drop_menu_category_sslbump">HTTPS Decryption</a></li>
+            </ul>
+        </li>
+        <li class="dropdown {% block exclude_other %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_other" role="button" href="#" data-toggle="dropdown">Other <b class="caret"></b></a>
+            <ul id="menu_address" class="dropdown-menu" role="menu" aria-labelledby="drop_other">
+                <li><a href="{% url 'ViewExcludeUserAgentList' %}"   id="drop_menu_user_agent">User Agent</a></li> 
+                <li><a href="{% url 'ViewExcludeContentTypeList' %}" id="drop_menu_content_type">Content Type</a></li>  
+                <li><a href="{% url 'ViewExcludeScheduleList' %}"    id="drop_menu_time_schedule">Time Schedule</a></li>
+            </ul>
+        </li>
+        <li class="dropdown {% block exclude_advanced %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_advanced" role="button" href="#" data-toggle="dropdown">Advanced Exclusions <b class="caret"></b></a>
+            <ul id="menu_advanced" class="dropdown-menu" role="menu" aria-labelledby="drop_advanced">
+                <li><a href="{% url 'ViewExcludeAdvancedSsl' %}"         id="drop_menu_advanced_sslbump">HTTPS Decryption</a></li>  
+                <li><a href="{% url 'ViewExcludeAdvancedAdaptation' %}"  id="drop_menu_advanced_adaptation">Web Filter and Anti Virus</a></li>                 
+                <li><a href="{% url 'ViewExcludeAdvancedAuth' %}"        id="drop_menu_advanced_auth">Proxy Authentication</a></li>                
+                <li><a href="{% url 'ViewExcludeAdvancedUrlRewriter' %}" id="drop_menu_advanced_urlrewrite">Safe Browsing</a></li>
+                <li><a href="{% url 'ViewExcludeAdvancedCache' %}"       id="drop_menu_advanced_cache">Cache</a></li>
+            </ul>
+        </li>
+    </ul>
+    {% block member_heading%}{%endblock%}
+    <div class="box">
+        {%block box_content %}{%endblock%}            
+    </div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'safety/policy.html' %}
+
+{% block toolbar_members %}class="active"{%endblock%}
+{% block policy_content %}
+    
+    {% if policy.name == 'default' %}
+        <div class="alert alert-info">Default filtering policy is used when proxy user can not be found in other policies so there is no need to configure members of default policy.</div>   
+    {% else %}
+        <ul class="nav nav-pills" id="myTab">
+            <li {% block toolbar_member_name %}{%endblock%}>
+                <a href="{% url 'ViewMemberNameList' policy.pk %}">User Name{% if count_of_names > 0 %} (<small>{{count_of_names}}</small>){%endif%}</a>
+            </li>
+            <li {% block toolbar_member_ldap %}{%endblock%}>
+                <a href="{% url 'ViewMemberLdapList' policy.pk %}">Active Directory Group{% if count_of_groups > 0 %} (<small>{{count_of_groups}}</small>){%endif%}</a>
+            </li>
+            <li {% block toolbar_member_ip %}{%endblock%}>
+                <a href="{% url 'ViewMemberIpList' policy.pk %}">IP Address{% if count_of_ips > 0 %} (<small>{{count_of_ips}}</small>){%endif%}</a>
+            </li>
+            <li {% block toolbar_member_range %}{%endblock%}>
+                <a href="{% url 'ViewMemberRangeList' policy.pk %}">IP Range{% if count_of_ranges > 0 %} (<small>{{count_of_ranges}}</small>){%endif%}</a>
+            </li>
+            <li {% block toolbar_member_subnet %}{%endblock%}>
+                <a href="{% url 'ViewMemberSubnetList' policy.pk %}">IP Subnet{% if count_of_subnets > 0 %} (<small>{{count_of_subnets}}</small>){%endif%}</a>
+            </li>            
+        </ul>
+        {% block member_heading%}{%endblock%}
+        <div class="box">
+            {% block member_content %}{%endblock%}
+        </div>
+    {% endif %}
+{% endblock %}

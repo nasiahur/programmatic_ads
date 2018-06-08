@@ -1,0 +1,11 @@
+{% extends 'safety/rules/rulefile_form.html' %}
+
+{% block rule_desc%}<p>Block downloads of files with specific content types.</p>{%endblock%}
+
+{% block value_name%}Content Type{%endblock%}
+{% block value_help%}For example, to block downloads of .torrent files, specify <em>application/x-bittorrent</em> as value for Content-Type blocking field.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleContentTypeList' policy.pk %}{%endblock%}

@@ -1,0 +1,23 @@
+{% extends 'traffic/monitor/monitor_logs.html' %}
+
+{% block navbar_logs %}class="active"{%endblock%}
+{% block toolbar_report_log %}class="active"{%endblock%}
+
+{% block content %}
+
+    <div class="box">    
+    	<section class="row-fluid">
+            <table class="table table-condensed">
+            <thead><tr><th>Name</th><th>Value</th></tr></thead>
+            <tr><td>Storage engine</td><td>{{db_engine}}</td></tr>
+            {% if is_sqlite %}
+            <tr><td>SQLite database size</td><td>{{db_size|filesizeformat}}</td></tr>
+            {% else %}
+            <tr><td>MySQL database size</td><td>{{db_size|filesizeformat}}</td></tr>
+            {% endif %}
+            <tr><td>Monitoring records to upload to database in <em>/opt/websafety/var/monitor</em></td><td>{{upload_size|filesizeformat}}</td></tr>
+            </table>
+        
+    	</section>
+    </div>
+{% endblock %}

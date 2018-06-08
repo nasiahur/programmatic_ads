@@ -1,0 +1,17 @@
+{% extends 'squid/exclude/form.html' %}
+
+{% block exclude_other %}active{%endblock%}
+{% block header_tab %} / Time Schedule{% endblock %}
+
+{% block page_comment %}
+<p>Connections during the following time schedules are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+
+{% block value_name%}Time Schedule{%endblock%}
+{% block value_help%}Specify the time schedule in Squid's format to add to exclusion list. For example <em>SMTWHFA 12:00-14:00</em> (written as one string) for usual lunch hours. See Squid's <a target="_new" href="http://www.squid-cache.org/Doc/config/acl/">online documentation</a> for more information. {%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewExcludeScheduleList' %}{%endblock%}

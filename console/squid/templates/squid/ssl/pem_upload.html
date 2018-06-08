@@ -1,0 +1,43 @@
+{% extends 'squid/ssl/index.html' %}
+
+{% block toolbar_ssl_mode %}class="active"{%endblock%}
+
+{% block page_comment %}{% endblock %}
+
+{% block page_content %}
+	<section class="container">
+		<div class="box">
+			<div class="alert">
+				Current Trusted Root CA certificate will be replaced with the imported one. Squid's mimicked SSL certificate storage will be reinitialized. It is recommended to disconnect all users from Squid prior to importing certificate. Do not forget to add the new certificate as Trusted Root CA in all your browsers as explained in <a target="_new" href="https://docs.diladele.com/administrator_guide_6_1/https_filtering/install_certificates/index.html">online documentation</a>!
+			</div>
+
+			{% if form.non_field_errors %}
+	        <div class="alert alert-error">
+	        	<p><strong>Cannot Upload Trusted Root CA Certificate!</strong><p>
+	        	<p>
+	            {% for error in form.non_field_errors %}<span>{{ error|escape }}</span>{% endfor %}
+	            </p>
+	        </div>  
+	        {% endif %}
+
+	        <form enctype="multipart/form-data" class="form-horizontal" method="POST">
+				{% csrf_token %}
+				<div class="control-group {% if form.file.errors %}error{%endif%}">
+					<div class="controls">
+						<input type="file" name="file" id="id_file">
+						<span class="help-block"><p>Browse to your Trusted Root CA certificate PEM file and click <em>Import Certificate</em> button.</p></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn btn-primary">Upload Certificate</button>
+						<a class="btn" href="{% url 'ViewSslInfo' %}">Cancel</a>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</section>
+</div>
+    
+{% endblock %}

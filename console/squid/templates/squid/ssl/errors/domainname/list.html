@@ -1,0 +1,12 @@
+{% extends 'squid/ssl/errors/base.html' %}
+
+{% block toolbar_ssl_error_domain %}class="active"{%endblock%}
+
+{% block ssl_error_desc %}
+<p>HTTPS / SSL errors (invalid certificates) on these domains are ignored, access to these domains is left as is. The browser will decide what do to with the error, not Squid. Please note error bypassing by domain name works only in <em>explicit proxy</em> deployments!</p>
+{% endblock %}
+
+
+{% block addnew_href%}{% url 'ViewSslErrorDomainCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewSslErrorDomainUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewSslErrorDomainUpdate' object.pk %}{%endblock%}

@@ -1,0 +1,19 @@
+{% extends 'traffic/application.html' %}
+{% block leftbar_reports %}class="active"{%endblock%}
+
+{% block contents %}
+
+	<h2>Traffic Reports{% block subheader %}{%endblock%}</h2>
+    {% block subheader_comment %}{% endblock %}
+    
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_jobs %}{%endblock%}><a id="tab_reports" href="{% url 'traffic:ViewReportJobs' %}">Reports</a></li>
+            <li {% block toolbar_templates %}{%endblock%}><a id="tab_templates" href="{% url 'traffic:ViewReportTemplates' %}">Templates</a></li>            
+        </ul>  
+
+        {% block page_comment %}{% endblock %}
+        {% block tab_content %}{% endblock %}        
+    </section>
+    
+{% endblock %}

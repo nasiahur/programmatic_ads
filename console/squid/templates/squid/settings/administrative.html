@@ -1,0 +1,57 @@
+{% extends 'squid/settings/index.html' %}
+
+{% block toolbar_administrative %}class="active"{%endblock%}
+{% block page_comment %}<p>Global administrative settings.</p>{% endblock %}
+
+{% block page_content %}
+
+    <div class="box">
+
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="control-group {% if form.cache_mgr.errors %}error{%endif%}">
+                <label class="control-label" for="id_cache_mgr">Cache Manager</label>
+                <div class="controls">
+                    {{form.cache_mgr}}
+                    {% if form.cache_mgr.errors %}
+                        <span class="help-block">{{form.cache_mgr.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the e-mail address of local cache manager who will receive mail if the cache dies. Default is <em>webmaster</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="id_httpd_suppress_version_string"></label>
+                <div class="controls"><label class="checkbox inline">{{form.httpd_suppress_version_string}} Suppress version string info in HTTP headers and HTML error pages. Default is <em>off</em>.</label>
+                </div>
+            </div>              
+            <div class="control-group {% if form.visible_hostname.errors %}error{%endif%}">
+                <label class="control-label" for="id_additional_sslports">Visible Hostname</label>
+                <div class="controls">
+                    {{form.visible_hostname}}
+                    {% if form.visible_hostname.errors %}
+                        <span class="help-block">{{form.visible_hostname.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">If you want to present a special hostname in error messages, etc, define this.  Otherwise, the return value of gethostname() will be used. Please note, it is recommended to specify FQDN here. For example, <em>proxy.example.lan</em>.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,335 @@
+{% extends 'safety/rules/rulecategorybase.html' %}
+
+{% block rule_desc %}<p>List of web site categories that are blocked in this policy. Set the checkbox to block a category and unset to allow. List of categories is predefined and periodically updated.</p>{%endblock%}
+
+{% block rule_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal" role="form">
+        {% csrf_token %}                                        
+        <input type="hidden" name="policy" value="{{policy.id}}">
+
+        <table class="table table-condensed table-striped table-hover">
+            <tr>
+                <td>
+                    <label for="id_block_adult_themes_sexuality" style="font-weight: normal;{% if form.block_adult_themes_sexuality.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_adult_themes_sexuality}} Adult Themes / Sexuality
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_drugs" style="font-weight: normal;{% if form.block_drugs.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_drugs}} Drugs
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_hate_discrimination_violence" style="font-weight: normal;{% if form.block_hate_discrimination_violence.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_hate_discrimination_violence}} Hate / Discrimination / Violence
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_proxy_anonymizer" style="font-weight: normal;{% if form.block_proxy_anonymizer.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_proxy_anonymizer}} Proxy / Anonymizer
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_advertising" style="font-weight: normal;{% if form.block_advertising.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_advertising}} Advertising
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_ecommerce_shopping" style="font-weight: normal;{% if form.block_ecommerce_shopping.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_ecommerce_shopping}} E-Commerce / Shopping
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_health_medicine_fitness" style="font-weight: normal;{% if form.block_health_medicine_fitness.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_health_medicine_fitness}} Health / Medicine / Fitness
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_real_estate_home_interior" style="font-weight: normal;{% if form.block_real_estate_home_interior.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_real_estate_home_interior}} Real Estate / Home / Interior
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_alcohol_tobacco" style="font-weight: normal;{% if form.block_alcohol_tobacco.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_alcohol_tobacco}} Alcohol / Tobacco
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_education_science_research" style="font-weight: normal;{% if form.block_education_science_research.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_education_science_research}} Education / Science / Research
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_jobs_employment_career" style="font-weight: normal;{% if form.block_jobs_employment_career.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_jobs_employment_career}} Jobs / Employment / Career
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_religious" style="font-weight: normal;{% if form.block_religious.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_religious}} Religious
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_anime_manga_webcomic" style="font-weight: normal;{% if form.block_anime_manga_webcomic.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_anime_manga_webcomic}} Anime / Manga / Webcomic
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_entertainment_humor_hobby" style="font-weight: normal;{% if form.block_entertainment_humor_hobby.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_entertainment_humor_hobby}} Entertainment / Humor / Hobby
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_messaging_chat" style="font-weight: normal;{% if form.block_messaging_chat.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_messaging_chat}} Messaging / Chat
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_search_engines" style="font-weight: normal;{% if form.block_search_engines.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_search_engines}} Search Engines
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_arts_society_culture" style="font-weight: normal;{% if form.block_arts_society_culture.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_arts_society_culture}} Arts / Society / Culture
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_expired_parked" style="font-weight: normal;{% if form.block_expired_parked.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_expired_parked}} Expired / Parked Domains
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_movies" style="font-weight: normal;{% if form.block_movies.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_movies}} Movies
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_social_networking" style="font-weight: normal;{% if form.block_social_networking.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_social_networking}} Social Networking
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_automotive" style="font-weight: normal;{% if form.block_automotive.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_automotive}} Automotive
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_fashion_beauty_cosmetics" style="font-weight: normal;{% if form.block_fashion_beauty_cosmetics.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_fashion_beauty_cosmetics}} Fashion / Beauty / Cosmetics
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_music_radio" style="font-weight: normal;{% if form.block_music_radio.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_music_radio}} Music / Radio
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_software_technology_hardware" style="font-weight: normal;{% if form.block_software_technology_hardware.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_software_technology_hardware}} Software / Technology / Hardware
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_banking_insurance_finance" style="font-weight: normal;{% if form.block_banking_insurance_finance.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_banking_insurance_finance}} Banking / Insurance / Finance
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_file_storage" style="font-weight: normal;{% if form.block_file_storage.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_file_storage}} File Storage
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_network_infrastructure" style="font-weight: normal;{% if form.block_network_infrastructure.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_network_infrastructure}} Network Infrastructure
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_sports" style="font-weight: normal;{% if form.block_sports.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_sports}} Sports
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_blogs_personal" style="font-weight: normal;{% if form.block_blogs_personal.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_blogs_personal}} Blogs / Personal Sites
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_food_dining_restaurants" style="font-weight: normal;{% if form.block_food_dining_restaurants.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_food_dining_restaurants}} Food / Dining / Restaurants
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_news_media" style="font-weight: normal;{% if form.block_news_media.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_news_media}} News / Media
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_television" style="font-weight: normal;{% if form.block_television.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_television}} Television
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_business_services_industry" style="font-weight: normal;{% if form.block_business_services_industry.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_business_services_industry}} Business Services / Industry
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_forums_message_boards" style="font-weight: normal;{% if form.block_forums_message_boards.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_forums_message_boards}} Forums / Message Boards
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_nudity_pornography" style="font-weight: normal;{% if form.block_nudity_pornography.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_nudity_pornography}} Nudity / Pornography
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_travel" style="font-weight: normal;{% if form.block_travel.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_travel}} Travel
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_classifieds_auctions" style="font-weight: normal;{% if form.block_classifieds_auctions.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_classifieds_auctions}} Classifieds / Auctions
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_gambling" style="font-weight: normal;{% if form.block_gambling.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_gambling}} Gambling
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_p2p_file_sharing" style="font-weight: normal;{% if form.block_p2p_file_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_p2p_file_sharing}} P2P File Sharing
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_user_tracking" style="font-weight: normal;{% if form.block_user_tracking.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_user_tracking}} User Tracking Scripts and Beacons 
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_content_delivery_networks" style="font-weight: normal;{% if form.block_content_delivery_networks.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_content_delivery_networks}} Content Delivery Networks
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_games" style="font-weight: normal;{% if form.block_games.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_games}} Games
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_photo_sharing" style="font-weight: normal;{% if form.block_photo_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_photo_sharing}} Photo Sharing
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_video_sharing" style="font-weight: normal;{% if form.block_video_sharing.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_video_sharing}} Video Sharing
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_cracks_hacking_illegal" style="font-weight: normal;{% if form.block_cracks_hacking_illegal.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_cracks_hacking_illegal}} Hacking, Cracking and Illegal Content
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_generic_non_categorized" style="font-weight: normal;{% if form.block_generic_non_categorized.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_generic_non_categorized}} Generic / Non-categorized Sites 
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_politics" style="font-weight: normal;{% if form.block_politics.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_politics}} Politics
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_weapons" style="font-weight: normal;{% if form.block_weapons.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_weapons}} Weapons
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="id_block_dating" style="font-weight: normal;{% if form.block_dating.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_dating}} Dating
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_government" style="font-weight: normal;{% if form.block_government.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_government}} Government
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_portals" style="font-weight: normal;{% if form.block_portals.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_portals}} Portals
+                    </label>
+                </td>
+                <td>
+                    <label for="id_block_webmail" style="font-weight: normal;{% if form.block_webmail.value %}color: red;{%endif%}" class="checkbox">
+                        {{form.block_webmail}} Web Mail
+                    </label>
+                </td>
+            </tr>
+    </table>  
+    
+
+    <div class="form-group">
+        <div class="col-lg-4">
+            <div class="well alert-danger">
+                <label class="checkbox inline">{{form.block_noncategorized_domains}} <strong>Block all non-categorized sites. This setting is usually used to create safe environments where each allowed site was explicitly looked at by an expert. Selecting this checkbox may seriously disrupt browsing experience! Proceed with caution! Click this link to <a href="{% url 'ViewRecategorizedDomains' %}">manually categorize unknown sites</a></strong>.<br>&nbsp;</label>                
+            </div>                                   
+        </div>
+    </div>    
+    <div class="form-group">
+        <div class="col-lg-4">
+            <button type="submit" class="btn btn-primary">Save Settings</button>            
+        </div>
+    </div>
+    </form>
+        
+{% endblock %}

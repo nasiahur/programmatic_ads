@@ -1,0 +1,19 @@
+{% extends 'squid/auth/base.html' %}
+
+{% block base_contents %}
+    
+    <section class="row-fluid">
+        <ul class="nav nav-pills">
+            <li {% block toolbar_auth_explicit %}{%endblock%}>
+            	<a href="{% url 'ViewAuthExplicit' %}">Explicit Proxy Authentication</a>
+            </li>
+            {% if not is_pfsense %}
+            <li {% block toolbar_auth_pseudo %}{%endblock%}>
+            	<a href="{% url 'ViewAuthPseudo' %}" id="toolbar_auth_pseudo">Pseudo Proxy Authentication</a>
+            </li>            
+            {% endif %}
+        </ul>
+        {% block page_content %}{% endblock %}            
+    </section>        
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'squid/cache/index.html' %}
+
+{% block toolbar_memory %}class="active"{%endblock%}
+{% block page_comment %}{% endblock %}
+
+{% block page_content %}
+
+    <style type="text/css">
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+
+    <div class="box">
+
+        {% block member_heading%}{%endblock%}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+             {% for error in form.non_field_errors %}
+                 <span>{{ error|escape }}</span>
+             {% endfor %}
+        </div>  
+        {% endif %}
+
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <div class="control-group {% if form.cache_mem.errors %}error{%endif%}">
+                <label class="control-label" for="id_cache_mem">Cache Size (MB)</label>
+                <div class="controls">
+                    <style>#id_cache_mem { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.cache_mem}}
+                        <button class="btn" type="button" onclick="$('#id_cache_mem').val('256');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.cache_mem.errors %}
+                        <span class="help-block">{{form.cache_mem.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the size of memory cache in megabytes. Default value is <em>256 MB</em>. See <a href="http://www.squid-cache.org/Doc/config/cache_mem/" target="blank">Squid documentaton</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.maximum_object_size_in_memory.errors %}error{%endif%}">
+                <label class="control-label" for="id_maximum_object_size_in_memory">Object Size (KB)</label>
+                <div class="controls">
+                    <style>#id_maximum_object_size_in_memory { width: 70px; }</style>
+                    <div class="input-append">
+                        {{form.maximum_object_size_in_memory}}
+                        <button class="btn" type="button" onclick="$('#id_maximum_object_size_in_memory').val('512');"><i class="icon-magic"></i></button>
+                    </div>                    
+                    {% if form.maximum_object_size_in_memory.errors %}
+                        <span class="help-block">{{form.maximum_object_size_in_memory.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Specify here the max size of object to store in memory cache in kilobytes. Default value is <em>512 KB</em>. Objects bigger than this value are not saved into memory cache. See <a href="http://www.squid-cache.org/Doc/config/maximum_object_size_in_memory/" target="blank">Squid documentaton</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group {% if form.memory_replacement_policy.errors %}error{%endif%}">
+                <label class="control-label" for="id_memory_replacement_policy">Replacement Policy</label>
+                <div class="controls">
+                    <style>#id_memory_replacement_policy { width: 120px; }</style>
+                    {{form.memory_replacement_policy}}
+                    {% if form.memory_replacement_policy.errors %}
+                        <span class="help-block">{{form.memory_replacement_policy.errors|striptags}}</span>
+                    {% else %}
+                        <span class="help-block">Memory replacement policy parameter determines which objects are purged from memory when memory space is needed. Default value is <em>LRU</em>. See <a href="http://www.squid-cache.org/Doc/config/memory_replacement_policy/" target="blank">Squid documentaton</a> for more information.</span>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-group"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}

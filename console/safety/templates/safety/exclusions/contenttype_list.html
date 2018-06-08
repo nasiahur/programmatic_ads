@@ -1,0 +1,9 @@
+{% extends 'safety/exclusions/list.html' %}
+
+{% block toolbar_exclusion_ctypes %}class="active"{%endblock%}
+
+{% block exclusion_heading%}<p>The following list contains content types excluded from filtering. Content types are filtered in HTTP/HTTPS responses only. Click on the content type to edit exclusion settings for it. Click <em>Add New</em> button to add new excluded content type. Click <em>Remove</em> button to remove content type from exclusion list.</p>{%endblock%}
+
+{% block addnew_href%}{% url 'ViewExclusionContentTypeCreate' policy.pk %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExclusionContentTypeUpdate' policy.pk object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExclusionContentTypeUpdate' policy.pk object.pk %}{%endblock%}

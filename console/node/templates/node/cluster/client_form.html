@@ -1,0 +1,70 @@
+{% extends 'node/cluster/index.html' %}
+
+{% block toolbar_client %}class="active"{%endblock%}
+
+{% block clustering_content %}
+
+    <p>In this mode, the node is not allowed to change configuration, it only downloads its from the master server. Configuration is downloaded by HTTPS with mutual validation of client and server using Root CA certificate. Please note you MUST have the same Root CA certificate installed on all clustered machines. Be sure <a href="{% url 'ViewSslInfo' %}">NOT to use default Root CA</a>!</p>
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-error"><strong>ERROR</strong>: 
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal">{% csrf_token %}
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls"><label class="checkbox inline">{{form.enabled}} Activate this node as configuration client.</label>
+            </div>
+        </div>
+        <div class="control-group {% if form.sync_interval.errors %}error{%endif%}">
+            <label class="control-label" for="id_sync_interval">Sync Frequency</label>
+            <div class="controls">
+                <div class="input-append">
+                    <style>#id_sync_interval { width: 70px; }</style>
+                    {{form.sync_interval}}
+                    <button class="btn" type="button" onclick="$('#id_sync_interval').val('5');"><i class="icon-magic"></i></button>
+                </div>
+                {% if form.sync_interval.errors %}
+                    <span class="help-block">{{form.sync_interval.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Heartbeat and pull the configuration from the configuration server each N seconds. Default value is 5.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.server_address.errors %}error{%endif%}">
+            <label class="control-label" for="id_server_address">Server Address</label>
+            <div class="controls">
+                {{form.server_address}}
+                {% if form.server_address.errors %}
+                    <span class="help-block">{{form.server_address.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Address of the server node to connect to.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group {% if form.server_port.errors %}error{%endif%}">
+            <label class="control-label" for="id_server_port">Server Port</label>
+            <div class="controls">
+                <div class="input-append">
+                    <style>#id_server_port { width: 70px; }</style>
+                    {{form.server_port}}
+                    <button class="btn" type="button" onclick="$('#id_server_port').val('18999');"><i class="icon-magic"></i></button>
+                </div>
+                {% if form.server_port.errors %}
+                    <span class="help-block">{{form.server_port.errors|striptags}}</span>
+                {% else %}
+                    <span class="help-block">Port of the server node to connect to. Default value is 18999.</span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+    </form>
+{% endblock %}

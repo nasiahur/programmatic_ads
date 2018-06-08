@@ -1,0 +1,42 @@
+{% extends 'node/tools/index.html' %}
+{% block leftbar_tools %}class="active"{%endblock%}
+
+{% block toolbar_backup %}class="active"{%endblock%}
+
+{% block box_contents %}
+
+    <p>Press <em>Backup</em> button to download backup archive of your current configuration. This backup will contain all files from  <em>/opt/websafety/etc</em> folder and <em>config.sqlite</em> configuration database from <em>/opt/websafety/var/db</em> folder as explained in the <a href="https://docs.diladele.com/administrator_guide_6_1/web_filter/configuration_files.html">documentation</a>.</p>
+
+    <form action="{% url 'node:ViewBackUpDownloadTarGz' %}" method="GET" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="controls">
+            	<div class="row-fluid">
+    				<div class="span12"><label class="checkbox inline">{{form.include_sqlite}} Include SQLite configuration database from <em>/opt/websafety/var/db/config.sqlite</em>. Recommended.</label></div>
+				</div>
+				<div class="row-fluid">
+    				<div class="span12"><label class="checkbox inline">{{form.include_lic}} Include license key from <em>/opt/websafety/etc/license.pem</em>. Recommended.</label></div>
+				</div>
+				<div class="row-fluid">
+    				<div class="span12"><label class="checkbox inline">{{form.include_certs}} Include private HTTPS decryption certificates. Not recommended if you plan to send the archive to support@diladele.com.</label></div>                    
+				</div>          
+				<div class="row-fluid">
+    				<div class="span12"><label class="checkbox inline">{{form.include_ad}} Include Active Directory integration artifacts (Kerberos keytab, LDAPS certificate, etc. Not recommended if you plan to send the archive to support@diladele.com.</label></div>                    
+				</div>                       
+				<!--
+				<div class="row-fluid">
+    				<div class="span12"><label class="checkbox inline">{{form.anonymize}} Remove any explicit passwords stored. Recommended only if you plan to send the archive to support@diladele.com.</label></div>
+				</div>		
+			-->
+        	</div>
+        </div>
+        <div class="control-group">
+            <div class="controls" style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Backup</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'squid/exclude/list.html' %}
+
+{% block exclude_user %}active{%endblock%}
+{% block header_tab %} / User IP Subnet{% endblock %}
+
+{% block page_comment %}
+<p>Connections from the following local IP subnets are excluded from web filtering, anti malware scanning, authentication and HTTPS decryption.</p>
+{% endblock %}
+
+{% block addnew_href%}{% url 'ViewExcludeUserSubnetCreate' %}{%endblock%}
+{% block edit1_href%}{% url 'ViewExcludeUserSubnetUpdate' object.pk %}{%endblock%}
+{% block edit2_href%}{% url 'ViewExcludeUserSubnetUpdate' object.pk %}{%endblock%}
+
+

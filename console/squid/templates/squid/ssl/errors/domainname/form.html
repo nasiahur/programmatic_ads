@@ -1,0 +1,11 @@
+{% extends 'squid/ssl/errors/form.html' %}
+
+{% block toolbar_ssl_error_domain %}class="active"{%endblock%}
+
+{% block value_name%}Domain Name{%endblock%}
+{% block value_help%}Specify domain name to ingore SSL errors on. Domains with self generated SSL certificates or those SSL certificates of which cannot be mimicked are good examples. Prefix a domain name with a . (dot) to exclude all subdomains. For example <em>.facebook.com</em> will match all subdomains of <em>facebook.com</em> (as well as top level <em>facebook.com</em> itself). Wildcards are not supported.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewSslErrorDomainList' %}{%endblock%}

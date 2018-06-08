@@ -1,0 +1,8 @@
+Temporary removed
+=================
+
+{ "model": "squid.SslExcludeDomain", "fields": { "squid_id" : 1, "value" : ".skype.com", "comment" : "Skype bypass"}},
+{ "model": "squid.SslExcludeDomain", "fields": { "squid_id" : 1, "value" : "login.live.com", "comment" : "Skype bypass (logging in)"}},
+{ "model": "squid.SslExcludeDomain", "fields": { "squid_id" : 1, "value" : ".messenger.live.com", "comment" : "Skype bypass (chatting)"}},
+{ "model": "squid.SslExcludeDomain", "fields": { "squid_id" : 1, "value" : ".trouter.io", "comment" : "Skype bypass (logging in)"}},
+

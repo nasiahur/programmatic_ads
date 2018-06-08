@@ -1,0 +1,58 @@
+{% extends 'traffic/monitor/monitor.html' %}
+{% load l10n %}
+{% block body_fluid %}class="fluid-layout"{% endblock %}
+{% block leftbar_history %}class="active"{%endblock%}
+
+{% block header %}Incident Information{%endblock%}
+
+{% block breadcrumbs %}{% endblock %}
+{% block banner %}<p>&nbsp;</p>{% endblock %}
+
+{% block content %}
+
+    <div class="box non-collapsible widget-messages">
+    
+        <p>Detailed information for monitoring incident {{object.iid}} identified as {{object.pk}} in the monitoring database.</p>
+        
+        <div class="message-actions">
+        
+            <table class="table table-striped table-condensed table-hover">
+                <thead>
+                    <tr><th>Name</th><th>Value</th></tr>
+                </thead>
+                    <tr><td>Primary Key</td><td>{{object.pk}}</td></tr>
+                    <tr><td>Incident ID</td><td>{{object.iid}}</td></tr>
+                    <tr><td>Time</td><td>{{object.timestamp|localize}} (hour of day {{object.hour}}) </td></tr>
+                    <tr {% if object.verdict.value == 'block' %}style="color: red;"{% elif object.is_whitelisted %}style="color: green;"{%endif%}><td>Verdict</td><td>{{object.verdict.value}}</td></tr>
+                    <tr><td>Offensive</td><td>{{object.offensive}}</td></tr>
+                    <tr><td>Unproductive</td><td>{{object.unproductive}}</td></tr>
+                    <tr><td>ICAP Message</td><td>{{object.message.value}}</td></tr>
+                    <tr><td>User IP</td><td>{{object.user_ip.value}}</td></tr>
+                    <tr><td>User Name</td><td>{{object.user_name.value}}</td></tr>
+                    <tr><td>User Agent</td><td>{{object.user_agent.value}}</td></tr>
+                    <tr><td>User EUI (MAC)</td><td>{{object.user_eui.value}}</td></tr>
+                    <tr><td>Size</td><td>{{object.size}}</td></tr>
+                    <tr><td>Size from Content Length header</td><td>{{object.size_approx}}</td></tr>
+                    <tr><td>Policy</td><td>{{object.policy.value}}</td></tr>
+                    <tr><td>Policy Member</td><td>{{object.member.value}}</td></tr>
+                    <tr><td>Content-Type</td><td>{{object.content_type.value}}</td></tr>
+                    <tr><td>Scan Flags</td><td>{{object.get_flags_as_string}}</td></tr>
+                    <tr><td>Level</td><td>{{object.level.value}}</td></tr>
+                    <tr><td>Method</td><td>{{object.method.value}}</td></tr>
+                    <tr><td>Host</td><td>{% if object.host.value != '-' %}<a href="{% url 'ViewRecategorizedDomainCreate' %}?name={{object.host.value}}">{{object.host.value}}</a>{% else %}{{object.host.value}}{%endif%}</td></tr>
+                    <tr><td>Top Level Domain</td><td>{% if object.tld.value != '-' %}<a href="{% url 'ViewRecategorizedDomainCreate' %}?name={{object.tld.value}}">{{object.tld.value}}</a>{% else %}{{object.tld.value}}{%endif%}</td></tr>
+                    <tr><td>Module</td><td>{{object.module.value}}</td></tr>
+                    <tr><td>Assigned Categories</td><td>{{object.get_categories_as_string}}</td></tr>
+                    <tr><td>Categories are Trusted</td><td>{% if object.trusted %}Yes{% else%}No{%endif%}</td></tr>
+                    <tr><td>Param 1</td><td>{{object.param1.value}}</td></tr>
+                    <tr><td>Param 2</td><td>{{object.param2.value}}</td></tr>
+                    <tr><td>URL</td><td><a target="_new" href="{{object.get_url}}">{{object.get_url}}</a></td></tr>
+                    <tr><td>Referer</td><td>{%if object.get_referer and object.get_referer != '-' %}<a target="_new" href="{{object.get_referer}}">{{object.get_referer}}</a>{%else%}{{object.get_referer}}{% endif%}</td></tr>
+            </table> 
+            </div>
+        </div>
+        
+    </div> 
+{% endblock %}
+
+

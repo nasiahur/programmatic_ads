@@ -1,0 +1,11 @@
+{% extends 'safety/members/form.html' %}
+
+{% block toolbar_member_subnet %}class="active"{%endblock%}
+
+{% block value_name%}IP Subnet{%endblock%}
+{% block value_help%}Specify IP subnet of the members of this policy. For example, 10.0.0.0/24 or 2607:f0d0:1002:0051:0000:0000:0000:0004/120.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewMemberSubnetList' policy.pk %}{%endblock%}

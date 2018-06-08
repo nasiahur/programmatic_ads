@@ -1,0 +1,11 @@
+{% extends 'safety/rules/ruledomainbase_form.html' %}
+
+{% block rule_desc%}<p>Unconditionally block requests for specific URLs. Specify Perl style regular expression as the Rule Value. This regex will be used for matching against the URL.</p>{%endblock%}
+
+{% block value_name%}Request URL{%endblock%}
+{% block value_help%}For example the .* value blocks access to all URLs. This might come in handy if you are trying to set the visit the "white list" only domains policy. In this case after blocking all URLs with .*, add allowed domains to the exclusion list for such policy.{%endblock%}
+
+{% block comment_name%}Comment{%endblock%}
+{% block comment_help%}Specify comment for your own use.{%endblock%}
+
+{% block cancel_href%}{% url 'ViewRuleUrlList' policy.pk %}{%endblock%}

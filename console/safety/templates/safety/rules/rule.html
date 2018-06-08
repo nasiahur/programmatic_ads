@@ -1,0 +1,56 @@
+{% extends 'safety/policy.html' %}
+
+{% block toolbar_rules %}class="active"{%endblock%}
+{% block policy_content %}
+
+
+    <ul class="nav nav-pills" id="myTab">
+        <li {% block toolbar_rule_adult %}{%endblock%}><a href="{% url 'ViewRuleAdult' policy.pk %}">Adult Sites</a></li>
+
+        <li class="dropdown {% block toolbar_rule_categories %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_categories" role="button" href="#" data-toggle="dropdown">Site Categorization <b class="caret"></b></a>
+            <ul id="menu_categories" class="dropdown-menu" role="menu" aria-labelledby="drop_categories">
+                <li><a href="{% url 'ViewRuleCategoryBuiltIn' policy.pk %}">Block Sites by Category</a></li>
+                <li><a href="{% url 'ViewRuleCategoryDynamic' policy.pk %}">Dynamic Categorization</a></li>                
+                <li><a href="{% url 'ViewRuleCategoryCustom' policy.pk %}">Custom Categories</a></li>                
+            </ul>
+        </li>
+        <li class="dropdown {% block toolbar_rule_file %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_file" role="button" href="#" data-toggle="dropdown">File Downloads <b class="caret"></b></a>
+            <ul id="menu_file" class="dropdown-menu" role="menu" aria-labelledby="drop_file">
+                <li><a href="{% url 'ViewRuleFileNameList' policy.pk %}">Block Files by Name</a></li>
+                <li><a href="{% url 'ViewRuleFileContentList' policy.pk %}">Block Files by Content</a></li>
+                <li><a href="{% url 'ViewRuleFileSize' policy.pk %}">Block Files by Size</a></li>
+                <li><a href="{% url 'ViewRuleContentTypeList' policy.pk %}">Block Specific Content Types</a></li>
+                <li><a href="{% url 'ViewRuleCharsetList' policy.pk %}">Block Specific Charsets</a></li>
+            </ul>
+        </li>
+        
+        <li {% block toolbar_rule_annoyances %}{%endblock%}><a href="{% url 'ViewRuleAnnoyances' policy.pk %}">Annoyances</a></li>
+
+        <li class="dropdown {% block toolbar_rule_domains %}{%endblock%}">
+            <a class="dropdown-toggle" id="drop_domain" role="button" href="#" data-toggle="dropdown">Domains &amp; URLS <b class="caret"></b></a>
+            <ul id="menu_domain" class="dropdown-menu" role="menu" aria-labelledby="drop_domain">
+                <li><a href="{% url 'ViewRuleDomainList' policy.pk %}">Block Specific Domains</a></li>
+                <li><a href="{% url 'ViewRuleUrlList' policy.pk %}">Block URLs</a></li>                
+                <li><a href="{% url 'ViewRuleUserAgentList' policy.pk %}">Block User Agents</a></li>                
+            </ul>
+        </li>
+        <li {% block toolbar_rule_apps %}{%endblock%}><a href="{% url 'ViewRuleApps' policy.pk %}">YouTube &amp; Google</a></li>        
+    </ul>
+    
+    {% block rule_desc %}{%endblock%}
+        
+    <div class="tab-content" style="margin-bottom: 10px;">
+        <div class="tab-pane fade in active">
+
+            {% block rule_boxed_content %}
+                <div class="box">    
+                    {% block rule_content %}{%endblock%}    
+                </div>        
+            {%endblock%}    
+        </div>
+    </div>
+    
+    
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'squid/auth/active_directory.html' %}
+
+{% block auth_ad_general %}class="active"{%endblock%}
+
+{% block page_comment %}
+	<p style="margin-bottom: 15px;">If proxy authentication is enabled only authenticated users will be able to access the Internet through this proxy. Proxy authentication can only be used in case of explicit proxy deployment, when browser is configured to use the proxy. See <a href="http://wiki.squid-cache.org/Features/Authentication" target="_new">Squid Wiki article</a> for more information.</p>
+{% endblock %}
+
+
+{% block tab_content %}
+
+    <div class="box">
+        <style type="text/css">
+            .wrapit {
+                white-space: pre-wrap;
+            }
+        </style>    
+        {% if not success %}
+        <div class="alert alert-error">
+            <p><strong>Failure!</strong></p>
+            <p>LDAP test failed. Please examine the following output, click <em>Continue Editing</em> below, correct and save your LDAP settings, and <em>Test LDAP Connection</em> again. Please note, on operating systems other than Ubuntu/Debian you might need to specify <em>user@example.lan</em> as LDAP binding user name, not just <em>user</em>.</p>
+        </div>
+        {% else %}        
+        <div class="alert alert-success">
+            <p><strong>Success!</strong></p>
+            <p>LDAP test completed successfully with the following results. Do not forget to <a href="{% url 'frame:ApplyView' %}">Apply New Settings and Restart the ICAP server</a> to activate LDAP settings.</p>        
+        </div>
+        {% endif %}
+        
+        <p><pre class="wrapit{% if not success %} alert-error{%endif%}">{{ output }}</pre></p>
+
+        {% if not success %}
+        <a class="btn btn-danger" href="{% url 'ViewAuthDomainEdit' %}">Continue Editing</a>
+        {% endif %}
+        <p>&nbsp;</p>
+    </div>
+
+{% endblock %}

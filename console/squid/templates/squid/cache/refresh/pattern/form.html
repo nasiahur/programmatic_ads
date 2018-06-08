@@ -1,0 +1,7 @@
+{% extends 'squid/cache/refresh/form.html' %}
+
+{% block header_subtab %}{% endblock %}
+
+{% block page_comment%}<p>Refresh pattern overriding default caching rules. Please take a look at <a href="http://www.squid-cache.org/Doc/config/refresh_pattern/" target="blank">Squid documentation</a> before changing anything.</p>{%endblock%}
+
+{% block cancel_href%}{% url 'ViewCacheRefreshPatternList' %}{%endblock%}

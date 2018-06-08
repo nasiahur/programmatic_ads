@@ -1,0 +1,182 @@
+{% extends 'safety/subscriptions/subscriptions.html' %}
+
+{% block toolbar_subscriptions_adblock %}class="active"{%endblock%}
+
+{% block subscriptions_desc %}<p>Enable only those subscriptions which match the language of most browsed web sites in your network. Activated subscriptions are shown in green. Selecting too many subscriptions may require more powerful CPU!</p>{%endblock%}
+
+{% block subscriptions_content %}
+
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+         {% for error in form.non_field_errors %}
+             <span>{{ error|escape }}</span>
+         {% endfor %}
+    </div>  
+    {% endif %}
+
+    <form action="" method="POST" class="form-horizontal" role="form">{% csrf_token %}                                        
+
+        <table class="table table-condensed table-striped table-hover">
+            <tr>
+                <td>
+                    <label for="id_enable_bulgarian" style="font-weight: normal;{% if form.enable_bulgarian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_bulgarian}} Bulgarian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_estonian" style="font-weight: normal;{% if form.enable_estonian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_estonian}} Estonian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_italian" style="font-weight: normal;{% if form.enable_italian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_italian}} Italian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_romanian" style="font-weight: normal;{% if form.enable_romanian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_romanian}} Romanian
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_chinese" style="font-weight: normal;{% if form.enable_chinese.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_chinese}} Chinese
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_french" style="font-weight: normal;{% if form.enable_french.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_french}} French
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_japanese" style="font-weight: normal;{% if form.enable_japanese.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_japanese}} Japanese
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_russian" style="font-weight: normal;{% if form.enable_russian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_russian}} Russian
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_custom1" style="font-weight: normal;{% if form.enable_custom1.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_custom1}} Custom
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_german" style="font-weight: normal;{% if form.enable_german.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_german}} German
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_korean" style="font-weight: normal;{% if form.enable_korean.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_korean}} Korean
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_slovak" style="font-weight: normal;{% if form.enable_slovak.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_slovak}} Slovak
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_czech" style="font-weight: normal;{% if form.enable_czech.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_czech}} Czech
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_greek" style="font-weight: normal;{% if form.enable_greek.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_greek}} Greek
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_latvian" style="font-weight: normal;{% if form.enable_latvian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_latvian}} Latvian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_spanish" style="font-weight: normal;{% if form.enable_spanish.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_spanish}} Spanish
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_danish" style="font-weight: normal;{% if form.enable_danish.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_danish}} Danish
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_hungarian" style="font-weight: normal;{% if form.enable_hungarian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_hungarian}} Hungarian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_lithuanian" style="font-weight: normal;{% if form.enable_lithuanian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_lithuanian}} Lithuanian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_swedish" style="font-weight: normal;{% if form.enable_swedish.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_swedish}} Swedish
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_dutch" style="font-weight: normal;{% if form.enable_dutch.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_dutch}} Dutch
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_indian" style="font-weight: normal;{% if form.enable_indian.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_indian}} Indian
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_polish" style="font-weight: normal;{% if form.enable_polish.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_polish}} Polish
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_turkish" style="font-weight: normal;{% if form.enable_turkish.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_turkish}} Turkish
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="id_enable_english" style="font-weight: normal;{% if form.enable_english.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_english}} English
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_israeli" style="font-weight: normal;{% if form.enable_israeli.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_israeli}} Israeli
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_portuguese" style="font-weight: normal;{% if form.enable_portuguese.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_portuguese}} Portuguese
+                    </label>
+                </td>
+                <td>
+                    <label for="id_enable_vietnamese" style="font-weight: normal;{% if form.enable_vietnamese.value %}color: green;{%endif%}" class="checkbox">
+                        {{form.enable_vietnamese}} Vietnamese
+                    </label>
+                </td>
+            </tr>
+        </table>  
+        <div class="form-group">
+            <div class="col-lg-4">
+                <button type="submit" class="btn btn-primary">Save Settings</button>            
+            </div>
+        </div>
+    </form>
+    
+{% endblock %}

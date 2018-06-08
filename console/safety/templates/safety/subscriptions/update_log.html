@@ -1,0 +1,45 @@
+{% extends 'safety/subscriptions/settings.html' %}
+{% block toolbar_updates %}class="active"{%endblock%}
+{% block settings_content %}
+
+    <div class="box">    
+    
+   <table class="table table-striped table-condensed table-hover">
+        <tr>
+            <th width="40%">Definition File</th>
+            <th>Created On</th>
+        </tr>
+        <tr>
+            <td>Block Web Advertisements</td>
+            <td>{{info.adblock}}</td>
+        </tr>
+        <tr>
+            <td>Protect Online Privacy</td>
+            <td>{{info.privacy}}</td>
+        </tr>
+        <tr>
+            <td>Web Site Categorization</td>
+            <td>{{info.categories}}</td>
+        </tr>
+        <tr>
+            <td>YouTube Annoyances</td>
+            <td>{{info.youtube}}</td>
+        </tr>
+        <tr>
+            <td><a href="https://www.iwf.org.uk/" target="_new">Internet Watch Foundation</a> List</td>
+            <td>{{info.iwf}}</td>
+        </tr>
+    </table>  
+    <p>&nbsp;</p>
+    <h4>Update Log <small>of automatic hourly updates of definition files</small></h4>
+    <style type="text/css">
+            .wrapit {
+                white-space: pre-wrap;
+                margin-bottom: 20px;
+            }
+    </style>
+
+    <pre class="wrapit">{{update_log}}</pre>
+
+    </div>
+{% endblock %}
